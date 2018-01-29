@@ -69,8 +69,15 @@ export default class Login extends React.Component {
                             onChange={this.onChangeKeyword}
                         ></InputItem>
                     </List>
-                    <Button className="btn">登 陆</Button>
+                    <Button
+                        className="btn"
+                        type="primary"
+                    >登 陆</Button>
                 </div>
+                <i 
+                    className="iconfont icon-leftarrow"
+                    onClick={() => { hashHistory.goBack();}}
+                ></i>
             </div>
         )
     }

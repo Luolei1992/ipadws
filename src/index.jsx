@@ -12,6 +12,7 @@ import Visit from './components/Visit';
 
 import 'lib-flexible/flexible'
 import './css/index.less'
+import './css/font/iconfont.css'
 
 ReactDOM.render(
     <Router history={hashHistory}>
