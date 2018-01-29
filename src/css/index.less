@@ -1,3 +1,74 @@
-body {
-    background-color: red;
+@import './base.css';
+
+.guideWrap {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background-color: #000;
+    ul {
+        overflow: hidden;
+        li {
+            float: left;
+            text-align: center;
+            padding: 0 .533333rem;
+            font-size: 14px;
+            a {
+                color: red;
+            }
+        }
+    }
 }
+.loginWrap {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    .loginIpt {
+        h2 {
+            text-align: center;
+            font-size: 38px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin: .533333rem 0;
+            span {
+                color: red;
+            }
+        }
+        input {
+            
+        }
+        .btn {
+            background-color: #C51E46;
+            color: #fff;
+            width: 70%;
+            margin: 0 auto;
+        }
+        .am-list-item {
+            border: 1px solid #ccc;
+            width: 70%;
+            margin: 0 auto .4rem auto;   
+            box-sizing: border-box;         
+        }
+    }
+}
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+        html:not([data-scale]) .am-list-body::before,
+        html:not([data-scale]) .am-list-body::after {
+        content: '';
+        position: absolute;
+        background-color: transparent !important;
+        display: block;
+        z-index: 1;
+        top: 0;
+        right: auto;
+        bottom: auto;
+        left: 0;
+        width: 100%;
+        height: 1PX;
+        -webkit-transform-origin: 50% 50%;
+        -ms-transform-origin: 50% 50%;
+        transform-origin: 50% 50%;
+        -webkit-transform: scaleY(0.5);
+        -ms-transform: scaleY(0.5);
+        transform: scaleY(0.5);
+        }
+    }
