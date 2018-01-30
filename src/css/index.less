@@ -1,27 +1,62 @@
 @import './base.css';
 
-.guideWrap {
+.guideWrap {     //引导页样式
     position: fixed;
     height: 100%;
     width: 100%;
-    background-color: #000;
-    ul {
-        overflow: hidden;
-        li {
-            float: left;
+    background-color: #E60012;
+    .head {
+        margin: .54rem .6rem ;
+    }
+    .main {
+        h2 {
+            font-size: 38px;
+            color: #fff;
             text-align: center;
-            padding: 0 .533333rem;
-            font-size: 14px;
-            a {
-                color: red;
+            font-weight: 800;
+            letter-spacing: .03rem;
+            margin: 1rem 0 1.5rem 0;
+            span{
+                color: #000000;
             }
+        }
+        ul {
+            overflow: hidden;
+            display: table;
+            margin: 0 auto;
+            li {
+                float: left;
+                text-align: center;
+                padding: 0 .6rem;
+                font-size: 14px;
+                a {
+                    color: #fff;
+                }
+            }
+        }
+        .right {
+            width: 31px;
+            height: 31px;
+            margin: 0 auto;
+            margin-top: .976563rem;
         }
     }
 }
-.loginWrap {
+.loginWrap {     //登陆也样式
     position: fixed;
     height: 100%;
     width: 100%;
+    background: #000;
+    .head {
+        overflow: hidden;
+        padding: .390625rem;
+        .logo {
+            float: left;
+        }
+        .wordMsg {
+            float: right;
+        }
+    }
     i {
         font-size: 28px;
         font-weight: 800;
@@ -30,39 +65,62 @@
         left: .533333rem;
     }
     .loginIpt {
-        h2 {
-            text-align: center;
-            font-size: 38px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            margin: .533333rem 0;
-            span {
-                color: red;
-            }
+        .wordLogo {
+            display: table;
+            margin: 0 auto .488281rem auto;
         }
+       
         input {
-            
+            width: 4.882813rem;
         }
         .btn {
             background-color: #C51E46;
             color: #fff;
-            width: 70%;
+            width: 4.882813rem;
             margin: 0 auto;
         }
-        .am-list-item {
-            border: 1px solid #ccc;
-            width: 70%;
-            margin: 0 auto .4rem auto;   
-            box-sizing: border-box;         
+        .am-list-body {
+            background-color: #000;
+            .am-list-item {
+                border: 1px solid #ccc;
+                width: 4.882813rem;
+                border-radius: 5px;
+                margin: 0 auto .4rem auto;   
+                box-sizing: border-box;         
+            }   
         }
+    }
+    .left {
+        width: 31px;
+        height: 31px;
+        position: absolute;
+        bottom: .488281rem;
+        left: .488281rem;
     }
 }
-    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-        html:not([data-scale]) .am-list-body::before,
-        html:not([data-scale]) .am-list-body::after {
-            background-color: transparent !important;
+.visitWrap {
+    .footerBar {
+        background-color: #000000;
+        ul {
+            text-align: center;
+            overflow: hidden;
+            li {
+                float: left;
+                a {
+                    color: #fff;
+                }
+            }
         }
-        html:not([data-scale]) .am-button-primary::before {
-            border : 0 none !important;
-        }
+        
     }
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+    html:not([data-scale]) .am-list-body::before,
+    html:not([data-scale]) .am-list-body::after {
+        background-color: transparent !important;
+    }
+    html:not([data-scale]) .am-button-primary::before {
+        border : 0 none !important;
+    }
+}

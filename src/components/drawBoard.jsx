@@ -242,6 +242,3 @@ class DrawBoard {
 }
 
 export { DrawBoard };
-
-
-// module.exports = DrawBoard;

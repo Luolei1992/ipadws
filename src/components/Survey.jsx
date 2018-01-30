@@ -4,7 +4,7 @@ export default class survey extends React.Component{
     constructor(props) {
         super(props);
         this.state={
-
+            
         }
     }
     componentDidMount(){

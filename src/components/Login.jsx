@@ -2,6 +2,17 @@ import React from "react";
 import { List, InputItem, Toast, Button, Modal } from 'antd-mobile';
 import { Link, hashHistory } from 'react-router';
 
+import '../js/jspdf.debug.js'
+import '../js/html2canvas.min.js'
+import '../js/div2png.js'
+
+const urls = {
+    wordLogo:require('../images/wordLogo.png'),
+    left:require('../images/left.png'),
+    bg:require('../images/bg.png'),
+    wordMsg:require('../images/wordMsg.png'),
+    logo:require('../images/logo.png')
+}
 export default class Login extends React.Component {
     constructor(props) {
         super(props);
@@ -41,9 +52,15 @@ export default class Login extends React.Component {
     }
     render(){
         return (
-            <div className="loginWrap" >
-                <div className="loginIpt midCenter">
-                    <h2><span>同心</span>共进&nbsp;&nbsp;<span>感恩</span>汇聚</h2>
+            <div className="loginWrap" id="fromHTMLtestdiv">
+                <div className="head">
+                    <img src={urls.logo} className="logo" />
+                    <img src={urls.wordMsg} className="wordMsg" />
+                </div>
+                <div className="loginIpt midCenterFull">
+                    <div className="wordLogo">
+                        <img src={urls.wordLogo} />
+                    </div>
                     <List>
                         <InputItem
                             type="number"
@@ -74,10 +91,12 @@ export default class Login extends React.Component {
                         type="primary"
                     >登 陆</Button>
                 </div>
-                <i 
-                    className="iconfont icon-leftarrow"
-                    onClick={() => { hashHistory.goBack();}}
-                ></i>
+                {/* <i className="iconfont icon-leftarrow" onClick={() => { hashHistory.goBack();}}></i> */}
+                <div className="left" onClick={() => { hashHistory.goBack(); }}>
+                    <img src={urls.left} />
+                </div>
+                <button id="downloadPng">下载图片</button>
+                <button id="download">下载PDF</button>
             </div>
         )
     }

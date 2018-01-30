@@ -36,7 +36,7 @@ export default class Signature extends React.Component {
         return (
             <div class="main">
                 <p class="title">电子签名区</p>
-                <canvas id="canvas" width="500" height="300"></canvas>
+                <canvas id="canvas" width="500" height="300" style={{backgroundColor:"red"}}></canvas>
                 <div>
                     <button type="button" class="bt-warn" onClick={this.clearAll}>重签</button>
                     <button type="button" class="bt-default" onClick={this.cancelLast}>撤销</button>
