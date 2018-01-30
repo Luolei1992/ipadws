@@ -9,6 +9,7 @@ import Company from './components/Company';
 import Quality from './components/Quality';
 import Survey from './components/Survey';
 import Visit from './components/Visit';
+import Signature from './components/Signature';
 
 import 'lib-flexible/flexible'
 import './css/index.less'
@@ -25,5 +26,6 @@ ReactDOM.render(
         <Route path="/quality" component={Quality} />
         <Route path="/survey" component={Survey} />
         <Route path="/visit" component={Visit} />
+        <Route path="/sign" component={Signature} />
     </Router>
 , document.getElementById('mainWrap'));
