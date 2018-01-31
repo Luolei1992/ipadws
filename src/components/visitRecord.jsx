@@ -17,7 +17,7 @@ export default class VisitRecord extends React.Component {
     }
     render(){
         return (
-            <div className="visitRecordWrap" id="fromHTMLtestdiv">
+            <form className="visitRecordWrap" id="fromHTMLtestdiv">
                 <TableHead url={urls.wordMsg}></TableHead>
                 <button id="downloadPng">下载图片</button>
                 <button id="download">下载PDF</button>
@@ -57,7 +57,7 @@ export default class VisitRecord extends React.Component {
                         </table>
                     </div>
                 </div>
-            </div>
+            </form>
         )
     }
 }

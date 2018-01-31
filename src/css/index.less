@@ -150,6 +150,7 @@
             table {
                 border: 3px solid #000;
                 width: 100%;
+                
                 tr {
                     th,td {
                         border: 1px solid #000000; 
@@ -169,29 +170,91 @@
                 }
                 .darkbg {
                     background-color: #E7E6E6;
+                    text-align: center;
+                    width: 16.666667%;     
+                    font-weight: 800;
                 }
             }
             table.sceneTable {
-                th:nth-child(2n-1) {
-                    width: 16.67%;
-                }
-                th:nth-child(2n) {
-                    width: 33.34%;
-                }
-                td:nth-child(2n-1) {
-                    width: 16.67%;
-                }
-                td:nth-child(2n) {
-                    width: 33.34%;
-                }
-                th{
-                    text-align: center;
-                    padding-left: 0;                    
+                border-top: 0;
+                input {
+                    height: .46875rem;
+                    width: .46875rem;
+                    position: relative;
+                    top: 0.14rem;
                 }
                 td {
                     padding-left: 0;
                 }
-                textarea {
+                .signatureTxt {
+                    span {
+                        line-height: 20px;
+                    }
+                    position: relative;
+                    #canvas {
+                        position: absolute;
+                        bottom: 0;
+                        right: 0;
+                        z-index: 100;
+                    }
+                    .bt-warn {
+                        button {
+                            border: 1px solid #ccc;
+                            background-color: #c5c5c5;
+                            padding: .097656rem .195313rem;
+                            border-radius: 5px;
+                            position: relative;
+                            bottom: .195313rem;
+                        }
+                    }
+                    .date {
+                        position: absolute;
+                        bottom: .292969rem;
+                        right: .292969rem;
+                        z-index: 10;
+                    }
+                }
+                .suggess {
+                    padding: .488281rem;
+                    padding-bottom: 0;
+                    box-sizing: border-box;
+                    height: 2.6rem;
+                    overflow: hidden;
+                    position: relative;
+                    span {
+                        float: left;
+                    }
+                    ul {
+                        li {
+                            width: auto;
+                            padding-left: 0;
+                            margin-left: .585938rem;
+                        }
+                    }
+                    .midDiv {
+                        position: absolute;
+                        left: 50%;
+                        top: .3rem;
+                        width: 10.546875rem;
+                        transform: translateX(-50%);
+                    }
+                    .midDivTop {
+                        position: absolute;
+                        bottom: 0;
+                        .suggessMsg {
+                            width: 13.085938rem;
+                            height: 1.4rem;
+                            box-sizing: border-box;
+                            border: 0 none;
+                            resize: none;
+                        }
+                        span {
+                            line-height: 20px;
+                        }
+                    }
+                }
+                
+                textarea.allBox {
                     border: 0 none;
                     float: left;
                     height: 4.140625rem;
@@ -200,6 +263,17 @@
                     box-sizing: border-box;
                     resize:none;
                 }
+                tr.fourToOne {
+                    td {
+                        width: 25%;
+                        text-align: center;
+                    }
+                }
+            }
+            table.topTable {
+                border-bottom: 0;
+                position: relative;
+                top: 1px;
             }
             table.recordTable {
                 th:nth-child(2n-1) {
@@ -207,6 +281,34 @@
                 }
                 th:nth-child(2n) {
                     width: 37.5%;
+                }
+            }
+        }
+    }
+}
+.qualityFormWrap {
+    .qualityWrap {
+        padding: 1.2rem;
+        .qualityWrapTop {
+            // margin-top: .820313rem;
+            h3 {
+                text-align: center;
+                font-size: 22px;
+                font-weight: 800;
+                line-height: .976563rem;
+            }
+        }
+        table {
+            border: 3px solid #000;
+            width: 100%;
+            tr {
+                td {
+                    border: 1px solid #000;
+                    width: 25%;
+                    height: .878906rem;
+                    text-align: center;
+                    font-size: 16px;
+                    font-weight: 800;
                 }
             }
         }

@@ -12,6 +12,7 @@ import Visit from './components/Visit';
 import Signature from './components/Signature';
 import VisitRecord from './components/VisitRecord';
 import SceneVisit from './components/SceneVisit';
+import Meeting from './components/Meeting';
 
 import 'lib-flexible/flexible'
 import './css/index.less'
@@ -31,5 +32,6 @@ ReactDOM.render(
         <Route path="/sign" component={Signature} />
         <Route path="/visitRecord" component={VisitRecord} />
         <Route path="/scene" component={SceneVisit} />
+        <Route path="/meeting" component={Meeting} />
     </Router>
 , document.getElementById('mainWrap'));
