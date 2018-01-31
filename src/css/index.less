@@ -148,7 +148,7 @@
             font-size: 16px;
             margin-top: .4rem;
             table {
-                border: 2px solid #000;
+                border: 3px solid #000;
                 width: 100%;
                 tr {
                     th,td {
@@ -166,12 +166,47 @@
                             font-weight: normal;
                         }
                     }
-                    th:nth-child(2n-1) {
-                        width: 12.5%;
-                    }
-                    th:nth-child(2n) {
-                        width: 37.5%;
-                    }
+                }
+                .darkbg {
+                    background-color: #E7E6E6;
+                }
+            }
+            table.sceneTable {
+                th:nth-child(2n-1) {
+                    width: 16.67%;
+                }
+                th:nth-child(2n) {
+                    width: 33.34%;
+                }
+                td:nth-child(2n-1) {
+                    width: 16.67%;
+                }
+                td:nth-child(2n) {
+                    width: 33.34%;
+                }
+                th{
+                    text-align: center;
+                    padding-left: 0;                    
+                }
+                td {
+                    padding-left: 0;
+                }
+                textarea {
+                    border: 0 none;
+                    float: left;
+                    height: 4.140625rem;
+                    width: 100%;
+                    padding: .292969rem;
+                    box-sizing: border-box;
+                    resize:none;
+                }
+            }
+            table.recordTable {
+                th:nth-child(2n-1) {
+                    width: 12.5%;
+                }
+                th:nth-child(2n) {
+                    width: 37.5%;
                 }
             }
         }

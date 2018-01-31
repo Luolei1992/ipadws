@@ -35,7 +35,7 @@ export default class VisitRecord extends React.Component {
                         </li>
                     </ul>
                     <div className="tableDetails">
-                        <table>
+                        <table className="recordTable">
                             <tr>
                                 <th>发生时间</th>
                                 <th>内容</th>
