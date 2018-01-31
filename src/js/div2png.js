@@ -35,7 +35,6 @@ function div2png(dom, name) {
         },
         useCORS: true
     });
-
 }
 window.onload = function () { 
     let downloadPng = document.getElementById("downloadPng");

@@ -2,10 +2,6 @@ import React from "react";
 import { List, InputItem, Toast, Button, Modal } from 'antd-mobile';
 import { Link, hashHistory } from 'react-router';
 
-import '../js/jspdf.debug.js'
-import '../js/html2canvas.min.js'
-import '../js/div2png.js'
-
 const urls = {
     wordLogo:require('../images/wordLogo.png'),
     left:require('../images/left.png'),
@@ -13,6 +9,7 @@ const urls = {
     wordMsg:require('../images/wordMsg.png'),
     logo:require('../images/logo.png')
 }
+
 export default class Login extends React.Component {
     constructor(props) {
         super(props);
@@ -29,7 +26,7 @@ export default class Login extends React.Component {
         }
     }
     componentDidMount(){
-
+        
     }
     onChange = (value) => {  //用户名输入
         this.setState({
@@ -52,7 +49,7 @@ export default class Login extends React.Component {
     }
     render(){
         return (
-            <div className="loginWrap" id="fromHTMLtestdiv">
+            <div className="loginWrap">
                 <div className="head">
                     <img src={urls.logo} className="logo" />
                     <img src={urls.wordMsg} className="wordMsg" />
@@ -95,8 +92,6 @@ export default class Login extends React.Component {
                 <div className="left" onClick={() => { hashHistory.goBack(); }}>
                     <img src={urls.left} />
                 </div>
-                <button id="downloadPng">下载图片</button>
-                <button id="download">下载PDF</button>
             </div>
         )
     }
