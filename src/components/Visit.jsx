@@ -48,7 +48,7 @@ export default class Visit extends React.Component {
 
                 </div>
                 <div className="footerBar">
-                    <BottomLis>
+                    <BottomLis >
                         
                     </BottomLis>
                 </div>

@@ -213,43 +213,43 @@
                         right: .292969rem;
                         z-index: 10;
                     }
-                }
-                .suggess {
-                    padding: .488281rem;
-                    padding-bottom: 0;
-                    box-sizing: border-box;
-                    height: 2.6rem;
-                    overflow: hidden;
-                    position: relative;
-                    span {
-                        float: left;
-                    }
-                    ul {
-                        li {
-                            width: auto;
-                            padding-left: 0;
-                            margin-left: .585938rem;
-                        }
-                    }
-                    .midDiv {
-                        position: absolute;
-                        left: 50%;
-                        top: .3rem;
-                        width: 10.546875rem;
-                        transform: translateX(-50%);
-                    }
-                    .midDivTop {
-                        position: absolute;
-                        bottom: 0;
-                        .suggessMsg {
-                            width: 13.085938rem;
-                            height: 1.4rem;
-                            box-sizing: border-box;
-                            border: 0 none;
-                            resize: none;
-                        }
+                    .suggess {
+                        padding: .488281rem;
+                        padding-bottom: 0;
+                        box-sizing: border-box;
+                        height: 2.6rem;
+                        overflow: hidden;
+                        position: relative;
                         span {
-                            line-height: 20px;
+                            float: left;
+                        }
+                        ul {
+                            li {
+                                width: auto;
+                                padding-left: 0;
+                                margin-left: .585938rem;
+                            }
+                        }
+                        .midDiv {
+                            position: absolute;
+                            left: 50%;
+                            top: .3rem;
+                            width: 10.546875rem;
+                            transform: translateX(-50%);
+                        }
+                        .midDivTop {
+                            position: absolute;
+                            bottom: 0;
+                            .suggessMsg {
+                                width: 13.085938rem;
+                                height: 1.4rem;
+                                box-sizing: border-box;
+                                border: 0 none;
+                                resize: none;
+                            }
+                            span {
+                                line-height: 20px;
+                            }
                         }
                     }
                 }
@@ -288,7 +288,7 @@
 }
 .qualityFormWrap {
     .qualityWrap {
-        padding: 1.2rem;
+        padding: 0.8rem 1.2rem;
         .qualityWrapTop {
             // margin-top: .820313rem;
             h3 {
@@ -304,21 +304,167 @@
             tr {
                 td {
                     border: 1px solid #000;
-                    width: 25%;
                     height: .878906rem;
                     text-align: center;
                     font-size: 16px;
                     font-weight: 800;
+                    table {
+                        tr {
+                            td {
+                                width: 33.33%;
+                            }
+                        }
+                    }
+                }
+                td:nth-child(1) {
+                    width: 20%;
+                }
+                td:nth-child(2) {
+                    width: 30%;
+                }
+                td:nth-child(3) {
+                    width: 20%;
+                }
+                td:nth-child(4) {
+                    width: 30%;
+                }
+            }
+            .signatureTxt {
+                span {
+                    line-height: 20px;
+                }
+                position: relative;
+                #canvas {
+                    position: absolute;
+                    bottom: 0;
+                    right: 0;
+                    z-index: 100;
+                }
+                .bt-warn {
+                    button {
+                        border: 1px solid #ccc;
+                        background-color: #c5c5c5;
+                        padding: .097656rem .195313rem;
+                        border-radius: 5px;
+                        position: relative;
+                        bottom: .195313rem;
+                    }
+                }
+                .date {
+                    position: absolute;
+                    bottom: .292969rem;
+                    right: .292969rem;
+                    z-index: 10;
+                }
+                .suggess {
+                    padding: .488281rem;
+                    padding-bottom: 0;
+                    box-sizing: border-box;
+                    height: 2.6rem;
+                    overflow: hidden;
+                    position: relative;
+                    span {
+                        float: left;
+                    }
+                    ul {
+                        overflow:hidden; 
+                        li {
+                            width: auto;
+                            padding-left: 0;
+                            margin-left: .585938rem;
+                            float: left;
+                            box-sizing: border-box;
+                        }
+                    }
+                    .midDiv {
+                        position: absolute;
+                        left: 50%;
+                        top: .3rem;
+                        width: 10.546875rem;
+                        transform: translateX(-50%);
+                    }
+                    .midDivTop {
+                        position: absolute;
+                        bottom: 0;
+                        .suggessMsg {
+                            width: 13.085938rem;
+                            height: 1.4rem;
+                            box-sizing: border-box;
+                            border: 0 none;
+                            resize: none;
+                        }
+                        span {
+                            line-height: 20px;
+                        }
+                    }
                 }
             }
         }
     }
 }
+.visitRecordWrap {
+    .recordMain {
+        .visitLists {
+            ul{
+                li {
+                    width: 1.953125rem;
+                    height: 2.929688rem;
+                    font-size: 12px;
+                    background-color: #EEEEEE;
+                    padding-left: 0;
+                    margin: .390625rem;
+                    text-align: center;
+                    padding-top: 1rem;
+                    p {
+                        line-height: .390625rem;                    }
+                }
+            }
+        }
+    }
+}
+.customsLists {
+    background-color: #000000;
+    color: #fff;
+    .customsHead {
+        padding: .488281rem .78125rem;
+        .center {
+            text-align: center;
+        }
+        h3 {
+            display: table;
+            margin: 0 auto;
+            font-size: 26px;
+        }
+        .pub {
+            position: absolute;
+            top: .7rem;
+        }
+        .left {
+            left: .78125rem;
+            font-size: 16px;
+        }
+        .right {
+            right: .78125rem;
+            input {
+                border: 0 none;
+                background-color: #000000;
+                color: #fff;
+                margin-left: .390625rem;
+            }
+        }
+    }
+}
 .tableHead {   
-    height: 1.171875rem;
+    height: 1rem;
     background-color: #000;
     img {
-        margin: .234375rem .507813rem 0 0;
+        margin: .14rem .5rem 0 0;
+    }
+    .leftLogoWord {
+        font-size: 22px;
+        color: #fff;
+        margin: .24rem 0 0 .488281rem;
+        letter-spacing: 2px;
     }
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {

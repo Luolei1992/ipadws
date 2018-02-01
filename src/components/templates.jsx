@@ -2,6 +2,7 @@ import { Link } from "react-router";
 
 export const TableHead = (props) => (     
     <div className="tableHead">
+        <div className="leftLogoWord fn-left">维善 设计</div>
         <img src={props.url} className="fn-right" />
     </div>
 )

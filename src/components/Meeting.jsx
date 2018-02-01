@@ -47,18 +47,18 @@ export default class Meeting extends React.Component {
                     <h2>会议纪要</h2>
                     <div className="tableDetails">
                         <table className="topTable">
-                                <tr>
-                                    <th className="darkbg">会议日期</th>
-                                    <td></td>
-                                    <th className="darkbg">会议地址</th>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <th className="darkbg">主持人</th>
-                                    <td></td>
-                                    <th className="darkbg">记录人</th>
-                                    <td></td>
-                                </tr>
+                            <tr>
+                                <th className="darkbg">会议日期</th>
+                                <td></td>
+                                <th className="darkbg">会议地址</th>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th className="darkbg">主持人</th>
+                                <td></td>
+                                <th className="darkbg">记录人</th>
+                                <td></td>
+                            </tr>
                         </table>
                         <table className="sceneTable">
                             <tr>
