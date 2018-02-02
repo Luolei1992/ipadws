@@ -22,7 +22,6 @@ export const div2png =(dom, name) => {         //html转图片
         onrendered: function (canvas) {
             canvas.id = "mycanvas";
             document.body.appendChild(canvas);
-
             var newCanvas = document.getElementById("mycanvas");
             var type = "png";
             var imgData = newCanvas.toDataURL(type);
@@ -53,8 +52,8 @@ export const div2png =(dom, name) => {         //html转图片
     });
 }
 export const readyDo = () => {
-    let fromHTMLtestdiv = document.getElementById("fromHTMLtestdiv");
     let downloadPng = document.getElementById("downloadPng");
+    let fromHTMLtestdiv = document.getElementById("fromHTMLtestdiv");
     let download = document.getElementById("download");
     downloadPng.onclick = function () {
         div2png(fromHTMLtestdiv, 'png')

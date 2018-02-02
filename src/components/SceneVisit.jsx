@@ -130,10 +130,10 @@ export default class SceneVisit extends React.Component {
                                 <td><input type="checkbox" /></td>
                             </tr>
                             <tr>
-                                <td colSpan="4">
+                                <td colSpan="4" className="signatureTxt">
                                     <div className="suggess">
                                         <div className="midDiv">
-                                            <span>总体印象: </span>
+                                            <span style={{lineHeight:"46px"}}>总体印象: </span>
                                             <ul>
                                                 <li>
                                                     <input type="checkbox" id="gloab" />

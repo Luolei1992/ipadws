@@ -35,5 +35,6 @@ ReactDOM.render(
         <Route path="/meeting" component={Meeting} />
         <Route path="/quality" component={Quality} />
         <Route path="/visitLists" component={VisitLists} />
+        <Route path="/signature" component={Signature} />
     </Router>
 , document.getElementById('mainWrap'));
