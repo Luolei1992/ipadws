@@ -2,7 +2,7 @@ import { Link } from "react-router";
 
 export const TableHead = (props) => (     
     <div className="tableHead">
-        <div className="leftLogoWord fn-left">维善 设计</div>
+        <div className="leftLogoWord fn-left"><i className="iconfont icon-jiantou"></i>返回</div>
         <img src={props.url} className="fn-right" />
     </div>
 )
@@ -15,6 +15,94 @@ export const BottomLis = (props) => (     // 底部导航
         <li><Link to="/login">会议纪要</Link></li>
         <li><Link to="/login">联系人</Link></li>
         <li><Link to="/login">调研档案</Link></li>
+    </ul>
+)
+export const Customs = (props) =>(         //我的客户信息展示
+    <ul className="customDetails">
+        {
+            props.dataList.map(function(value){
+                return <li>
+                    <div className="liWrap">
+                        <div className="left fn-left">
+                            <img src='' />
+                        </div>
+                        <div className="mid fn-left">
+                            <h3>{value.company}<span> {value.tag}</span></h3>
+                            <table>
+                                <tr>
+                                    <td style={{ width: "60px", position: "relative" }}>
+                                        <span style={{
+                                            float: "left",
+                                            position: "absolute",
+                                            left: "0",
+                                            top: "0",
+                                            lineHeight: "18px"
+                                        }}>服务内容:</span>
+                                    </td>
+                                    <td style={{ lineHeight: "18px" }}>
+                                        <p>{value.content}</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colSpan="2">
+                                        <table>
+                                            <tr>
+                                                <td style={{ width: "35px", position: "relative" }}>
+                                                    <span style={{ float: "left", position: "absolute", left: "0", top: "0", lineHeight: "18px" }}>备注:</span>
+                                                </td>
+                                                <td style={{
+                                                    lineHeight: "18px"
+                                                }}><p>{value.remark}</p></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colSpan="2">
+                                        <table>
+                                            <tr>
+                                                <td style={{ width: "35px", position: "relative" }}>
+                                                    <span style={{ float: "left", position: "absolute", left: "0", top: "0", lineHeight: "18px" }}>条件:</span>
+                                                </td>
+                                                <td style={{ lineHeight: "18px" }}><p>{value.resean}</p></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div className="right fn-right">
+                            <p className="more"><i>...</i></p>
+                            <ul>
+                                <li>
+                                    <p className="top">{value.duty}</p>
+                                    <p className="btm">任务</p>
+                                </li>
+                                <li>
+                                    <p className="top">{value.visit}</p>
+                                    <p className="btm">回访</p>
+                                </li>
+                                <li>
+                                    <p className="top">{value.summary}</p>
+                                    <p className="btm">纪要</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div className="line"></div>
+                    <div className="person">
+                        <p>相关人员 : {
+                            value.relate.map(function(value){
+                                return <span onClick={(e) => {props.del(e)}}>{value}<i className="iconfont icon-shanchu"></i></span>
+                            })
+                        }
+                            <a style={{ marginLeft: "0.5rem" }} href="javascript:;">全部</a>
+                            <a href="javascript:;" onClick={(e)=>{props.showModal(e)}}>新增</a>
+                        </p>
+                    </div>
+                </li>
+            })
+        }
     </ul>
 )
 export const div2png =(dom, name) => {         //html转图片

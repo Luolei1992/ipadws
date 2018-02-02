@@ -425,7 +425,7 @@
 .customsLists {
     background-color: #000000;
     .customsHead {
-        padding: .488281rem .78125rem;
+        padding: 0 0 .488281rem 0;
         color: #fff;
         .center {
             text-align: center;
@@ -437,7 +437,26 @@
         }
         .pub {
             position: absolute;
-            top: .7rem;
+            .selectWrap {
+                &>div {
+                    width: 1.5rem;
+                    &>span {
+                        padding-left: .1rem;
+                        i {
+                            position: relative;
+                            top: 1px;
+                        }
+                    }
+                    ul {
+                        position: absolute;
+                        background-color: #000;
+                        padding-top: 0.1rem;
+                        li {
+                            padding: .12rem .3rem .12rem .1rem;
+                        }
+                    }
+                }
+            }
         }
         .left {
             left: .78125rem;
@@ -456,9 +475,10 @@
     .mainCustomList {
         padding: 0 .78125rem;
         .customDetails {
-            li {
+            &>li {
                 padding: .585938rem .488281rem 0 .488281rem;
                 background-color: #fff;
+                margin-bottom: .08rem;
                 overflow: hidden;
                 h3 {
                         font-size: 18px;
@@ -468,20 +488,24 @@
                             font-size: 14px;
                             font-weight: normal;
                         }
-                        i {
-                            float: right;
-                        }
+                        
                     }
                 .left {
-                    width: 2.832031rem;
+                    // width: 2.832031rem;
+                    width: 15%;
                     height: 2.441406rem;
                     background-color: #E0E0E0;
                     margin-right: .3rem;
                 }
                 .mid {
                     position: relative;
-                    width: 9.277344rem;
-                    
+                    // width: 8.5rem;
+                    width: 55%;
+                    table {
+                        p {
+                            color: #8D8D8D;
+                        }
+                    }
                     .serverContent {
                         font-size: 12px;
                         margin-bottom: -20px;
@@ -498,21 +522,58 @@
                             line-height: 20px;
                         }
                     }
-                    .serverRemark {
-                       
-                    }
                 }
                 .right {
-                    overflow: hidden;
+                    .more {
+                        overflow: hidden;
+                        i {
+                            float: right;
+                            font-weight: 800;
+                            letter-spacing: 2px;
+                            font-size: 18px;
+                        }
+                    }
                     ul {
+                        overflow: hidden;
                         li{
                             float: left;
+                            padding-left: .8rem;
+                            padding-top: 0.2rem;
+                            text-align: center;
                             .top {
                                 font-size: 26px;
                                 line-height: 40px;
                             }
                             .btm {
                                 font-size: 14px;
+                            }
+                        }
+                    }
+                }
+                .liWrap {
+                    overflow: hidden;
+                }
+                .line {
+                    width: 100%;
+                    position: relative;
+                    border-bottom: 1px dotted #D6D6D6;
+                    margin: .195313rem 0;
+                }
+                .person {
+                    margin-bottom: .195313rem;
+                    font-weight: 800;
+                    font-size: 14px;
+                    p {
+                        text-align: center;
+                        a {
+                            margin-left: 0.2rem;
+                        }
+                        span {
+                            margin: 0 .06rem;
+                            i{
+                                position: relative;
+                                top: -6px;
+                                color: #ccc;
                             }
                         }
                     }
@@ -524,11 +585,15 @@
 .tableHead {   
     height: 1rem;
     background-color: #000;
+    color: #fff;
     img {
         margin: .14rem .5rem 0 0;
     }
+    i {
+        font-size: 20px;
+    }
     .leftLogoWord {
-        font-size: 22px;
+        font-size: 18px;
         color: #fff;
         margin: .24rem 0 0 .488281rem;
         letter-spacing: 2px;
