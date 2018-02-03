@@ -129,7 +129,7 @@
         h2 {
             font-size: 38px;
             text-align: center;
-            margin-top: 1.3rem;
+            margin-top: 1rem;
             margin-bottom: .625rem;
             font-weight: 800;
             letter-spacing: .292969rem;
@@ -581,6 +581,79 @@
             }
         }
     }
+}
+.visitRecordWrap .recordMain .tableDetails {
+    .personalMsg {
+        text-align: center;
+        border: 0 none;
+        tr {
+            td{
+                border: 0 none;
+                line-height: 0.5rem;
+            }
+        }
+    }
+    table.plan {
+        text-align: center;
+        border: 0 none;
+        tr {
+            td {
+                line-height: 0.5rem;
+                width: 25%;
+            }
+        }        
+    }
+}
+.surveyWrap {
+    .surveyList {
+        padding: .6rem .78125rem;
+        ul {
+            li {
+                padding: .4rem .488281rem .1rem .488281rem;
+                background-color: #F3F3F3;
+                margin-bottom: .08rem;
+                overflow: hidden;
+                border: 1px solid #DBDBDB;
+                h3 {
+                    font-size: 24px;
+                    margin-bottom: .097656rem;
+                    font-weight: 800;
+                }
+                p {
+                    font-size: 14px;
+                    line-height: 28px;
+                    span {
+                        padding: 0 0.3rem;
+                    }
+                }
+                .redText {
+                    color: red;
+                    i {
+                        color: #333333;
+                    }
+                }
+            }
+        }
+    }
+}
+.giveMsg {
+    min-height: 2.929688rem;
+    border: 1px solid #F1C792;
+    margin-top: .292969rem;
+    padding: 0.2rem;
+}
+#textarea{
+    border: 1px solid #a0b3d6;
+    overflow: auto;
+    min-height: 20px;
+    // max-height: 500px;
+    /*高度值根据屏幕高度设置，是为了防止文本框高度大于屏幕高度后再点击换行或空格时，页面自动定位到文本框顶端，那么页底文字就看不到的情况。    这也是该方法缺点之一，上一个方法就不会出现这个问题*/
+    padding: .175781rem;
+    outline: none;
+    background-color: #fff;
+    resize: none;
+    margin-top:0px;
+    width:100%;
 }
 .tableHead {   
     height: 1rem;

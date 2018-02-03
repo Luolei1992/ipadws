@@ -1,5 +1,4 @@
 import React from 'react';
-// import { Checkbox, Flex } from 'antd-mobile';
 import { div2png, readyDo, TableHead } from './templates';
 import { DrawBoard } from './drawBoard';
 

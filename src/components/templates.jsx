@@ -173,3 +173,35 @@ export const readyDo = () => {
         });
     };
 }
+
+
+export const init = (textarea) => {
+    var observe;
+    if (window.attachEvent) {
+        observe = function (element, event, handler) {
+            element.attachEvent('on' + event, handler);
+        };
+    }
+    else {
+        observe = function (element, event, handler) {
+            element.addEventListener(event, handler, false);
+        };
+    }
+    var text = document.getElementById(textarea);
+    function resize() {
+        text.style.height = 'auto';
+        var vHeight = text.scrollHeight - 20;
+        text.style.height = vHeight + 'px';
+    }
+    function delayedResize() {
+        window.setTimeout(resize, 0);
+    }
+    observe(text, 'change', resize);
+    observe(text, 'cut', delayedResize);
+    observe(text, 'paste', delayedResize);
+    observe(text, 'drop', delayedResize);
+    observe(text, 'keydown', delayedResize);
+    text.focus();
+    text.select();
+    resize();
+}

@@ -14,6 +14,8 @@ import SceneVisit from './components/SceneVisit';
 import Meeting from './components/Meeting';
 import Quality from './components/Quality';
 import VisitLists from './components/VisitLists';
+import Company from './components/Company';
+import SurveyHistory from './components/SurveyHistory';
 
 import 'lib-flexible/flexible'
 import './css/index.less'
@@ -36,5 +38,7 @@ ReactDOM.render(
         <Route path="/quality" component={Quality} />
         <Route path="/visitLists" component={VisitLists} />
         <Route path="/signature" component={Signature} />
+        <Route path="/company" component={Company} />
+        <Route path="/surveyHistory" component={SurveyHistory} />
     </Router>
 , document.getElementById('mainWrap'));
