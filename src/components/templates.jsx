@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, hashHistory } from "react-router";
 
 export const TableHead = (props) => (     
     <div className="tableHead">
@@ -6,16 +6,32 @@ export const TableHead = (props) => (
         <img src={props.url} className="fn-right" />
     </div>
 )
-
-export const BottomLis = (props) => (     // 底部导航
-    <ul className="footNavList">
-        <li><Link to="/login">合同内容</Link></li>
-        <li><Link to="/login">任务记录</Link></li>
-        <li><Link to="/login">回访记录</Link></li>
-        <li><Link to="/login">会议纪要</Link></li>
-        <li><Link to="/login">联系人</Link></li>
-        <li><Link to="/login">调研档案</Link></li>
-    </ul>
+export const getLocationParam = (name) => {
+    var url = window.location.search;
+    if (~url.indexOf("?")) {
+        var search = {};
+        var arrayParam = url.split("?")[1].split("&");
+        arrayParam.map(function (value, index, elem) {
+            var key = value.split("=")[0];
+            var val = value.split("=")[1];
+            search[key] = val;
+        });
+        if (name in search) {
+            return search[name];
+        } else {
+            return "";
+        }
+    }
+    return "";
+}
+export const TableHeads = (props) => (     
+    <div className="tableHead">
+        <div className="leftLogoWord fn-left" onClick={()=>{hashHistory.goBack()}}><i className="iconfont icon-jiantou"></i>返回</div>
+        {
+            props.isHide ? "" : props.tag
+        }
+        <img src={props.url} className="fn-right" />
+    </div>
 )
 export const Customs = (props) =>(         //我的客户信息展示
     <ul className="customDetails">
@@ -27,7 +43,9 @@ export const Customs = (props) =>(         //我的客户信息展示
                             <img src='' />
                         </div>
                         <div className="mid fn-left">
-                            <h3>{value.company}<span> {value.tag}</span></h3>
+                            <h3>
+                                <Link to={'/company?tab=0&id='+value.id}>{value.company}<span>{value.tag}</span></Link>
+                            </h3>
                             <table>
                                 <tr>
                                     <td style={{ width: "60px", position: "relative" }}>
@@ -48,7 +66,13 @@ export const Customs = (props) =>(         //我的客户信息展示
                                         <table>
                                             <tr>
                                                 <td style={{ width: "35px", position: "relative" }}>
-                                                    <span style={{ float: "left", position: "absolute", left: "0", top: "0", lineHeight: "18px" }}>备注:</span>
+                                                    <span style={{ 
+                                                        float: "left", 
+                                                        position: "absolute", 
+                                                        left: "0", 
+                                                        top: "0", 
+                                                        lineHeight: "18px" 
+                                                    }}>备注:</span>
                                                 </td>
                                                 <td style={{
                                                     lineHeight: "18px"
@@ -75,16 +99,20 @@ export const Customs = (props) =>(         //我的客户信息展示
                             <p className="more"><i>...</i></p>
                             <ul>
                                 <li>
-                                    <p className="top">{value.duty}</p>
+                                    <p className="top"><Link to="/visitRecord?tab=1">{value.duty}</Link></p>
                                     <p className="btm">任务</p>
                                 </li>
                                 <li>
-                                    <p className="top">{value.visit}</p>
+                                    <p className="top"><Link to="/visitRecord?tab=1">{value.visit}</Link></p>
                                     <p className="btm">回访</p>
                                 </li>
                                 <li>
-                                    <p className="top">{value.summary}</p>
+                                    <p className="top"><Link to="/visitRecord?tab=1">{value.summary}</Link></p>
                                     <p className="btm">纪要</p>
+                                </li>
+                                <li>
+                                    <p className="top"><Link to="/visitRecord?tab=1">{value.validate}</Link></p>
+                                    <p className="btm">验收</p>
                                 </li>
                             </ul>
                         </div>
@@ -93,11 +121,11 @@ export const Customs = (props) =>(         //我的客户信息展示
                     <div className="person">
                         <p>相关人员 : {
                             value.relate.map(function(value){
-                                return <span onClick={(e) => {props.del(e)}}>{value}<i className="iconfont icon-shanchu"></i></span>
+                                return <span>{value}<i className="iconfont icon-shanchu" onClick={(e) => { props.del(e) }}></i></span>
                             })
                         }
                             <a style={{ marginLeft: "0.5rem" }} href="javascript:;">全部</a>
-                            <a href="javascript:;" onClick={(e)=>{props.showModal(e)}}>新增</a>
+                            <a href="javascript:;" onClick={(e) => { props.showModal(e,value.id)}}>新增</a>
                         </p>
                     </div>
                 </li>
@@ -190,7 +218,7 @@ export const init = (textarea) => {
     var text = document.getElementById(textarea);
     function resize() {
         text.style.height = 'auto';
-        var vHeight = text.scrollHeight - 20;
+        var vHeight = text.scrollHeight - 3;
         text.style.height = vHeight + 'px';
     }
     function delayedResize() {

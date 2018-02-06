@@ -1,6 +1,8 @@
 import React from 'react';
-import { div2png, readyDo, TableHead } from './templates';
+import { hashHistory } from "react-router";
+import { div2png, readyDo, TableHeads, init } from './templates';
 import { DrawBoard } from './drawBoard';
+import { Modal } from 'antd-mobile';
 
 const urls = {
     wordMsg: require('../images/wordMsg.png'),
@@ -11,14 +13,17 @@ export default class Company extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-
+            flags:[]
         }
     }
 
     componentDidMount () {
+        init('textarea1');
         readyDo();
         canvas = document.getElementById("canvas");
         drawBoard = new DrawBoard(canvas);  // 初始化
+        
+        this.props.state = [true,false,false,false,false,false]
     }
     clearAll = function () {
         drawBoard.clear();
@@ -40,11 +45,15 @@ export default class Company extends React.Component {
         return (
             <div id="fromHTMLtestdiv">
                 <form className="visitRecordWrap">
-                    <TableHead url={urls.wordMsg}></TableHead>
+                    <TableHeads 
+                        url={urls.wordMsg} 
+                        isHide={false} 
+                        tag={<h3 className="fn-left">我的客户</h3>}
+                    ></TableHeads>
                     <button id="downloadPng">下载图片</button>
                     <button id="download">下载PDF</button>
                     <div className="recordMain">
-                        <h2 style={{letterSpacing:"1px",marginTop:"0.8rem"}}>上海泰宇公司回访记录</h2>
+                        <h2 style={{ letterSpacing: "1px", marginTop: "0.8rem" }}>上海泰宇信息技术有限公司</h2>
                         <p style={{textAlign:"center"}}>
                             文件编号: 156489415164  <span style={{ padding: "0 15px" }}></span>起止时间: 2018.10.11-2019.1.23<span style={{ padding: "0 15px" }}></span>
                         </p>
@@ -54,21 +63,27 @@ export default class Company extends React.Component {
                                     <td colSpan="4" className="darkbg">客户信息</td>
                                 </tr>
                                 <tr>
-                                    <th className="darkbg">会议日期</th>
-                                    <td></td>
-                                    <th className="darkbg">会议地址</th>
-                                    <td></td>
+                                    <th className="darkbg">公司名称</th>
+                                    {/* <td><textarea id="textarea1" className="textareaCompany"></textarea></td> */}
+                                    {/* <td className="lightbg" onClick={() => Modal.prompt('defaultValue', 'defaultValue for prompt', [
+                                        { text: 'Cancel' },
+                                        { text: 'Submit', onPress: value => console.log(`输入的内容:${value}`) },
+                                    ], 'default', '100')}></td> */}
+                                    <td className="lightbg"></td>
+                                    <th className="darkbg">成立时间</th>
+                                    {/* <td><textarea id="textarea2" className="textareaCompany"></textarea></td> */}
+                                    <td className="lightbg"></td>
                                 </tr>
                                 <tr>
-                                    <th className="darkbg">主持人</th>
-                                    <td></td>
-                                    <th className="darkbg">记录人</th>
-                                    <td></td>
+                                    <th className="darkbg">公司地址</th>
+                                    <td className="lightbg"></td>
+                                    <th className="darkbg">公司网址</th>
+                                    <td className="lightbg"></td>
                                 </tr>
                             </table>
                             <table className="sceneTable">
                                 <tr>
-                                    <td colSpan="4" className="darkbg">客户信息</td>
+                                    <td colSpan="4" className="darkbg">联系人</td>
                                 </tr>
                                 <tr>
                                     <td colSpan="4">
@@ -151,7 +166,7 @@ export default class Company extends React.Component {
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
+                                {/* <tr>
                                     <td colSpan="4" className="signatureTxt" style={{borderTop:"0 none"}}>
                                         <div className="suggess">
                                             <canvas id="canvas" width="768" height="150"></canvas>
@@ -179,7 +194,7 @@ export default class Company extends React.Component {
                                             </div>
                                         </div>
                                     </td>
-                                </tr>
+                                </tr> */}
                             </table>
                         </div>
                     </div>

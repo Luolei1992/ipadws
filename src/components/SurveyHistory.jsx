@@ -1,5 +1,6 @@
 import React from 'react';
-import { div2png, readyDo, TableHead, init} from './templates';
+import { hashHistory } from "react-router";
+import { div2png, readyDo, TableHeads, init} from './templates';
 import { DrawBoard } from './drawBoard';
 
 const urls = {
@@ -12,10 +13,10 @@ export default class SurveyHistory extends React.Component {
         super(props);
         this.state = {
             txt: `<pre>
-hagdhsagda都干啥都干撒和
-圣诞节啊看了觉得卡萨
-是【
-是多大的多多多多多多多多多多多多多多多
+                hagdhsagda都干啥都干撒和
+                圣诞节啊看了觉得卡萨
+                是是的撒放到电风扇防风网大萨达撒萨达萨达萨达萨达as第三方地方热稳定撒
+                是多大的多多多多多多多多多多多多多多多
             </pre>`
         }
     }
@@ -46,36 +47,26 @@ hagdhsagda都干啥都干撒和
             }
         });
     }
-    getTxt (e) {
-        let a = e.currentTarget.innerHTML;
-        console.log(a);
-        this.setState({
-            txt:a
-        })
-    }
     render(){
         return (
             <div id="fromHTMLtestdiv">
                 <form className="visitRecordWrap">
-                    <TableHead url={urls.wordMsg}></TableHead>
+                    <TableHeads 
+                        url={urls.wordMsg} 
+                        isHide={false} 
+                        tag={<h3 className="fn-left">我的客户</h3>}
+                    ></TableHeads>
                     <button id="downloadPng">下载图片</button>
                     <button id="download">下载PDF</button>
                     <div className="recordMain">
-                        <h2 style={{letterSpacing:"1px",marginTop:"0.8rem"}}>上海泰宇公司回访记录</h2>
+                        <h2 style={{letterSpacing:"1px",marginTop:"0.8rem"}}>上海泰宇信息技术有限公司(老板)</h2>
                         <p style={{textAlign:"center"}}>
                             文件编号: 156489415164  <span style={{ padding: "0 15px" }}></span>起止时间: 2018.10.11-2019.1.23<span style={{ padding: "0 15px" }}></span>
                         </p>
-                        <div onClick={(e)=>{this.getTxt(e)}}>
-                                1.dID加上佛萨芬萨基否爱上
-                                <br/>2.搜嘎互动式就爱看福阿德
-                                <br/>3.是的撒的发
-                        </div>
-                        <textarea id="textarea">
-                            
-                        </textarea>
-                        <div className="giveMsg"  dangerouslySetInnerHTML={{
-                            __html: this.state.txt
-                        }}>
+                        <div className="giveMsg" >
+                            <textarea id="textarea">
+                                
+                            </textarea>
                         </div>
                         <div className="tableDetails">
                             <table className="topTable">

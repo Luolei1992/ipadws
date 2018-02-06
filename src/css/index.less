@@ -157,7 +157,7 @@
                         padding-left: .097656rem;
                         box-sizing: border-box;
                         height: .878906rem;
-                        line-height: .878906rem;
+                        line-height: .5rem;
                     }
                     th {
                         font-weight: 800;
@@ -173,6 +173,9 @@
                     text-align: center;
                     width: 16.666667%;     
                     font-weight: 800;
+                }
+                .lightbg {
+                    width: 33.333334%;
                 }
             }
             table.sceneTable {
@@ -500,7 +503,7 @@
                 .mid {
                     position: relative;
                     // width: 8.5rem;
-                    width: 55%;
+                    width: 50%;
                     table {
                         p {
                             color: #8D8D8D;
@@ -537,7 +540,7 @@
                         overflow: hidden;
                         li{
                             float: left;
-                            padding-left: .8rem;
+                            padding-left: .6rem;
                             padding-top: 0.2rem;
                             text-align: center;
                             .top {
@@ -637,23 +640,31 @@
     }
 }
 .giveMsg {
-    min-height: 2.929688rem;
+    min-height: 2.5rem;
     border: 1px solid #F1C792;
     margin-top: .292969rem;
-    padding: 0.2rem;
+    // padding: 0.2rem;
 }
 #textarea{
-    border: 1px solid #a0b3d6;
+    border: 0 none;
     overflow: auto;
-    min-height: 20px;
+    min-height: 2.5rem;
     // max-height: 500px;
     /*高度值根据屏幕高度设置，是为了防止文本框高度大于屏幕高度后再点击换行或空格时，页面自动定位到文本框顶端，那么页底文字就看不到的情况。    这也是该方法缺点之一，上一个方法就不会出现这个问题*/
-    padding: .175781rem;
+    padding: .2rem;
     outline: none;
     background-color: #fff;
     resize: none;
     margin-top:0px;
     width:100%;
+    box-sizing: border-box;
+}
+.textareaCompany {
+    width: 100%;
+    min-height: .8rem;
+    box-sizing: border-box;
+    padding: .1rem;
+    border: 0 none;
 }
 .tableHead {   
     height: 1rem;
@@ -665,12 +676,78 @@
     i {
         font-size: 20px;
     }
+    h3 {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 26px;
+        margin-top: .18rem;
+    }
     .leftLogoWord {
         font-size: 18px;
         color: #fff;
         margin: .24rem 0 0 .488281rem;
         letter-spacing: 2px;
     }
+}
+.tableBottom {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: #000;
+    height: .976563rem;
+    font-size: 14px;
+    ul {
+        overflow: hidden;
+        display: table;
+        margin: 0 auto;
+        li {
+            float: left;
+            line-height: .95rem;
+            width: 1.953125rem;
+            text-align: center;
+            box-sizing: border-box;
+            border-bottom: 3px solid red;
+            a {
+                color: #fff;
+            }
+        }
+    }
+    span {
+        position: absolute;
+        right: .488281rem;
+        top: 0;
+        color: #fff;
+        line-height: .976563rem;
+    }
+}
+.personalLinkWrap {
+    width: 5.8rem;
+    .am-modal-button-group-h .am-modal-button {
+        font-size: 16px;
+        height: 42px;
+        line-height: 42px;
+    }
+    .personalLink {
+        .personalLinkList {
+            ul {
+                li {
+                    height: .6rem;
+                    line-height:.6rem; 
+                    background-color: #F5F5F5;
+                    margin: .078125rem;
+                    input {
+                        border: 0 none;
+                        background-color: #F5F5F5;                        
+                    }
+                }
+            }
+        }
+    }
+}
+.txtRed {
+    color: red;
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
     html:not([data-scale]) .am-list-body::before,

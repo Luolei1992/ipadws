@@ -10,6 +10,18 @@ const CheckPhone = (value) => {
         hasError: false
     }
 }
+// 验证邮箱 
+const CheckEmail = (value) => {
+    if (!/^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/.test(value)) {
+        return {
+            hasError: true,
+            errorMessage: '请输入正确的邮箱格式'
+        }
+    }
+    return {
+        hasError: false
+    }
+}
 //验证密码长度
 const CheckKeywords = (value) => {
     if(value.length < 6) {
@@ -54,6 +66,6 @@ export default {
     CheckPhone, 
     CheckKeywords, 
     getCookie, 
-    setCookie
+    setCookie,
+    CheckEmail
 }
-// export { CheckPhone, CheckKeywords, getCookie, setCookie};

@@ -1,5 +1,6 @@
 import React from 'react';
-import { TableHead, Customs } from './templates';
+import { hashHistory } from "react-router";
+import { TableHeads, Customs } from './templates';
 
 const urls = {
     wordMsg: require('../images/wordMsg.png'),
@@ -18,7 +19,7 @@ export default class survey extends React.Component{
     render(){
         return (
             <div className="surveyWrap visitRecordWrap">
-                <TableHead url={urls.wordMsg}></TableHead>
+                <TableHeads url={urls.wordMsg} isHide={true}></TableHeads>
                 <div className="surveyList">
                     <ul>
                         <li>

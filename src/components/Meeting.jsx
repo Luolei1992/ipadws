@@ -1,5 +1,6 @@
 import React from 'react';
-import { div2png, readyDo, TableHead } from './templates';
+import { hashHistory } from "react-router";
+import { div2png, readyDo, TableHeads } from './templates';
 import { DrawBoard } from './drawBoard';
 
 let canvas;
@@ -40,7 +41,7 @@ export default class Meeting extends React.Component {
         return (
             <div id="fromHTMLtestdiv">
                 <form className="visitRecordWrap">
-                    <TableHead url={urls.wordMsg}></TableHead>
+                    <TableHeads url={urls.wordMsg} isHide={true}></TableHeads>
                     <button id="downloadPng">下载图片</button>
                     <button id="download">下载PDF</button>
                     <div className="recordMain">

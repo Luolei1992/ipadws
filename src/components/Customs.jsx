@@ -1,6 +1,7 @@
 import React from "react";
-import { TableHead, Customs } from './templates';
-import { Modal, List, Button, WhiteSpace, WingBlank } from 'antd-mobile';
+import { hashHistory } from "react-router";
+import { TableHeads, Customs, getLocationParam} from './templates';
+import { Modal, List, Button, WhiteSpace, WingBlank , InputItem } from 'antd-mobile';
 
 const urls = {
     wordMsg: require('../images/wordMsg.png'),
@@ -26,6 +27,14 @@ export default class Custom extends React.Component {
             modal:false,            
             order:"全部",
             check:"全部",
+            company:"",
+            job:"",
+            name:"",
+            phone:"",
+            email:"",
+            remark:"",
+            hasError1:false,
+            hasError2:false,
             data: [
                 {
                     company: "上海泰宇信息技术有限公司",
@@ -38,7 +47,9 @@ export default class Custom extends React.Component {
                     duty: "55",
                     visit: "88",
                     summary: "8",
+                    validate:"0",
                     relate: ["张三", "李四", "王五"],
+                    id:"1"
                 },
                 {
                     company: "北京齐天大圣科技有限公司",
@@ -51,7 +62,9 @@ export default class Custom extends React.Component {
                     duty: "5",
                     visit: "65",
                     summary: "14",
+                    validate: "0",
                     relate: ["张三", "李四", "王五", "赵六"],
+                    id:"2"
                 }
             ]
         }
@@ -65,31 +78,65 @@ export default class Custom extends React.Component {
             show:!this.state.show
         })
     }
-    changeCheck(e){
+    changeCheck(e){  
         this.setState({
             check:e.currentTarget.innerHTML,
             show2: !this.state.show2
         })
     }
     delPerson(e){      //删除联系人
-        e.currentTarget.style.display = "none";
+        e.currentTarget.parentNode.style.display = "none";
     }
-    showModal = key => (e) => {
+    showModal = key => (e,id) => {
         e.preventDefault(); // 修复 Android 上点击穿透
         this.setState({
             [key]: true,
         });
+        console.log(id);    //得到对应id的元素
     }
     onClose = key => () => {
         this.setState({
             [key]: false,
         });
     }
-
+    onChangePhone(e){
+        let val = e.currentTarget.value;
+        this.setState({
+            hasError1: validate.CheckPhone(val).hasError,
+            phone: val
+        });
+    }
+    onChangeEmail(e){
+        let val = e.currentTarget.value;
+        this.setState({
+            hasError2: validate.CheckEmail(val).hasError,
+            email: val
+        });
+    }
+    onChangeCompany(e) {
+        this.setState({
+            company: e.currentTarget.value
+        });
+    }
+    onChangeJob(e){
+        this.setState({
+            job: e.currentTarget.value
+        });
+    }
+    onChangeName(e){
+        this.setState({
+            name: e.currentTarget.value
+        });
+    }
+    onChangeRemark(e){
+        this.setState({
+            remark: e.currentTarget.value
+        });
+    }
     render(){
         return (
             <div className="customsLists visitRecordWrap">
-                <TableHead url={urls.wordMsg}></TableHead>
+                <TableHeads url={urls.wordMsg} isHide={true}></TableHeads>
                 <div className="customsHead ">
                     <h3 className="center" onClick={this.showModal('modal')}>
                         我的客户
@@ -132,19 +179,68 @@ export default class Custom extends React.Component {
                     transparent
                     maskClosable={false}
                     onClose={this.onClose('modal')}
+                    className="personalLinkWrap"
                     footer={[
                         { text: '取消', onPress: () => { console.log('cancle'); this.onClose('modal')(); } },
                         { text: '确定', onPress: () => { console.log('ok'); this.onClose('modal')(); } }
                     ]}
                     // wrapProps={{ onTouchStart: this.onWrapTouchStart }}
                 >
-                    <div style={{ height: 100, overflow: 'scroll' }}>
-                        scoll content...<br />
-                        scoll content...<br />
-                        scoll content...<br />
-                        scoll content...<br />
-                        scoll content...<br />
-                        scoll content...<br />
+                    <div className="personalLink">
+                        <div className="personalLinkList">
+                            <ul>
+                                <li>
+                                    <span>公司：</span>
+                                    <input 
+                                        type="text" 
+                                        value={this.state.company}
+                                        onChange={(e) => { this.onChangeCompany(e)}}
+                                    />
+                                </li>
+                                <li>
+                                    <span>职位：</span>
+                                    <input 
+                                        type="text"
+                                        value={this.state.job}
+                                        onChange={(e) => { this.onChangeJob(e) }}
+                                    />
+                                </li>
+                                <li>
+                                    <span>姓名：</span>
+                                    <input
+                                        type="text"
+                                        value={this.state.name}
+                                        onChange={(e) => { this.onChangeName(e) }}
+                                    />
+                                </li>
+                                <li>
+                                    <span>手机：</span>
+                                    <input
+                                        type="text"
+                                        value={this.state.phone}
+                                        onChange={(e) => { this.onChangePhone(e) }}
+                                        className={this.state.hasError1 ?"txtRed":""}
+                                    />
+                                </li>
+                                <li>
+                                    <span>邮箱：</span>
+                                    <input
+                                        type="text"
+                                        value={this.state.email}
+                                        onChange={(e) => { this.onChangeEmail(e) }}
+                                        className={this.state.hasError2 ? "txtRed" : ""}                                        
+                                    />
+                                </li>
+                                <li>
+                                    <span>备注：</span>
+                                    <input
+                                        type="text"
+                                        value={this.state.remark}
+                                        onChange={(e) => { this.onChangeRemark(e) }}
+                                    />
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </Modal>
                 <div className="mainCustomList">
