@@ -8,7 +8,7 @@ const urls = {
 }
 let canvas;
 let drawBoard;
-export default class SurveyHistory extends React.Component {
+export default class NewSurveyHistory extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
@@ -29,7 +29,6 @@ export default class SurveyHistory extends React.Component {
             e = e || event;
             console.log(e.keyCode);
         }
-        init('textarea');
     }
     clearAll = function () {
         drawBoard.clear();
@@ -54,18 +53,18 @@ export default class SurveyHistory extends React.Component {
                     <TableHeads 
                         url={urls.wordMsg} 
                         isHide={false} 
-                        tag={<h3 className="fn-left">我的客户</h3>}
+                        tag={<h3 className="fn-left">
+                            <span style={{ borderBottom:"3px solid red"}}>新建调研</span>
+                            <span>历史调研</span>
+                        </h3>}
                     ></TableHeads>
                     <button id="downloadPng">下载图片</button>
                     <button id="download">下载PDF</button>
                     <div className="recordMain">
-                        <h2 style={{letterSpacing:"1px",marginTop:"0.8rem"}}>上海泰宇信息技术有限公司(老板)</h2>
+                        <h2 style={{letterSpacing:"1px",marginTop:"0.8rem"}}>上海泰宇信息技术有限公司</h2>
                         <p style={{textAlign:"center"}}>
                             文件编号: 156489415164  <span style={{ padding: "0 15px" }}></span>起止时间: 2018.10.11-2019.1.23<span style={{ padding: "0 15px" }}></span>
                         </p>
-                        <div className="giveMsg" >
-                            <textarea id="textarea"></textarea>
-                        </div>
                         <div className="tableDetails">
                             <table className="topTable">
                                 <tr>
@@ -73,15 +72,19 @@ export default class SurveyHistory extends React.Component {
                                 </tr>
                                 <tr>
                                     <th className="darkbg">会议日期</th>
-                                    <td></td>
+                                    <td className="lightbg">
+                                        
+                                    </td>
                                     <th className="darkbg">会议地址</th>
-                                    <td></td>
+                                    <td className="lightbg">
+                                        <input type="text" className="surveyIpt" />
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th className="darkbg">主持人</th>
-                                    <td></td>
+                                    <td className="lightbg"><input type="text" className="surveyIpt" /></td>
                                     <th className="darkbg">记录人</th>
-                                    <td></td>
+                                    <td className="lightbg"><input type="text" className="surveyIpt" /></td>
                                 </tr>
                             </table>
                             <table className="sceneTable">

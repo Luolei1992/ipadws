@@ -189,14 +189,14 @@ export default class Custom extends React.Component {
                     <div className="personalLink">
                         <div className="personalLinkList">
                             <ul>
-                                <li>
+                                {/* <li>
                                     <span>公司：</span>
                                     <input 
                                         type="text" 
                                         value={this.state.company}
                                         onChange={(e) => { this.onChangeCompany(e)}}
                                     />
-                                </li>
+                                </li> */}
                                 <li>
                                     <span>职位：</span>
                                     <input 

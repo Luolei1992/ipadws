@@ -153,7 +153,7 @@
                 
                 tr {
                     th,td {
-                        border: 1px solid #000000; 
+                        border: 1px solid #000000;
                         padding-left: .097656rem;
                         box-sizing: border-box;
                         height: .878906rem;
@@ -176,6 +176,8 @@
                 }
                 .lightbg {
                     width: 33.333334%;
+                    padding: .15rem;
+                    box-sizing: border-box;
                 }
             }
             table.sceneTable {
@@ -659,12 +661,12 @@
     width:100%;
     box-sizing: border-box;
 }
-.textareaCompany {
+.textareaPub {
     width: 100%;
-    min-height: .8rem;
+    min-height: .5rem;
     box-sizing: border-box;
-    padding: .1rem;
-    border: 0 none;
+    padding: .15rem;
+    // border: 0 none;
 }
 .tableHead {   
     height: 1rem;
@@ -681,7 +683,14 @@
         left: 50%;
         transform: translateX(-50%);
         font-size: 26px;
-        margin-top: .18rem;
+        line-height: 1rem;
+        span {
+            font-size: 14px;
+            float: left;
+            position: relative;
+            top: -3px; 
+            margin: 0 .195313rem;           
+        }
     }
     .leftLogoWord {
         font-size: 18px;
@@ -745,6 +754,11 @@
             }
         }
     }
+}
+.surveyIpt {
+    width: 100%;
+    box-sizing: border-box;
+    border: 0 none;
 }
 .txtRed {
     color: red;
