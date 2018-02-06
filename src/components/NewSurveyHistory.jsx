@@ -73,7 +73,7 @@ export default class NewSurveyHistory extends React.Component {
                                 <tr>
                                     <th className="darkbg">会议日期</th>
                                     <td className="lightbg">
-                                        
+                                        <input type="text" className="surveyIpt" />
                                     </td>
                                     <th className="darkbg">会议地址</th>
                                     <td className="lightbg">
@@ -89,7 +89,7 @@ export default class NewSurveyHistory extends React.Component {
                             </table>
                             <table className="sceneTable">
                                 <tr>
-                                    <td colSpan="4" className="darkbg">客户信息</td>
+                                    <td colSpan="4" className="darkbg newPersonalMsg">客户信息<span>新增 <i className="iconfont icon-jia"></i></span></td>
                                 </tr>
                                 <tr>
                                     <td colSpan="4">

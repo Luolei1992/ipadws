@@ -18,6 +18,7 @@ import Company from './components/Company';
 import SurveyHistory from './components/SurveyHistory';
 import Mycustom from './components/Mycustom';
 import NewSurveyHistory from './components/NewSurveyHistory';
+import Test from './components/test';
 
 import 'lib-flexible/flexible'
 import './css/index.less'
@@ -44,5 +45,6 @@ ReactDOM.render(
         <Route path="/quality" component={Quality} />
         <Route path="/surveyHistory" component={SurveyHistory} />
         <Route path="/newSurveyHistory" component={NewSurveyHistory} />
+        <Route path="/Test" component={Test} />
     </Router>
 , document.getElementById('mainWrap'));
