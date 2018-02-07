@@ -1,6 +1,6 @@
 import React from 'react';
 // import { Checkbox, Flex } from 'antd-mobile';
-import { div2png, readyDo, TableHead } from './templates';
+import { div2png, readyDo, TableHeads } from './templates';
 import { DrawBoard } from './drawBoard';
 
 let canvas;
@@ -40,7 +40,7 @@ export default class SceneVisit extends React.Component {
     render(){
         return (
             <form className="visitRecordWrap" id="fromHTMLtestdiv">
-                <TableHead url={urls.wordMsg}></TableHead>
+                <TableHeads url={urls.wordMsg} isHide={true}></TableHeads>
                 <button id="downloadPng">下载图片</button>
                 <button id="download">下载PDF</button>
                 <div className="recordMain">
@@ -54,7 +54,7 @@ export default class SceneVisit extends React.Component {
                                 <td></td>
                             </tr>
                             <tr className="sixToOne">
-                                <td className="darkbg">回访人员</td>
+                                <td className="darkbg">受访人员</td>
                                 <td></td>
                                 <td className="darkbg">回访人员</td>
                                 <td></td>

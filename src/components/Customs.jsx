@@ -175,7 +175,7 @@ export default class Custom extends React.Component {
                     </div>
                 </div>
                 <Modal
-                    visible={this.state.modal}
+                    visible={ this.state.modal }
                     transparent
                     maskClosable={false}
                     onClose={this.onClose('modal')}
@@ -198,19 +198,19 @@ export default class Custom extends React.Component {
                                     />
                                 </li> */}
                                 <li>
-                                    <span>职位：</span>
-                                    <input 
-                                        type="text"
-                                        value={this.state.job}
-                                        onChange={(e) => { this.onChangeJob(e) }}
-                                    />
-                                </li>
-                                <li>
                                     <span>姓名：</span>
                                     <input
                                         type="text"
                                         value={this.state.name}
                                         onChange={(e) => { this.onChangeName(e) }}
+                                    />
+                                </li>
+                                <li>
+                                    <span>职位：</span>
+                                    <input
+                                        type="text"
+                                        value={this.state.job}
+                                        onChange={(e) => { this.onChangeJob(e) }}
                                     />
                                 </li>
                                 <li>

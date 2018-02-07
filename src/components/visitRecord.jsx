@@ -19,7 +19,7 @@ export default class VisitRecord extends React.Component {
     render(){
         return (
             <form className="visitRecordWrap" id="fromHTMLtestdiv">
-                <TableHeads url={urls.wordMsg} isHide={true}></TableHeads>
+                <TableHeads url={urls.wordMsg} isHide={false} tag={ <h3>任务记录</h3> }></TableHeads>
                 <button id="downloadPng">下载图片</button>
                 <button id="download">下载PDF</button>
                 <div className="recordMain">

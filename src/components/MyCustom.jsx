@@ -48,12 +48,12 @@ export default class MyCustom extends React.Component {
                         <li
                             style={this.state.flag[3] ? { borderBottom: "3px solid red" } : { borderBottom: "3px solid transparent" }}
                             onClick={() => { this.handleClickLi(3) }}>
-                            <Link to='/meeting?tab=3'>会议纪要</Link>
+                            <Link to='/meetingList?tab=3'>会议纪要</Link>
                         </li>
                         <li
                             style={this.state.flag[4] ? { borderBottom: "3px solid red" } : { borderBottom: "3px solid transparent" }}
                             onClick={() => { this.handleClickLi(4) }}>
-                            <Link to='#'>联系人</Link>
+                            <Link>联系人</Link>
                         </li>
                         <li
                             style={this.state.flag[5] ? { borderBottom: "3px solid red" } : { borderBottom: "3px solid transparent" }}

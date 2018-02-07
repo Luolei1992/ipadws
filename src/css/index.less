@@ -4,7 +4,7 @@
     position: fixed;
     height: 100%;
     width: 100%;
-    background-color: #E60012;
+    background: url('../images/guideBg.png');
     .head {
         margin: .54rem .6rem ;
     }
@@ -81,6 +81,7 @@
         }
         .am-list-body {
             background-color: #000;
+            border: 0 none;
             .am-list-item {
                 border: 1px solid #ccc;
                 width: 4.882813rem;
@@ -182,7 +183,7 @@
             }
             table.sceneTable {
                 border-top: 0;
-                input {
+                input[type=checkbox] {
                     height: .46875rem;
                     width: .46875rem;
                     position: relative;
@@ -243,7 +244,7 @@
                             transform: translateX(-50%);
                         }
                         .midDivTop {
-                            position: absolute;
+                            // position: absolute;
                             bottom: 0;
                             .suggessMsg {
                                 width: 13.085938rem;
@@ -258,13 +259,14 @@
                         }
                     }
                 }
-                
                 textarea.allBox {
                     border: 0 none;
                     float: left;
                     height: 4.140625rem;
                     width: 100%;
                     padding: .292969rem;
+                    font-size: 14px;
+                    line-height: 20px;
                     box-sizing: border-box;
                     resize:none;
                 }
@@ -771,6 +773,44 @@
 }
 .txtRed {
     color: red;
+}
+.surveyUpload {
+    .staticUpload {
+        height: 1.5rem;
+        .am-flexbox .am-flexbox-item {
+            flex: none;
+            width: 1.5rem;
+        }
+        .am-image-picker-list .am-flexbox {
+            float: left;
+            margin-right: 5px;
+        }
+    }
+    ul.fileNameList {
+        padding: 0px 8px 0;
+        overflow: hidden;
+        li {
+            float: left;
+            width: 1.757813rem;
+            padding-left: 0;
+            text-align: center;
+        }
+    }
+}
+.addDutyList {
+    .personalLinkList {
+        ul {
+            li {
+                span {
+                    width: 35%;
+                    display: inline-block;
+                }
+                input {
+                    width: 65%;
+                }
+            }
+        }
+    }
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
     html:not([data-scale]) .am-list-body::before,

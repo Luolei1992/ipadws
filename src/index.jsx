@@ -18,6 +18,7 @@ import Company from './components/Company';
 import SurveyHistory from './components/SurveyHistory';
 import Mycustom from './components/Mycustom';
 import NewSurveyHistory from './components/NewSurveyHistory';
+import MeetingList from './components/MeetingList';
 import Test from './components/test';
 
 import 'lib-flexible/flexible'
@@ -34,9 +35,10 @@ ReactDOM.render(
             <IndexRoute component={Company} />
             <Route path="/company" component={Company} />  
             <Route path="/visitRecord" component={VisitRecord} />
-            <Route path="/visitLists" component={VisitLists} />
+            <Route path="/visitLists" component={VisitLists} />          
             <Route path="/meeting" component={Meeting} />
             <Route path="/survey" component={Survey} />            
+            <Route path="/meetingList" component={MeetingList} />            
         </Route>
         <Route path="/customs" component={Customs} />
         <Route path="/login" component={Login} />

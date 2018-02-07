@@ -59,7 +59,7 @@ export default class SurveyHistory extends React.Component {
                     <button id="downloadPng">下载图片</button>
                     <button id="download">下载PDF</button>
                     <div className="recordMain">
-                        <h2 style={{letterSpacing:"1px",marginTop:"0.8rem"}}>上海泰宇信息技术有限公司(老板)</h2>
+                        <h2 style={{letterSpacing:"1px",marginTop:"0.8rem"}}>上海泰宇信息技术有限公司</h2>
                         <p style={{textAlign:"center"}}>
                             文件编号: 156489415164  <span style={{ padding: "0 15px" }}></span>起止时间: 2018.10.11-2019.1.23<span style={{ padding: "0 15px" }}></span>
                         </p>

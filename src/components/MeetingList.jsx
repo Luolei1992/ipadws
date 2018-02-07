@@ -6,7 +6,7 @@ const urls = {
     wordMsg: require('../images/wordMsg.png'),
 }
 
-export default class VisitList extends React.Component {
+export default class MeetingList extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
@@ -20,11 +20,11 @@ export default class VisitList extends React.Component {
         return (
             <div id="fromHTMLtestdiv">
                 <form className="visitRecordWrap">
-                    <TableHeads url={urls.wordMsg} isHide={false} tag={<h3>走访记录</h3>}></TableHeads>
+                    <TableHeads url={urls.wordMsg} isHide={false} tag={<h3>会议纪要</h3>}></TableHeads>
                     <button id="downloadPng">下载图片</button>
                     <button id="download">下载PDF</button>
                     <div className="recordMain">
-                        <h2 style={{letterSpacing:"1px",marginTop:"0.8rem"}}>上海泰宇公司回访记录</h2>
+                        <h2 style={{letterSpacing:"1px",marginTop:"0.8rem"}}>上海泰宇公司会议纪要</h2>
                         <p style={{textAlign:"center"}}>
                             责任设计师:  <span style={{ padding: "0 15px" }}></span>时间: <span style={{ padding: "0 15px" }}></span>回访:
                         </p>
@@ -32,7 +32,7 @@ export default class VisitList extends React.Component {
                             <ul>
                                 <Link to='/scene'>
                                     <li>
-                                        <p>很满意</p>
+                                        <p>会议主题</p>
                                         <p>2017-12-12</p>
                                     </li>
                                 </Link>

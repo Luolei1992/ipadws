@@ -6,6 +6,15 @@ export const TableHead = (props) => (
         <img src={props.url} className="fn-right" />
     </div>
 )
+export const TableHeads = (props) => (     
+    <div className="tableHead">
+        <div className="leftLogoWord fn-left" onClick={()=>{hashHistory.goBack()}}><i className="iconfont icon-jiantou"></i>返回</div>
+        {
+            props.isHide ? "" : props.tag
+        }
+        <img src={props.url} className="fn-right" />
+    </div>
+)
 export const getLocationParam = (name) => {
     var url = window.location.search;
     if (~url.indexOf("?")) {
@@ -24,15 +33,6 @@ export const getLocationParam = (name) => {
     }
     return "";
 }
-export const TableHeads = (props) => (     
-    <div className="tableHead">
-        <div className="leftLogoWord fn-left" onClick={()=>{hashHistory.goBack()}}><i className="iconfont icon-jiantou"></i>返回</div>
-        {
-            props.isHide ? "" : props.tag
-        }
-        <img src={props.url} className="fn-right" />
-    </div>
-)
 export const Customs = (props) =>(         //我的客户信息展示
     <ul className="customDetails">
         {
@@ -99,19 +99,19 @@ export const Customs = (props) =>(         //我的客户信息展示
                             <p className="more"><i>...</i></p>
                             <ul>
                                 <li>
-                                    <p className="top"><Link to="/visitRecord?tab=1">{value.duty}</Link></p>
+                                    <p className="top"><Link to="/visitRecord?tab=0">{value.duty}</Link></p>
                                     <p className="btm">任务</p>
                                 </li>
                                 <li>
-                                    <p className="top"><Link to="/visitRecord?tab=1">{value.visit}</Link></p>
+                                    <p className="top"><Link to="/visitLists?tab=1">{value.visit}</Link></p>
                                     <p className="btm">回访</p>
                                 </li>
                                 <li>
-                                    <p className="top"><Link to="/visitRecord?tab=1">{value.summary}</Link></p>
+                                    <p className="top"><Link to="/meetingList?tab=2">{value.summary}</Link></p>
                                     <p className="btm">纪要</p>
                                 </li>
                                 <li>
-                                    <p className="top"><Link to="/visitRecord?tab=1">{value.validate}</Link></p>
+                                    <p className="top"><Link to="/quality?tab=3">{value.validate}</Link></p>
                                     <p className="btm">验收</p>
                                 </li>
                             </ul>

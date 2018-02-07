@@ -18,10 +18,10 @@ export default class Company extends React.Component {
     }
 
     componentDidMount () {
-        init('textarea1');
+        // init('textarea1');
         readyDo();
-        canvas = document.getElementById("canvas");
-        drawBoard = new DrawBoard(canvas);  // 初始化
+        // canvas = document.getElementById("canvas");
+        // drawBoard = new DrawBoard(canvas);  // 初始化
         
         this.props.state = [true,false,false,false,false,false]
     }
