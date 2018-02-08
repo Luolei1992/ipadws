@@ -96,7 +96,7 @@ export default class Meeting extends React.Component {
                                     <td colSpan="4" className="signatureTxt">
                                         <div className="suggess">
                                             <canvas id="canvas" width="768" height="150"></canvas>
-                                            <div className="signature sure" style={{ position: "relative", zIndex: "1000" }}>
+                                            <div className="signature sure" style={{ position: "relative", zIndex: "100" }}>
                                                 <span style={{ backgroundColor: "#fff" }}>项目负责人(签字): </span>
                                             </div>
                                             <div className="dataType">

@@ -58,7 +58,7 @@ export default class MyCustom extends React.Component {
                         <li
                             style={this.state.flag[5] ? { borderBottom: "3px solid red" } : { borderBottom: "3px solid transparent" }}
                             onClick={() => { this.handleClickLi(5) }}>
-                            <Link to='/Survey?tab=5'>调研档案</Link>
+                            <Link to='/surveyHistoryStatic?tab=5'>调研档案</Link>
                         </li>
                     </ul>
                     <span>新增</span>

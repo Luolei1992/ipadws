@@ -1,29 +1,35 @@
 import React from 'react';
-import { hashHistory } from "react-router";
-import { div2png, readyDo, TableHeads, init } from './templates';
+import { hashHistory,Link } from "react-router";
+import { div2png, readyDo, TableHeads, init} from './templates';
 import { DrawBoard } from './drawBoard';
-import { Modal } from 'antd-mobile';
 
 const urls = {
     wordMsg: require('../images/wordMsg.png'),
 }
 let canvas;
 let drawBoard;
-export default class Company extends React.Component {
+export default class SurveyHistoryStatic extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-            flags:[]
+            txt: `<pre>
+                hagdhsagda都干啥都干撒和
+                圣诞节啊看了觉得卡萨
+                是是的撒放到电风扇防风网大萨达撒萨达萨达萨达萨达as第三方地方热稳定撒
+                是多大的多多多多多多多多多多多多多多多
+            </pre>`
         }
     }
 
     componentDidMount () {
-        // init('textarea1');
         readyDo();
-        // canvas = document.getElementById("canvas");
-        // drawBoard = new DrawBoard(canvas);  // 初始化
-        
-        this.props.state = [true,false,false,false,false,false]
+        canvas = document.getElementById("canvas");
+        drawBoard = new DrawBoard(canvas);  // 初始化
+        document.onkeyup = function (e) {
+            e = e || event;
+            console.log(e.keyCode);
+        }
+        init('textarea');
     }
     clearAll = function () {
         drawBoard.clear();
@@ -48,15 +54,20 @@ export default class Company extends React.Component {
                     <TableHeads 
                         url={urls.wordMsg} 
                         isHide={false} 
-                        tag={<h3 className="fn-left">我的客户</h3>}
+                        tag={<h3 className="fn-left">调研档案</h3>}
                     ></TableHeads>
                     <button id="downloadPng">下载图片</button>
                     <button id="download">下载PDF</button>
                     <div className="recordMain">
-                        <h2 style={{ letterSpacing: "1px", marginTop: "0.8rem" }}>上海泰宇信息技术有限公司</h2>
+                        <h2 style={{letterSpacing:"1px",marginTop:"0.8rem"}}>上海泰宇信息技术有限公司</h2>
                         <p style={{textAlign:"center"}}>
                             文件编号: 156489415164  <span style={{ padding: "0 15px" }}></span>起止时间: 2018.10.11-2019.1.23<span style={{ padding: "0 15px" }}></span>
                         </p>
+                        <div className="giveMsg" >
+                            <textarea id="textarea" disabled>
+                                
+                            </textarea>
+                        </div>
                         <div className="tableDetails">
                             <table className="topTable">
                                 <tr>
@@ -64,26 +75,20 @@ export default class Company extends React.Component {
                                 </tr>
                                 <tr>
                                     <th className="darkbg">公司名称</th>
-                                    {/* <td><textarea id="textarea1" className="textareaCompany"></textarea></td> */}
-                                    {/* <td className="lightbg" onClick={() => Modal.prompt('defaultValue', 'defaultValue for prompt', [
-                                        { text: 'Cancel' },
-                                        { text: 'Submit', onPress: value => console.log(`输入的内容:${value}`) },
-                                    ], 'default', '100')}></td> */}
-                                    <td className="lightbg"></td>
+                                    <td></td>
                                     <th className="darkbg">成立时间</th>
-                                    {/* <td><textarea id="textarea2" className="textareaCompany"></textarea></td> */}
-                                    <td className="lightbg"></td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <th className="darkbg">公司地址</th>
-                                    <td className="lightbg"></td>
+                                    <td></td>
                                     <th className="darkbg">公司网址</th>
-                                    <td className="lightbg"></td>
+                                    <td></td>
                                 </tr>
                             </table>
                             <table className="sceneTable">
                                 <tr>
-                                    <td colSpan="4" className="darkbg">联系人</td>
+                                    <td colSpan="4" className="darkbg">客户信息</td>
                                 </tr>
                                 <tr>
                                     <td colSpan="4">
@@ -166,7 +171,7 @@ export default class Company extends React.Component {
                                         </div>
                                     </td>
                                 </tr>
-                                {/* <tr>
+                                <tr>
                                     <td colSpan="4" className="signatureTxt" style={{borderTop:"0 none"}}>
                                         <div className="suggess">
                                             <canvas id="canvas" width="768" height="150"></canvas>
@@ -194,7 +199,7 @@ export default class Company extends React.Component {
                                             </div>
                                         </div>
                                     </td>
-                                </tr> */}
+                                </tr>
                             </table>
                         </div>
                     </div>

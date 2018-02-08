@@ -4,32 +4,57 @@
     position: fixed;
     height: 100%;
     width: 100%;
-    background: url('../images/guideBg.png');
+    background: url('../images/guideBg.png') no-repeat center center / 100% 100%;
     .head {
         margin: .54rem .6rem ;
     }
     .main {
+        position: absolute;
+        bottom: .8rem;
+        left: 50%;
+        -webkit-transform: translateX(-50%) translateY(-50%);
+        -moz-transform: translateX(-50%) translateY(-50%);
+        -ms-transform: translateX(-50%) translateY(-50%);
+        -o-transform: translateX(-50%) translateY(-50%);
+        transform: translateX(-50%) translateY(-50%);
+        // padding-top: 2rem;
+        .redRight {
+            // position: absolute;
+            // right: 116px;
+            // top: 50px;
+            padding-bottom: .195313rem;
+            display: block;
+            width: 32px;
+            height: 32px;
+            margin: 0 auto;
+        }
         h2 {
-            font-size: 38px;
+            font-size: 28px;
             color: #fff;
             text-align: center;
             font-weight: 800;
             letter-spacing: .03rem;
-            margin: 1rem 0 1.5rem 0;
+            margin: 0 0 .6rem 0;
             span{
-                color: #000000;
+                color: red;
             }
         }
         ul {
             overflow: hidden;
-            display: table;
-            margin: 0 auto;
+            // display: table;
+            // margin: 0 auto;
             li {
                 float: left;
                 text-align: center;
-                padding: 0 .6rem;
+                padding: 0 .48rem;
                 font-size: 14px;
+                img {
+                    display: block;
+                    margin-bottom: .15625rem;
+                    border-radius: 50%;
+                }
                 a {
+                    display: block;
                     color: #fff;
                 }
             }
@@ -100,19 +125,189 @@
     }
 }
 .visitWrap {
-    .footerBar {
-        background-color: #000000;
-        ul {
-            text-align: center;
-            overflow: hidden;
-            li {
-                float: left;
-                a {
-                    color: #fff;
+    .mainWrap {
+        overflow: hidden;
+        .mainWrapLeft {
+            position: absolute;
+            left: 0;
+            height: 100%;
+            margin-top: -1rem;
+            z-index: 1;
+            width: 30%;
+            padding-top: 1rem;
+            box-sizing: border-box;
+            background-color: #000;
+            color: #fff;
+            font-size: 16px;
+            .allQuality {
+                height: .8rem;
+                line-height: .8rem;
+                background-color: #A90707;
+                padding: 0 .273438rem;    
+                i {
+                    float: right;
+                }            
+            }
+            ul {
+                li {
+                    padding: 0 .273438rem;
+                    height: .8rem;
+                    line-height: .8rem;
+                    border-bottom: 1px solid #2D2D2D;
+                    p {
+                        span {
+                            width: 80%;
+                            display: inline-block;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                        }
+                        i {
+                            float: right;
+                            width: 10%;
+                            display: inline-block;                            
+                            text-align: center;
+                        }
+                    }
                 }
             }
         }
-        
+        .mainWrapRight {
+            width: 70%;
+            position: absolute;
+            right: 0;
+            .which {
+                text-align: right;
+                margin-top: .4rem;
+                margin-bottom: .2rem;
+                line-height: 22px;
+                padding-right: .292969rem;
+                input {
+                    width: 22px;
+                    height: 22px;
+                    position: relative;
+                    top: 5px;
+                }
+                span {
+                    padding: 0 10px;
+                }
+            }
+            .details {
+                width: 100%;   
+                // overflow: hidden;
+                padding: .25rem;      
+                box-sizing: border-box;       
+                li.fullWidth {
+                    background-color: #fff;
+                    padding: .25rem 0;   
+                    margin-bottom: .2rem;  
+                    position: relative;                     
+                    .top {
+                        overflow: hidden;
+                        position: relative;
+                        padding:0 .25rem;
+                        ul {
+                            width: 100%;
+                            overflow: hidden;
+                            font-size: 14px;
+                            li {
+                                float: left;
+                                line-height: 30px;
+                                i {
+                                    display: inline-block;
+                                    width: .546875rem;
+                                    height: .546875rem;
+                                    border-radius: 50%;
+                                    background-color: red;
+                                    margin-right: .195313rem;
+                                }
+                            }
+                        }
+                        .slideDown {
+                            position: absolute;
+                            right: 10px;
+                            top: -5px;
+                            font-size: 28px;
+                            color: #dadae0;
+                        }
+                    }
+                    .btm {
+                        padding-left: .742188rem;
+                        box-sizing: border-box;
+                        overflow: hidden;
+                        .btmLeft {
+                            width: 33.33%;
+                            float: left;
+                            padding:0 .25rem;
+                            box-sizing: border-box;                            
+                            h4 {
+                                font-size: 16px;
+                                color: red;
+                                line-height: 30px;
+                            }
+                        }
+                        .btmCenter {
+                            float: left;
+                            width: 33.33%;
+                            padding-left: 1rem;
+                            box-sizing: border-box;
+                            .dataNum {
+                                font-size: 36px;
+                                float: left;
+                                margin-right: .06rem;
+                            }
+                            .explain {
+                                margin-top: .1rem;
+                                float: left;
+                                .end {
+                                    font-size: 14px;
+                                    line-height: 20px;
+                                }
+                            }
+                        }
+                        .btmRight {
+                            float: left;
+                            width: 33.33%;
+                            padding-right: .390625rem;
+                            box-sizing: border-box;
+                            text-align: right;
+                            button {
+                                border: 0 none;
+                                color: #fff;
+                                background-color: #DE0000;
+                                height: .6rem;
+                                width: 1.855469rem;
+                                border-radius: .3rem;
+                            }
+                        }
+                    }
+                    .attach {
+                        padding: .292969rem .175781rem;
+                        background-color: #DFDFDF;
+                        box-sizing: border-box;
+                        width: 100%;
+                        // position: absolute;
+                        // bottom: 0;
+                        .attachTop {
+                            width: 100%;
+                            background-color: #FFFAEE;
+                            border: 1px solid #FFDCAB;
+                            padding: .2rem;
+                            box-sizing: border-box;
+                            span {
+                                padding: 0 .15rem;
+                            }
+                            p {
+                                line-height: 28px;
+                            }
+                        }
+                        .attachList {
+
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -269,6 +464,7 @@
                     line-height: 20px;
                     box-sizing: border-box;
                     resize:none;
+                    margin-bottom: .029297rem;
                 }
                 tr.fourToOne {
                     td {
@@ -674,6 +870,8 @@
     height: 1rem;
     background-color: #000;
     color: #fff;
+    position: relative;
+    z-index: 10;
     img {
         margin: .14rem .5rem 0 0;
     }
@@ -776,7 +974,7 @@
 }
 .surveyUpload {
     .staticUpload {
-        height: 1.5rem;
+        height: 1.8rem;
         .am-flexbox .am-flexbox-item {
             flex: none;
             width: 1.5rem;

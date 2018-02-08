@@ -19,6 +19,8 @@ import SurveyHistory from './components/SurveyHistory';
 import Mycustom from './components/Mycustom';
 import NewSurveyHistory from './components/NewSurveyHistory';
 import MeetingList from './components/MeetingList';
+import QualityList from './components/QualityList';
+import SurveyHistoryStatic from './components/SurveyHistoryStatic';
 import Test from './components/test';
 
 import 'lib-flexible/flexible'
@@ -37,9 +39,9 @@ ReactDOM.render(
             <Route path="/visitRecord" component={VisitRecord} />
             <Route path="/visitLists" component={VisitLists} />          
             <Route path="/meeting" component={Meeting} />
-            <Route path="/survey" component={Survey} />            
             <Route path="/meetingList" component={MeetingList} />            
         </Route>
+        <Route path="/survey" component={Survey} />            
         <Route path="/customs" component={Customs} />
         <Route path="/login" component={Login} />
         <Route path="/visit" component={Visit} />
@@ -47,6 +49,8 @@ ReactDOM.render(
         <Route path="/quality" component={Quality} />
         <Route path="/surveyHistory" component={SurveyHistory} />
         <Route path="/newSurveyHistory" component={NewSurveyHistory} />
+        <Route path="/qualityList" component={QualityList} />
+        <Route path="/surveyHistoryStatic" component={SurveyHistoryStatic} />
         <Route path="/Test" component={Test} />
     </Router>
 , document.getElementById('mainWrap'));

@@ -164,7 +164,7 @@ export default class SceneVisit extends React.Component {
                                 <td colSpan="4" className="signatureTxt">
                                     <div className="suggess">
                                         <canvas id="canvas" width="768" height="150"></canvas>
-                                        <div className="signature" style={{position:"relative",zIndex:"1000"}}>
+                                        <div className="signature" style={{position:"relative",zIndex:"100"}}>
                                             <span style={{backgroundColor:"#fff"}}>顾客/客户(签字): </span>
                                         </div>
                                         <div className="dataType">

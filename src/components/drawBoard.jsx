@@ -24,7 +24,7 @@ class DrawBoard {
     init() {
         this.context.lineCap = 'round';             //平滑处理
         this.context.lineJoin = 'round';            //平滑处理
-        this.lineWidthMax = 3;   //画笔最粗值
+        this.lineWidthMax = 2;   //画笔最粗值
         //设置落笔的最近线条宽度 lastWidth
         this.lastLineWidth = this.lineWidthMax / 2;
     }

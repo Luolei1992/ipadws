@@ -1,5 +1,5 @@
 import React from 'react';
-import { hashHistory } from "react-router";
+import { hashHistory,Link } from "react-router";
 import { Modal, ImagePicker,Toast } from 'antd-mobile';
 import { div2png, readyDo, TableHeads, init} from './templates';
 import { DrawBoard } from './drawBoard';
@@ -44,9 +44,9 @@ export default class NewSurveyHistory extends React.Component {
     componentDidMount () {
         init('allBox');
         init('suggest');
-        readyDo();
-        canvas = document.getElementById("canvas");
-        drawBoard = new DrawBoard(canvas);  // 初始化
+        // readyDo();
+        // canvas = document.getElementById("canvas");
+        // drawBoard = new DrawBoard(canvas);  // 初始化
     }
     clearAll = function () {
         drawBoard.clear();
@@ -135,6 +135,26 @@ export default class NewSurveyHistory extends React.Component {
             finishTime: e.currentTarget.value
         });
     }
+    onChangeCompanyName(e) {
+        this.setState({
+            meetingTime: e.currentTarget.value
+        });
+    }
+    onChangeMeetingAddress(e){
+        this.setState({
+            meetingAddress: e.currentTarget.value
+        });
+    }
+    onChangeCompanys(e) {
+        this.setState({
+            companyName: e.currentTarget.value
+        });
+    }
+    onChangeCompanyAddress(e){
+        this.setState({
+            companyAddress: e.currentTarget.value
+        });
+    }
     addPersonLink(){
         let tmp = {
             company: this.state.company,
@@ -194,11 +214,11 @@ export default class NewSurveyHistory extends React.Component {
                         isHide={false} 
                         tag={<h3 className="fn-left">
                             <span style={{ borderBottom:"3px solid red"}}>新建调研</span>
-                            <span>历史调研</span>
+                            <Link to='/survey?tab=5' style={{color:"#fff"}}><span>历史调研</span></Link>
                         </h3>}
                     ></TableHeads>
-                    <button id="downloadPng">下载图片</button>
-                    <button id="download">下载PDF</button>
+                    {/* <button id="downloadPng">下载图片</button>
+                    <button id="download">下载PDF</button> */}
                     <div className="recordMain">
                         <h2 style={{letterSpacing:"1px",marginTop:"0.8rem"}}>上海泰宇信息技术有限公司</h2>
                         <p style={{textAlign:"center"}}>
@@ -213,24 +233,40 @@ export default class NewSurveyHistory extends React.Component {
                                     <td colSpan="4" className="darkbg">客户信息</td>
                                 </tr>
                                 <tr>
-                                    <th className="darkbg">会议日期</th>
-                                    <td className="lightbg">
-                                        <input type="text" className="surveyIpt" value={this.state.meetingTime} />
-                                    </td>
-                                    <th className="darkbg">会议地址</th>
-                                    <td className="lightbg">
-                                        <input type="text" className="surveyIpt" value={this.state.meetingAddress} />
-                                    </td>
-                                </tr>
-                                <tr>
                                     <th className="darkbg">公司名称</th>
                                     <td className="lightbg">
-                                        <input type="text" className="surveyIpt" value={this.state.companyName} />
-                                    </td>
+                                        <input 
+                                            type="text" 
+                                            className="surveyIpt" 
+                                            value={this.state.meetingTime} 
+                                            onChange={(e)=>{this.onChangeCompanyName(e)}} 
+                                        /></td>
+                                    <th className="darkbg">成立时间</th>
+                                    <td className="lightbg">
+                                        <input 
+                                        type="text" 
+                                        className="surveyIpt" 
+                                        value={this.state.meetingAddress}
+                                        onChange={(e) => { this.onChangeMeetingAddress(e) }}                                         
+                                    /></td>
+                                </tr>
+                                <tr>
+                                    <th className="darkbg">公司地址</th>
+                                    <td className="lightbg">
+                                        <input 
+                                        type="text" 
+                                        className="surveyIpt" 
+                                        value={this.state.companyName} 
+                                        onChange={(e) => { this.onChangeCompanys(e) }} 
+                                    /></td>
                                     <th className="darkbg">公司网址</th>
                                     <td className="lightbg">
-                                        <input type="text" className="surveyIpt" value={this.state.companyAddress} />
-                                    </td>
+                                        <input 
+                                        type="text" 
+                                        className="surveyIpt" 
+                                        value={this.state.companyAddress} 
+                                            onChange={(e) => { this.onChangeCompanyAddress(e) }}                                         
+                                    /></td>
                                 </tr>
                             </table>
                             <table className="sceneTable">
@@ -503,7 +539,7 @@ export default class NewSurveyHistory extends React.Component {
                                     <td colSpan="4" className="signatureTxt" style={{borderTop:"0 none"}}>
                                         <div className="suggess">
                                             <canvas id="canvas" width="768" height="150"></canvas>
-                                            <div className="signature sure" style={{ position: "relative", zIndex: "1000" }}>
+                                            <div className="signature sure" style={{ position: "relative", zIndex: "100" }}>
                                                 <span style={{ backgroundColor: "#fff" }}>项目负责人(签字): </span>
                                             </div>
                                             <div className="dataType">

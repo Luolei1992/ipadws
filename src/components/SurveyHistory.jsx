@@ -1,5 +1,5 @@
 import React from 'react';
-import { hashHistory } from "react-router";
+import { hashHistory,Link } from "react-router";
 import { div2png, readyDo, TableHeads, init} from './templates';
 import { DrawBoard } from './drawBoard';
 
@@ -54,7 +54,10 @@ export default class SurveyHistory extends React.Component {
                     <TableHeads 
                         url={urls.wordMsg} 
                         isHide={false} 
-                        tag={<h3 className="fn-left">我的客户</h3>}
+                        tag={<h3 className="fn-left">
+                            <Link to='/newSurveyHistory'><span style={{ color: "#fff" }}>新建调研</span></Link>
+                            <span style={{ borderBottom: "3px solid red" }}>历史调研</span>
+                        </h3>}
                     ></TableHeads>
                     <button id="downloadPng">下载图片</button>
                     <button id="download">下载PDF</button>
@@ -72,15 +75,15 @@ export default class SurveyHistory extends React.Component {
                                     <td colSpan="4" className="darkbg">客户信息</td>
                                 </tr>
                                 <tr>
-                                    <th className="darkbg">会议日期</th>
+                                    <th className="darkbg">公司名称</th>
                                     <td></td>
-                                    <th className="darkbg">会议地址</th>
+                                    <th className="darkbg">成立时间</th>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <th className="darkbg">主持人</th>
+                                    <th className="darkbg">公司地址</th>
                                     <td></td>
-                                    <th className="darkbg">记录人</th>
+                                    <th className="darkbg">公司网址</th>
                                     <td></td>
                                 </tr>
                             </table>
@@ -173,7 +176,7 @@ export default class SurveyHistory extends React.Component {
                                     <td colSpan="4" className="signatureTxt" style={{borderTop:"0 none"}}>
                                         <div className="suggess">
                                             <canvas id="canvas" width="768" height="150"></canvas>
-                                            <div className="signature sure" style={{ position: "relative", zIndex: "1000" }}>
+                                            <div className="signature sure" style={{ position: "relative", zIndex: "100" }}>
                                                 <span style={{ backgroundColor: "#fff" }}>项目负责人(签字): </span>
                                             </div>
                                             <div className="dataType">

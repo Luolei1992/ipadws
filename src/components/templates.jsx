@@ -3,7 +3,7 @@ import { Link, hashHistory } from "react-router";
 export const TableHead = (props) => (     
     <div className="tableHead">
         <div className="leftLogoWord fn-left"><i className="iconfont icon-jiantou"></i>返回</div>
-        <img src={props.url} className="fn-right" />
+        <Link to='/'><img src={props.url} className="fn-right" /></Link>
     </div>
 )
 export const TableHeads = (props) => (     
@@ -12,7 +12,7 @@ export const TableHeads = (props) => (
         {
             props.isHide ? "" : props.tag
         }
-        <img src={props.url} className="fn-right" />
+        <Link to='/'><img src={props.url} className="fn-right" /></Link>
     </div>
 )
 export const getLocationParam = (name) => {
@@ -111,7 +111,7 @@ export const Customs = (props) =>(         //我的客户信息展示
                                     <p className="btm">纪要</p>
                                 </li>
                                 <li>
-                                    <p className="top"><Link to="/quality?tab=3">{value.validate}</Link></p>
+                                    <p className="top"><Link to="/qualityList">{value.validate}</Link></p>
                                     <p className="btm">验收</p>
                                 </li>
                             </ul>
