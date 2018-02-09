@@ -23,9 +23,9 @@ import QualityList from './components/QualityList';
 import SurveyHistoryStatic from './components/SurveyHistoryStatic';
 import Test from './components/test';
 
-import 'lib-flexible/flexible'
-import './css/index.less'
-import './css/font/iconfont.css'
+import 'lib-flexible/flexible';
+import './css/index.less';
+import './css/font/iconfont.css';
 
 ReactDOM.render(
     <Router history={hashHistory}>

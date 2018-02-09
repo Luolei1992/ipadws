@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router';
-import { div2png, readyDo, TableHeads } from './templates';
+import { div2png, readyDo, TableHeads,init } from './templates';
 import { DrawBoard } from './drawBoard';
 
 let canvas;
@@ -16,6 +16,7 @@ export default class Quality extends React.Component {
         }
     }
     componentDidMount(){
+        init('result');
         readyDo();
         canvas = document.getElementById("canvas");
         drawBoard = new DrawBoard(canvas);  // 初始化
@@ -59,30 +60,30 @@ export default class Quality extends React.Component {
                         <table>
                             <tr>
                                 <td>采购合同名称</td>
-                                <td></td>
+                                <td><input type="text" className="qualityIpt" /></td>
                                 <td>项目合同号</td>
-                                <td></td>
+                                <td><input type="text" className="qualityIpt" /></td>
                             </tr>
                             <tr>
                                 <td>项目合同名称</td>
-                                <td></td>
+                                <td><input type="text" className="qualityIpt" /></td>
                                 <td>项目编号</td>
-                                <td></td>
+                                <td><input type="text" className="qualityIpt" /></td>
                             </tr>
                             <tr>
                                 <td>项目负责人</td>
-                                <td></td>
+                                <td><input type="text" className="qualityIpt" /></td>
                                 <td>采购人员</td>
-                                <td></td>
+                                <td><input type="text" className="qualityIpt" /></td>
                             </tr>
                             <tr>
                                 <td>实施单位</td>
-                                <td></td>
+                                <td><input type="text" className="qualityIpt" /></td>
                                 <td>
                                     <p style={{ lineHeight: "30px" }}>实施/实施单位</p>
                                     <p style={{ lineHeight: "30px" }}>联系人</p>
                                 </td>
-                                <td></td>
+                                <td><input type="text" className="qualityIpt" /></td>
                             </tr>
                             <tr>
                                 <td rowSpan="2">
@@ -90,14 +91,14 @@ export default class Quality extends React.Component {
                                     <p style={{ lineHeight: "30px" }}>说明</p>
                                 </td>
                                 <td>节点描述</td>
-                                <td colSpan="2"></td>
+                                <td colSpan="2"><input type="text" className="qualityIpt" /></td>
                             </tr>
                             <tr>
                                 <td>
                                     <p style={{ lineHeight: "30px" }}>本次付款为</p>
                                     <p style={{ lineHeight: "30px" }}>第<i style={{ color: "red", textDecoration: "underline" }}>2</i>节点</p>
                                 </td>
-                                <td colSpan="2"></td>
+                                <td colSpan="2"><input type="text" className="qualityIpt" /></td>
                             </tr>
                             <tr>
                                 <td>
@@ -125,13 +126,13 @@ export default class Quality extends React.Component {
                                 <td colSpan="3">
                                     <table style={{ border: "0 none" }}>
                                         <tr>
-                                            <td style={{ border: "0 none", borderBottom: "1px solid #000" }}></td>
+                                            <td style={{ border: "0 none", borderBottom: "1px solid #000" }}><input type="text" className="qualityIpt" /></td>
                                         </tr>
                                         <tr>
-                                            <td style={{ border: "0 none" }}></td>
+                                            <td style={{ border: "0 none" }}><input type="text" className="qualityIpt" /></td>
                                         </tr>
                                         <tr>
-                                            <td style={{ border: "0 none", borderTop: "1px solid #000" }}></td>
+                                            <td style={{ border: "0 none", borderTop: "1px solid #000" }}><input type="text" className="qualityIpt" /></td>
                                         </tr>
                                     </table>
                                 </td>
@@ -141,7 +142,12 @@ export default class Quality extends React.Component {
                                     <p style={{ lineHeight: "40px" }}>验收结果</p>
                                     <p style={{ lineHeight: "40px" }}>后续处理</p>
                                 </td>
-                                <td colSpan="3"></td>
+                                <td colSpan="3">
+                                    <textarea 
+                                        id="result" 
+                                        style={{width:"100%",minHeight:"1.5rem",padding:".2rem",boxSizing:"border-box",border:"0 none"}}
+                                    ></textarea>
+                                </td>
                             </tr>
                             <tr>
                                 <td colSpan="4" className="signatureTxt">

@@ -5,6 +5,7 @@ const urls = {
     logo: require('../images/logo.png'),
     right: require('../images/right.png'),
     play: require('../images/play.png'),
+    guideBg: require('../images/guideBg.png'),
     guide1: require('../images/guide1.png'),
     guide2: require('../images/guide2.png'),
     guide3: require('../images/guide3.png'),
@@ -18,7 +19,7 @@ export default class Guide extends React.Component {
     }
     render() {
         return (
-            <div className="guideWrap">
+            <div className="guideWrap" style={{ background:"url("+urls.guideBg+") no-repeat center center / 100% 100%"}}>
                 <div className="head">
                     <img src={urls.logo} />
                 </div>
