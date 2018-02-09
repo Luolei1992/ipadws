@@ -206,7 +206,6 @@ export default class SurveyHistory extends React.Component {
                     </div>
                 </form>
             </div>
-            
         )
     }
 }

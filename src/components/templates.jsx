@@ -1,12 +1,17 @@
 import { Link, hashHistory } from "react-router";
 
+const urls = {
+    wordMsg: require('../images/wordMsg.png'),
+    addPic: require('../images/addPic.png'),
+}
+
 export const TableHead = (props) => (     
     <div className="tableHead">
         <div className="leftLogoWord fn-left"><i className="iconfont icon-jiantou"></i>返回</div>
         <Link to='/'><img src={props.url} className="fn-right" /></Link>
     </div>
 )
-export const TableHeads = (props) => (     
+export const TableHeads = (props) => (    //公共头部  
     <div className="tableHead">
         <div className="leftLogoWord fn-left" onClick={()=>{hashHistory.goBack()}}><i className="iconfont icon-jiantou"></i>返回</div>
         {
@@ -15,24 +20,24 @@ export const TableHeads = (props) => (
         <Link to='/'><img src={props.url} className="fn-right" /></Link>
     </div>
 )
-export const getLocationParam = (name) => {
-    var url = window.location.search;
-    if (~url.indexOf("?")) {
-        var search = {};
-        var arrayParam = url.split("?")[1].split("&");
-        arrayParam.map(function (value, index, elem) {
-            var key = value.split("=")[0];
-            var val = value.split("=")[1];
-            search[key] = val;
-        });
-        if (name in search) {
-            return search[name];
-        } else {
-            return "";
-        }
-    }
-    return "";
-}
+// export const getLocationParam = (name) => {
+//     var url = window.location.search;
+//     if (~url.indexOf("?")) {
+//         var search = {};
+//         var arrayParam = url.split("?")[1].split("&");
+//         arrayParam.map(function (value, index, elem) {
+//             var key = value.split("=")[0];
+//             var val = value.split("=")[1];
+//             search[key] = val;
+//         });
+//         if (name in search) {
+//             return search[name];
+//         } else {
+//             return "";
+//         }
+//     }
+//     return "";
+// }
 export const Customs = (props) =>(         //我的客户信息展示
     <ul className="customDetails">
         {
@@ -96,23 +101,23 @@ export const Customs = (props) =>(         //我的客户信息展示
                             </table>
                         </div>
                         <div className="right fn-right">
-                            <p className="more"><i>...</i></p>
+                            <p className="more"><Link to="/company?tab=0&id=1"><i>...</i></Link></p>
                             <ul>
                                 <li>
                                     <p className="top"><Link to="/visitRecord?tab=0">{value.duty}</Link></p>
-                                    <p className="btm">任务</p>
+                                    <p className="btm" onClick={(e)=>{props.addJobs(e,value.id)}}>任务</p>
                                 </li>
                                 <li>
                                     <p className="top"><Link to="/visitLists?tab=1">{value.visit}</Link></p>
-                                    <p className="btm">回访</p>
+                                    <p className="btm"><Link to="/scene">回访</Link></p>
                                 </li>
                                 <li>
                                     <p className="top"><Link to="/meetingList?tab=2">{value.summary}</Link></p>
-                                    <p className="btm">纪要</p>
+                                    <p className="btm"><Link to="/meeting">纪要</Link></p>
                                 </li>
                                 <li>
                                     <p className="top"><Link to="/qualityList">{value.validate}</Link></p>
-                                    <p className="btm">验收</p>
+                                    <p className="btm"><Link to="/quality">验收</Link></p>
                                 </li>
                             </ul>
                         </div>
@@ -131,6 +136,66 @@ export const Customs = (props) =>(         //我的客户信息展示
                 </li>
             })
         }
+    </ul>
+)
+
+export const Quality = (props) => (
+    <ul className="details">
+        <li className="fullWidth">
+            <div className="top">
+                <ul className="fn-left">
+                    <li><i></i></li>
+                    <li>张兰</li>
+                    <li style={{ color: "#ADADAD" }}>杭州画客科技有限公司</li>
+                    <li style={{ color: "#ADADAD" }}>总经理</li>
+                </ul>
+                <span className="slideDown iconfont icon-tubiao-" onClick={() => props.show(props.index, props.isShow)}></span>
+            </div>
+            <div className="btm">
+                <div className="btmLeft">
+                    <h4>不满意</h4>
+                    <p>设计师迟到，态度不好</p>
+                </div>
+                <div className="btmCenter">
+                    <span className="dataNum" style={{ color: "red" }}>5</span>
+                    <div className="explain">
+                        <p className="end" style={{ color: "red" }}>天到期</p>
+                        <p className="prey" style={{ color: "#ADADAD" }}>02-03</p>
+                    </div>
+                </div>
+                <div className="btmRight">
+                    <button onClick={() => { props.changeAlert() }}>回访结果</button>
+                </div>
+            </div>
+            <div className="attach" style={{ display: props.isShow ? "block" : "none" }}>
+                <div className="attachTop">
+                    手机：15856595686<span></span>邮箱：13565854858@qq.com<span></span>微信：15848486845<span></span>QQ：11452565684
+                    <p>2014年涣发大号书法家爱大家撒，上大街上的，上的那时间段内啥</p>
+                </div>
+                <div className="attachList">
+                    <ul className="attachListUl">
+                        <li>
+                            <div style={{ overflow: "hidden" }}>
+                                <span className="attachListLeft"><i className="iconfont icon-sanjiao1"></i>满意 <i className="date">12-03</i></span>
+                                <span className="attachListRight">12月</span>
+                            </div>
+                            <p>附加信息</p>
+                            <ul>
+                                <li>
+                                    <img src={urls.addPic} />
+                                </li>
+                                <li>
+                                    <img src={urls.addPic} />
+                                </li>
+                                <li>
+                                    <img src={urls.addPic} />
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </li>
     </ul>
 )
 export const div2png =(dom, name) => {         //html转图片

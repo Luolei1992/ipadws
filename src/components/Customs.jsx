@@ -1,7 +1,7 @@
 import React from "react";
 import { hashHistory } from "react-router";
-import { TableHeads, Customs, getLocationParam} from './templates';
-import { Modal, List, Button, WhiteSpace, WingBlank , InputItem } from 'antd-mobile';
+import { TableHeads, Customs} from './templates';
+import { Modal, List } from 'antd-mobile';
 
 const urls = {
     wordMsg: require('../images/wordMsg.png'),
@@ -25,6 +25,7 @@ export default class Custom extends React.Component {
             show:false,
             show2:false,
             modal:false,            
+            modal1:false,            
             order:"全部",
             check:"全部",
             company:"",
@@ -66,7 +67,11 @@ export default class Custom extends React.Component {
                     relate: ["张三", "李四", "王五", "赵六"],
                     id:"2"
                 }
-            ]
+            ],
+            happenTime: "",
+            content: "",
+            finishTime: "",
+            give: ""
         }
     }
     componentDidMount(){
@@ -133,6 +138,26 @@ export default class Custom extends React.Component {
             remark: e.currentTarget.value
         });
     }
+    onChangeHappenTime = (e) => {
+        this.setState({
+            happenTime: e.currentTarget.value
+        })
+    }
+    onChangeContent = (e) => {
+        this.setState({
+            content: e.currentTarget.value
+        })
+    }
+    onChangeFinishTime = (e) => {
+        this.setState({
+            finishTime: e.currentTarget.value
+        })
+    }
+    onChangeGive = (e) => {
+        this.setState({
+            give: e.currentTarget.value
+        })
+    }
     render(){
         return (
             <div className="customsLists visitRecordWrap">
@@ -177,7 +202,7 @@ export default class Custom extends React.Component {
                 <Modal
                     visible={ this.state.modal }
                     transparent
-                    maskClosable={false}
+                    maskClosable={true}
                     onClose={this.onClose('modal')}
                     className="personalLinkWrap"
                     footer={[
@@ -248,8 +273,65 @@ export default class Custom extends React.Component {
                         dataList={this.state.data} 
                         del={this.delPerson}
                         showModal={this.showModal('modal')}
+                        addJobs={this.showModal('modal1')}
                     ></Customs>
                 </div>
+                <Modal
+                    visible={this.state.modal1}
+                    transparent
+                    maskClosable={true}
+                    onClose={this.onClose('modal1')}
+                    style={{ width: "300px" }}
+                    className="personalLinkWrap myCustomModal"
+                    footer={[
+                        { text: '取消', onPress: () => { console.log('cancle'); this.onClose('modal1')(); } },
+                        { text: '确定', onPress: () => { console.log('ok'); this.onClose('modal1')(); } }
+                    ]}
+                >
+                    <div className="personalLink">
+                        <div className="personalLinkList">
+                            <ul>
+                                <li>
+                                    <span style={{ textAlignLast: "justify", width: "25%" }}>发生时间</span>:
+                                    <input
+                                        type="text"
+                                        value={this.state.name}
+                                        onChange={(e) => { this.onChangeHappenTime(e) }}
+                                        style={{paddingLeft:"5px"}}
+                                    />
+                                </li>
+                                <li>
+                                    <span style={{ textAlignLast: "justify", width: "25%" }}>内容</span>:
+                                    {/* <span>内容：</span> */}
+                                    <input
+                                        type="text"
+                                        value={this.state.job}
+                                        onChange={(e) => { this.onChangeContent(e) }}
+                                        style={{paddingLeft:"5px"}}
+                                    />
+                                </li>
+                                <li>
+                                    <span style={{ textAlignLast: "justify", width: "25%" }}>完成时间</span>:
+                                    <input
+                                        type="text"
+                                        value={this.state.phone}
+                                        onChange={(e) => { this.onChangeFinishTime(e) }}
+                                        style={{paddingLeft:"5px"}}
+                                    />
+                                </li>
+                                <li>
+                                    <span style={{ textAlignLast: "justify", width: "25%" }}>交割情况</span>:
+                                    <input
+                                        type="text"
+                                        value={this.state.email}
+                                        onChange={(e) => { this.onChangeGive(e) }}
+                                        style={{paddingLeft:"5px"}}
+                                    />
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </Modal>
             </div>
         )
     }

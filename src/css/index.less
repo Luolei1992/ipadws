@@ -125,13 +125,18 @@
     }
 }
 .visitWrap {
+    .tableHead {
+        position: fixed;
+        width: 100%;
+        top: 0;
+    }
     .mainWrap {
         overflow: hidden;
         .mainWrapLeft {
-            position: absolute;
+            position: fixed;
+            overflow: scroll;
             left: 0;
             height: 100%;
-            margin-top: -1rem;
             z-index: 1;
             width: 30%;
             padding-top: 1rem;
@@ -174,7 +179,10 @@
         }
         .mainWrapRight {
             width: 70%;
-            position: absolute;
+            height: 100%;
+            padding-top: 1rem;
+            position: fixed;
+            overflow: scroll;
             right: 0;
             .which {
                 text-align: right;
@@ -192,10 +200,66 @@
                     padding: 0 10px;
                 }
             }
+            .alertModalBg {
+                background-color: rgba(0, 0, 0, 0.5);
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                z-index: 1000;
+                top: 0;
+                left: 0;
+            }
+            .alertModal {
+                width: 6rem;
+                background-color: #fff;
+                border: 1px solid #f5f5f5;
+                padding: .9rem;
+                position: absolute;
+                z-index: 1002;
+                top: 50%;
+                left: 50%;
+                transform: translateX(-50%) translateY(-50%);
+                border-radius: 5px;
+                .am-image-picker-list {
+                    padding-left: 0;
+                    padding-right: 0;
+                }
+                .iconfont {
+                    position: absolute;
+                    top: .23rem;
+                    right: .23rem;
+                    color: #959595;
+                    font-size: 26px;
+                }
+                .which {
+                    margin-top: 0;
+                    padding-right: 0;
+                    text-align: center;
+                }
+                #plusMsg {
+                    width: 100%;
+                    min-height: 1.5rem;
+                    padding: .097656rem;
+                    box-sizing: border-box;
+                }
+                button {
+                    width: 2.734375rem;
+                    height: .78125rem;
+                    border-radius: 5px;
+                    border: 0 none;
+                    font-size: 16px;
+                    font-weight: 800;
+                    margin: 0 auto;
+                    display: block;
+                    color: #fff;
+                    background-color: #DE0000;
+                    margin-top: 20px;
+                }
+            }
             .details {
                 width: 100%;   
                 // overflow: hidden;
-                padding: .25rem;      
+                padding: 0 0.25rem;      
                 box-sizing: border-box;       
                 li.fullWidth {
                     background-color: #fff;
@@ -286,14 +350,15 @@
                         background-color: #DFDFDF;
                         box-sizing: border-box;
                         width: 100%;
-                        // position: absolute;
-                        // bottom: 0;
+                        position: relative;
+                        top: .3rem;
                         .attachTop {
                             width: 100%;
                             background-color: #FFFAEE;
                             border: 1px solid #FFDCAB;
                             padding: .2rem;
                             box-sizing: border-box;
+                            margin-bottom: .292969rem;
                             span {
                                 padding: 0 .15rem;
                             }
@@ -302,7 +367,42 @@
                             }
                         }
                         .attachList {
-
+                            ul {
+                                li {
+                                    .attachListLeft {
+                                        float: left;
+                                        font-size: 16px;
+                                        .iconfont {
+                                            color: #C9C9C9;
+                                            width: .6rem;
+                                            display: inline-block;
+                                            text-align: center;
+                                        }
+                                        .date {
+                                            font-size: 12px;
+                                            color: #B8B8B8;
+                                        }
+                                    }
+                                    .attachListRight {
+                                        font-size: 16px;
+                                        margin-right: .292969rem;
+                                        float: right;
+                                    }
+                                    p {
+                                        line-height: 20px;
+                                        margin: .195313rem .6rem;
+                                        color: #858585;
+                                    }
+                                    ul {
+                                        overflow: hidden;
+                                        margin-left: .6rem;
+                                        li {
+                                            float: left;
+                                            margin-right: 8px;
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -899,6 +999,16 @@
         letter-spacing: 2px;
     }
 }
+
+.myCustomModal {
+    .personalLinkList {
+        span {
+            display: inline-block;
+            width: 30%;
+            text-align: center;
+        }
+    }
+}
 .tableBottom {
     position: fixed;
     bottom: 0;
@@ -907,7 +1017,22 @@
     background-color: #000;
     height: .976563rem;
     font-size: 14px;
-    ul {
+    .addNewList {
+        position: absolute;
+        bottom: .976563rem;
+        right: 0;
+        color: #fff;
+        background-color: #000;
+        ul {
+            a {
+                color: #fff;
+            }
+            li {
+                padding: .12rem .488281rem;
+            }
+        }
+    }
+    .tableBottomMainList {
         overflow: hidden;
         display: table;
         margin: 0 auto;
@@ -978,10 +1103,19 @@
         .am-flexbox .am-flexbox-item {
             flex: none;
             width: 1.5rem;
+            height: 1.5rem;
         }
         .am-image-picker-list .am-flexbox {
             float: left;
             margin-right: 5px;
+            overflow: auto;
+        }
+        .am-image-picker-item {
+            position: relative;
+            .am-image-picker-item-content {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
         }
     }
     ul.fileNameList {

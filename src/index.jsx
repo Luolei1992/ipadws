@@ -38,9 +38,10 @@ ReactDOM.render(
             <Route path="/company" component={Company} />  
             <Route path="/visitRecord" component={VisitRecord} />
             <Route path="/visitLists" component={VisitLists} />          
-            <Route path="/meeting" component={Meeting} />
             <Route path="/meetingList" component={MeetingList} />            
+            <Route path="/surveyHistoryStatic" component={SurveyHistoryStatic} />
         </Route>
+        <Route path="/meeting" component={Meeting} />
         <Route path="/survey" component={Survey} />            
         <Route path="/customs" component={Customs} />
         <Route path="/login" component={Login} />
@@ -50,7 +51,6 @@ ReactDOM.render(
         <Route path="/surveyHistory" component={SurveyHistory} />
         <Route path="/newSurveyHistory" component={NewSurveyHistory} />
         <Route path="/qualityList" component={QualityList} />
-        <Route path="/surveyHistoryStatic" component={SurveyHistoryStatic} />
         <Route path="/Test" component={Test} />
     </Router>
 , document.getElementById('mainWrap'));

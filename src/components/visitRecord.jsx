@@ -15,6 +15,7 @@ export default class VisitRecord extends React.Component {
     }
     componentDidMount () {
         readyDo();
+        // console.log(jobList);
     }
     render(){
         return (
@@ -55,6 +56,16 @@ export default class VisitRecord extends React.Component {
                                 <td></td>
                                 <td></td>
                             </tr>
+                            {/* {
+                                this.state.jobList.map((value,idx)=>{
+                                    return <tr>
+                                        <td>value.happenTime</td>
+                                        <td>value.content</td>
+                                        <td>value.finishTime</td>
+                                        <td>value.give</td>
+                                    </tr>
+                                })
+                            } */}
                         </table>
                     </div>
                 </div>

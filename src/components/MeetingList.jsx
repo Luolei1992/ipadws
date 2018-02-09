@@ -30,7 +30,7 @@ export default class MeetingList extends React.Component {
                         </p>
                         <div className="visitLists">
                             <ul>
-                                <Link to='/scene'>
+                                <Link to='/meeting'>
                                     <li>
                                         <p>会议主题</p>
                                         <p>2017-12-12</p>

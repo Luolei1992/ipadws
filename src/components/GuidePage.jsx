@@ -3,7 +3,6 @@ import {Link} from "react-router"
 
 const urls = {
     logo: require('../images/logo.png'),
-    years: require('../images/years.png'),
     right: require('../images/right.png'),
     play: require('../images/play.png'),
     guide1: require('../images/guide1.png'),

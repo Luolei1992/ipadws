@@ -44,9 +44,9 @@ export default class NewSurveyHistory extends React.Component {
     componentDidMount () {
         init('allBox');
         init('suggest');
-        // readyDo();
-        // canvas = document.getElementById("canvas");
-        // drawBoard = new DrawBoard(canvas);  // 初始化
+        readyDo();
+        canvas = document.getElementById("canvas");
+        drawBoard = new DrawBoard(canvas);  // 初始化
     }
     clearAll = function () {
         drawBoard.clear();
@@ -175,6 +175,14 @@ export default class NewSurveyHistory extends React.Component {
         }else{
             this.onClose('modal1')();
             this.state.personLink.push(tmp);
+            this.setState( {
+                company: "",
+                job: "",
+                name: "",
+                phone: "",
+                email: "",
+                remark: "",
+            })
         };
     }
     addOrderMsg(){
@@ -193,6 +201,12 @@ export default class NewSurveyHistory extends React.Component {
         } else {
             this.onClose('modal2')();
             this.state.orderList.push(lis); 
+            this.setState({
+                order: "",
+                things: "",
+                duty: "",
+                finishTime: ""
+            })
         }
     }
     changeCheckState(e,idx){
@@ -217,8 +231,8 @@ export default class NewSurveyHistory extends React.Component {
                             <Link to='/survey?tab=5' style={{color:"#fff"}}><span>历史调研</span></Link>
                         </h3>}
                     ></TableHeads>
-                    {/* <button id="downloadPng">下载图片</button>
-                    <button id="download">下载PDF</button> */}
+                    <button id="downloadPng">下载图片</button>
+                    <button id="download">下载PDF</button>
                     <div className="recordMain">
                         <h2 style={{letterSpacing:"1px",marginTop:"0.8rem"}}>上海泰宇信息技术有限公司</h2>
                         <p style={{textAlign:"center"}}>
@@ -274,7 +288,7 @@ export default class NewSurveyHistory extends React.Component {
                                     <td 
                                         colSpan="4" 
                                         className="darkbg newPersonalMsg"
-                                    >客户信息<span onClick={this.showModal('modal1')}>新增  <i className="iconfont icon-jia"></i></span></td>
+                                    >联系人<span onClick={this.showModal('modal1')}>新增  <i className="iconfont icon-jia"></i></span></td>
                                 </tr>
                                 <Modal
                                     visible={this.state.modal1}
@@ -346,6 +360,7 @@ export default class NewSurveyHistory extends React.Component {
                                                 <td>邮箱</td>
                                                 <td>备注</td>
                                             </tr>
+                                            
                                             {
                                                 this.state.personLink.map((value) => { 
                                                     return <tr style={{ borderBottom:"1px solid #CBCBCB"}}>

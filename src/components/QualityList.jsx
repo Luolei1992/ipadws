@@ -29,7 +29,7 @@ export default class QualityList extends React.Component{
                 ></TableHeads>
                 <div className="surveyList">
                     <ul>
-                        <Link to='/surveyHistory'>
+                        <Link to='/quality'>
                             <li>
                                 <h3>上海泰宇信息技术有限公司</h3>
                                 <p>采购合同名称：<span></span>项目合同名称：<span></span>项目负责人：</p>
