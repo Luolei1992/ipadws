@@ -51,7 +51,7 @@ export default class Quality extends React.Component {
                         </h3>}
                     ></TableHeads>
                     <button id="downloadPng">下载图片</button>
-                    <button id="download">下载PDF</button>
+                    {/* <button id="download">下载PDF</button> */}
                     <div className="qualityWrap">
                         <div className="qualityWrapTop">
                             <h3>浙江中控技术股份有限公司</h3>

@@ -43,7 +43,7 @@ export default class Meeting extends React.Component {
                 <form className="visitRecordWrap">
                     <TableHeads url={urls.wordMsg} isHide={true}></TableHeads>
                     <button id="downloadPng">下载图片</button>
-                    <button id="download">下载PDF</button>
+                    {/* <button id="download">下载PDF</button> */}
                     <div className="recordMain">
                         <h2>会议纪要</h2>
                         <div className="tableDetails">

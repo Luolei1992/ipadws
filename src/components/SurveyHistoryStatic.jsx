@@ -57,7 +57,7 @@ export default class SurveyHistoryStatic extends React.Component {
                         tag={<h3 className="fn-left">调研档案</h3>}
                     ></TableHeads>
                     <button id="downloadPng">下载图片</button>
-                    <button id="download">下载PDF</button>
+                    {/* <button id="download">下载PDF</button> */}
                     <div className="recordMain">
                         <h2 style={{letterSpacing:"1px",marginTop:"0.8rem"}}>上海泰宇信息技术有限公司</h2>
                         <p style={{textAlign:"center"}}>

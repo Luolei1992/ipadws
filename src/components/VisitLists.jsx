@@ -22,7 +22,7 @@ export default class VisitList extends React.Component {
                 <form className="visitRecordWrap">
                     <TableHeads url={urls.wordMsg} isHide={false} tag={<h3>走访记录</h3>}></TableHeads>
                     <button id="downloadPng">下载图片</button>
-                    <button id="download">下载PDF</button>
+                    {/* <button id="download">下载PDF</button> */}
                     <div className="recordMain">
                         <h2 style={{letterSpacing:"1px",marginTop:"0.8rem"}}>上海泰宇公司回访记录</h2>
                         <p style={{textAlign:"center"}}>

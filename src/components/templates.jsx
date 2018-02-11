@@ -199,72 +199,92 @@ export const Quality = (props) => (
     </ul>
 )
 export const div2png =(dom, name) => {         //html转图片
-    html2canvas(dom, {
-        onrendered: function (canvas) {
-            canvas.id = "mycanvas";
-            document.body.appendChild(canvas);
-            var newCanvas = document.getElementById("mycanvas");
-            var type = "png";
-            var imgData = newCanvas.toDataURL(type);
-            var _fixType = function (type) {
-                type = type.toLowerCase().replace(/jpg/i, 'jpeg');
-                var r = type.match(/png|jpeg|bmp|gif/)[0];
-                return 'image/' + r;
-            };
+    var width = dom.offsetWidth;  // 获取(原生）dom 宽度
+    var height = dom.offsetHeight; // 获取(原生）dom 高
+    var offsetTop = dom.offsetTop;  //元素距离顶部的偏移量
 
-            imgData = imgData.replace(_fixType(type), 'image/octet-stream');
-            var saveFile = function (data, filename) {
-                var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
-                save_link.href = data;
-                save_link.download = filename;
+    var canvas = document.createElement('canvas');  //创建canvas 对象
+    document.body.appendChild(canvas);
+    canvas.id = "mycanvas";
+    var newCanvas = document.getElementById("mycanvas");
+    var type = "png";
+    var context = canvas.getContext('2d');
+    var scaleBy = 3;  //获取像素密度的方法 (也可以采用自定义缩放比例)
+    canvas.width = width * scaleBy;   //这里 由于绘制的dom 为固定宽度，居中，所以没有偏移
+    canvas.height = (height + offsetTop) * scaleBy;  // 注意高度问题，由于顶部有个距离所以要加上顶部的距离，解决图像高度偏移问题
+    context.scale(scaleBy, scaleBy);
 
-                var event = document.createEvent('MouseEvents');
-                event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-                save_link.dispatchEvent(event);
-            };
-            // 下载后的问题名
-            var filename = name + '_' + (new Date()).getTime() + '.' + type;
-            // download
-            saveFile(imgData, filename);
-            //   $("#mycanvas").remove();
-            newCanvas.remove();
-        },
-        useCORS: true
+    var opts = {
+        allowTaint: true,//允许加载跨域的图片
+        tainttest: true, //检测每张图片都已经加载完成
+        scale: scaleBy, // 添加的scale 参数
+        canvas: canvas, //自定义 canvas
+        logging: true, //日志开关，发布的时候记得改成false
+        width: width, //dom 原始宽度
+        height: height //dom 原始高度
+    };
+    html2canvas(dom, opts).then(function (canvas) {
+        var body = document.getElementsByTagName("body");
+        body[0].appendChild(canvas);
+        var imgData = canvas.toDataURL(type);
+        console.log(imgData);
+        var _fixType = function (type) {
+            type = type.toLowerCase().replace(/jpg/i, 'jpeg');
+            var r = type.match(/png|jpeg|bmp|gif/)[0];
+            return 'image/' + r;
+        };
+        imgData = imgData.replace(_fixType(type), 'image/octet-stream');
+        var saveFile = function (data, filename) {
+            var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+            save_link.href = data;
+            save_link.download = filename;
+            var event = document.createEvent('MouseEvents');
+            event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+            save_link.dispatchEvent(event);
+        };
+        // 下载后的问题名
+        var filename = name + '_' + (new Date()).getTime() + '.' + type;
+        // download
+        saveFile(imgData, filename);
+        //   $("#mycanvas").remove();
+        newCanvas.remove();
     });
+
+    
 }
 export const readyDo = () => {
     let downloadPng = document.getElementById("downloadPng");
     let fromHTMLtestdiv = document.getElementById("fromHTMLtestdiv");
     let download = document.getElementById("download");
     downloadPng.onclick = function () {
-        div2png(fromHTMLtestdiv, 'png')
+        div2png(fromHTMLtestdiv, 'png');
     }
-    download.onclick = function () {
-        html2canvas(fromHTMLtestdiv, {
-            onrendered: function (canvas) {
-                var imgData = canvas.toDataURL('image/png');
-                var imgWidth = 210;
-                var pageHeight = 295;
-                var imgHeight = canvas.height * imgWidth / canvas.width;
-                var heightLeft = imgHeight;
+    // download.onclick = function () {
+    //     html2canvas(fromHTMLtestdiv, {
+    //         onrendered: function (canvas) {
+    //             var imgData = canvas.toDataURL('image/png');
+    //             var imgWidth = 210;
+    //             var pageHeight = 295;
+    //             var imgHeight = canvas.height * imgWidth / canvas.width;
+    //             var heightLeft = imgHeight;
 
-                var doc = new jsPDF('p', 'mm');
-                var position = 0;
+    //             var doc = new jsPDF('p', 'mm');
+    //             var position = 0;
 
-                doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                heightLeft -= pageHeight;
+    //             doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+    //             heightLeft -= pageHeight;
 
-                while (heightLeft >= 0) {
-                    position = heightLeft - imgHeight;
-                    doc.addPage();
-                    doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                    heightLeft -= pageHeight;
-                }
-                doc.save('sample-file.pdf');
-            },
-            useCORS: true
-        });
-    };
+    //             while (heightLeft >= 0) {
+    //                 position = heightLeft - imgHeight;
+    //                 doc.addPage();
+    //                 doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+    //                 heightLeft -= pageHeight;
+    //             }
+    //             doc.save('sample-file.pdf');
+    //         },
+    //         useCORS: true
+    //     });
+    // };
 }
 
 
