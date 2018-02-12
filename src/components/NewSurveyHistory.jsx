@@ -54,15 +54,20 @@ export default class NewSurveyHistory extends React.Component {
     cancelLast = function () {
         drawBoard.cancel();
     }
-    save = function () {
+    save = (e) => {
         drawBoard.save('only-draw', function (url) {
             if (!url) {
                 alert("请先签字后再保存");
                 return;
             } else {
                 console.log(url);
+                // let a = document.getElementById("canvasPic");
+                // let b = document.getElementById("canvasWrap");
+                // b.style.display = "block";
+                // a.src = url;
             }
         });
+        // console.log(e.currentTarget.scrollTop);
     }
     showModal = key => (e, id) => {
         e.preventDefault(); // 修复 Android 上点击穿透
@@ -232,7 +237,15 @@ export default class NewSurveyHistory extends React.Component {
                         </h3>}
                     ></TableHeads>
                     <button id="btnGenerate">下载图片</button>
-                    <a id="downloadPng"></a>    <input id="filename" style={{display:"none"}}/>
+                    <a id="downloadPng"></a><input id="filename" style={{ display: "none" }} />
+                    {/* <div id="canvasWrap" style={{ 
+                        backgroundColor: "#f5f5f5",
+                        zIndex:"1000", 
+                        position: "fixed", 
+                        display: "none", 
+                        width: "100%", 
+                        height: "100%" 
+                    }}><img src='' id="canvasPic"/></div> */}
                     {/* <button id="download">下载PDF</button> */}
                     <div className="recordMain">
                         <h2 style={{letterSpacing:"1px",marginTop:"0.8rem"}}>上海泰宇信息技术有限公司</h2>
@@ -560,7 +573,7 @@ export default class NewSurveyHistory extends React.Component {
                                             <div className="dataType">
                                                 <div className="bt-warn fn-right" style={{ position: "relative", zIndex: "1000" }}>
                                                     {/* <button type="button" onClick={this.clearAll}>重签</button> */}
-                                                    <button type="button" onClick={this.save}>重签</button>
+                                                    <button type="button" onClick={(e)=>{this.save(e)}}>重签</button>
                                                 </div>
                                                 <div className="date" >
                                                     <span>日期：</span>

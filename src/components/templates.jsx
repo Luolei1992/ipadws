@@ -349,7 +349,7 @@ export const readyDo = () => {
         var opts = {
             allowTaint: true,//允许加载跨域的图片
             tainttest: true, //检测每张图片都已经加载完成
-            scale: 3, // 添加的scale 参数
+            scale: 2, // 添加的scale 参数
             canvas: canvas, //自定义 canvas
             logging: true, //日志开关，发布的时候记得改成false
             width: width, //dom 原始宽度

@@ -82,6 +82,7 @@ class DrawBoard {
             e.preventDefault();
             this.startWrite(this._getCo(e.clientX, e.clientY));
         }
+
         //移动，在鼠标移动期间不断执行。
         this.canvas.onmousemove = (e) => {
             e.preventDefault();
@@ -89,6 +90,7 @@ class DrawBoard {
                 this.writing(this._getCo(e.clientX, e.clientY));
             }
         };
+
         //收笔
         this.canvas.onmouseup = (e) => {
             e.preventDefault();
@@ -96,6 +98,7 @@ class DrawBoard {
                 this.endWrite();
             }
         };
+
         //出界
         this.canvas.onmouseout = (e) => {
             e.preventDefault();
