@@ -6,12 +6,12 @@ class DrawBoard {
         this.canvas = canvas;
         this.context = canvas.getContext('2d');
         this.isWriting = false;
-
+        // this.context.scale(2,2);
         this.lastX = 0;   //画笔上次停留坐标x轴值
         this.lastY = 0;   //画笔上次停留坐标y轴值
         this.lineWidthMax = 0, //画笔最大粗细
-            this.lineWidthMin = 1, //画笔最小粗细
-            this.lastTime = 0;  //画笔上次时间
+        this.lineWidthMin = 1, //画笔最小粗细
+        this.lastTime = 0;  //画笔上次时间
         this.lastLineWidth = 0;   //画笔最近宽度
 
         this.lastImg = "";  //最近一次签字
@@ -24,7 +24,7 @@ class DrawBoard {
     init() {
         this.context.lineCap = 'round';             //平滑处理
         this.context.lineJoin = 'round';            //平滑处理
-        this.lineWidthMax = 2;   //画笔最粗值
+        this.lineWidthMax = 1.5;   //画笔最粗值
         //设置落笔的最近线条宽度 lastWidth
         this.lastLineWidth = this.lineWidthMax / 2;
     }
@@ -59,6 +59,7 @@ class DrawBoard {
             //用9参数的drawImage方法对图片进行裁减
             var canvas2 = document.createElement('canvas');
             var context2 = canvas2.getContext('2d');
+            context2.scale(2,2);
 
             img.onload = () => {
                 var Coordinate = this._getImgCoordinate();
@@ -81,7 +82,6 @@ class DrawBoard {
             e.preventDefault();
             this.startWrite(this._getCo(e.clientX, e.clientY));
         }
-
         //移动，在鼠标移动期间不断执行。
         this.canvas.onmousemove = (e) => {
             e.preventDefault();
@@ -89,7 +89,6 @@ class DrawBoard {
                 this.writing(this._getCo(e.clientX, e.clientY));
             }
         };
-
         //收笔
         this.canvas.onmouseup = (e) => {
             e.preventDefault();
@@ -97,7 +96,6 @@ class DrawBoard {
                 this.endWrite();
             }
         };
-
         //出界
         this.canvas.onmouseout = (e) => {
             e.preventDefault();

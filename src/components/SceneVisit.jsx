@@ -27,7 +27,6 @@ export default class SceneVisit extends React.Component {
         readyDo();
         canvas = document.getElementById("canvas");
         drawBoard = new DrawBoard(canvas);  // 初始化
-        console.log(drawBoard);
     }
     clearAll = function () {
         drawBoard.clear();
@@ -51,11 +50,13 @@ export default class SceneVisit extends React.Component {
         })
     }
     isCheck1 = (num,idx) => {
-        console.log(idx);
         let arr = [false, false, false];
         if(idx){
             arr[idx] = !arr[idx];
             arr[0] = false;
+            this.setState({
+                allChecked: false
+            });
         }else{
             arr[idx] = !arr[idx];
         };
@@ -88,6 +89,32 @@ export default class SceneVisit extends React.Component {
             default:
                 break;
         }
+
+
+        // if (this.state.checkArr1[0] && this.state.checkArr2[0] && this.state.checkArr3[0] && this.state.checkArr4[0] && this.state.checkArr5[0]) {
+        //     this.setState({
+        //         allChecked: true
+        //     });
+        // };
+    }
+    toggleAgree=()=>{
+        if(!this.state.allChecked){
+            this.setState({
+                checkArr1: [true, false, false],
+                checkArr2: [true, false, false],
+                checkArr3: [true, false, false],
+                checkArr4: [true, false, false],
+                checkArr5: [true, false, false],
+            })
+        }else{
+            this.setState({
+                checkArr1: [false, false, false],
+                checkArr2: [false, false, false],
+                checkArr3: [false, false, false],
+                checkArr4: [false, false, false],
+                checkArr5: [false, false, false],
+            })
+        }
     }
     render() {
         return (
@@ -96,7 +123,8 @@ export default class SceneVisit extends React.Component {
                     url={urls.wordMsg}
                     isHide={true}
                 ></TableHeads>
-                <button id="downloadPng">下载图片</button>
+                <button id="btnGenerate">下载图片</button>
+                <a id="downloadPng"></a>    <input id="filename" style={{ display: "none" }} />
                 <div className="recordMain">
                     <h2>现场回访记录</h2>
                     <div className="tableDetails">
@@ -140,7 +168,7 @@ export default class SceneVisit extends React.Component {
                                     className="darkbg"
                                 >
                                     满意度调查 <span style={{ float: "right", fontWeight: 500, marginRight: "0.3rem" }}>
-                                        <input type="checkbox" id="allAgree" checked={this.state.allChecked} onClick={() => { this.changeCheck() }} />&nbsp;
+                                        <input type="checkbox" id="allAgree" checked={this.state.allChecked} onChange={() => { this.toggleAgree()}} onClick={() => { this.changeCheck() }} />&nbsp;
                                         <label htmlFor="allAgree">全满意</label>
                                     </span>
                                 </td>
@@ -172,14 +200,14 @@ export default class SceneVisit extends React.Component {
                             <tr className="fourToOne">
                                 <td>服务态度</td>
                                 <td><input type="checkbox" checked={this.state.checkArr4[0]} onClick={(e) => { this.isCheck1(4,0) }} /></td>
-                                <td><input type="checkbox" checked={this.state.checkArr4[1]} onClick={(e) => { this.isCheck1(4,0) }} /></td>
-                                <td><input type="checkbox" checked={this.state.checkArr4[2]} onClick={(e) => { this.isCheck1(4,0) }} /></td>
+                                <td><input type="checkbox" checked={this.state.checkArr4[1]} onClick={(e) => { this.isCheck1(4,1) }} /></td>
+                                <td><input type="checkbox" checked={this.state.checkArr4[2]} onClick={(e) => { this.isCheck1(4,2) }} /></td>
                             </tr>
                             <tr className="fourToOne">
                                 <td>是否准时到达</td>
                                 <td><input type="checkbox" checked={this.state.checkArr5[0]} onClick={(e) => { this.isCheck1(5,0) }} /></td>
-                                <td><input type="checkbox" checked={this.state.checkArr5[1]} onClick={(e) => { this.isCheck1(5,0) }} /></td>
-                                <td><input type="checkbox" checked={this.state.checkArr5[2]} onClick={(e) => { this.isCheck1(5,0) }} /></td>
+                                <td><input type="checkbox" checked={this.state.checkArr5[1]} onClick={(e) => { this.isCheck1(5,1) }} /></td>
+                                <td><input type="checkbox" checked={this.state.checkArr5[2]} onClick={(e) => { this.isCheck1(5,2) }} /></td>
                             </tr>
                             <tr>
                                 <td colSpan="4" className="signatureTxt">

@@ -155,7 +155,7 @@ export default class NewSurveyHistory extends React.Component {
             companyAddress: e.currentTarget.value
         });
     }
-    addPersonLink(){
+    addPersonLink(){     //添加联系人
         let tmp = {
             company: this.state.company,
             job: this.state.job,
@@ -185,7 +185,7 @@ export default class NewSurveyHistory extends React.Component {
             })
         };
     }
-    addOrderMsg(){
+    addOrderMsg(){       //下一任行动和计划
         let lis = {
             order:this.state.order,
             things:this.state.things,
@@ -231,7 +231,8 @@ export default class NewSurveyHistory extends React.Component {
                             <Link to='/survey?tab=5' style={{color:"#fff"}}><span>历史调研</span></Link>
                         </h3>}
                     ></TableHeads>
-                    <button id="downloadPng">下载图片</button>
+                    <button id="btnGenerate">下载图片</button>
+                    <a id="downloadPng"></a>    <input id="filename" style={{display:"none"}}/>
                     {/* <button id="download">下载PDF</button> */}
                     <div className="recordMain">
                         <h2 style={{letterSpacing:"1px",marginTop:"0.8rem"}}>上海泰宇信息技术有限公司</h2>
@@ -496,7 +497,7 @@ export default class NewSurveyHistory extends React.Component {
                                 </tr>
                                 <tr>
                                     <td colSpan="4" className="signatureTxt" style={{ height: "auto" }}>
-                                        <div className="suggess" style={{height:"auto",paddingTop:"46px"}}>
+                                        <div className="suggess" style={{height:"auto",paddingTop:"0"}}>
                                             <div className="midDiv">
                                                 <span style={{ lineHeight: "46px" }}>总体印象: </span>
                                                 <ul>
@@ -538,7 +539,7 @@ export default class NewSurveyHistory extends React.Component {
                                                     </li>
                                                 </ul>
                                             </div>
-                                            <div className="midDivTop">
+                                            <div className="midDivTop" style={{marginTop:"10px"}}>
                                                 <span>您的宝贵建议: </span>&nbsp;&nbsp;
                                                 {/* <textarea className="suggessMsg"></textarea> */}
                                                 <textarea 
@@ -553,13 +554,13 @@ export default class NewSurveyHistory extends React.Component {
                                 <tr>
                                     <td colSpan="4" className="signatureTxt" style={{borderTop:"0 none"}}>
                                         <div className="suggess">
-                                            <canvas id="canvas" width="768" height="150"></canvas>
                                             <div className="signature sure" style={{ position: "relative", zIndex: "100" }}>
                                                 <span style={{ backgroundColor: "#fff" }}>项目负责人(签字): </span>
                                             </div>
                                             <div className="dataType">
                                                 <div className="bt-warn fn-right" style={{ position: "relative", zIndex: "1000" }}>
-                                                    <button type="button" onClick={this.clearAll}>重签</button>
+                                                    {/* <button type="button" onClick={this.clearAll}>重签</button> */}
+                                                    <button type="button" onClick={this.save}>重签</button>
                                                 </div>
                                                 <div className="date" >
                                                     <span>日期：</span>
@@ -576,6 +577,7 @@ export default class NewSurveyHistory extends React.Component {
                                                     </ul>
                                                 </div>
                                             </div>
+                                            <canvas id="canvas" width="1536" height="300"></canvas>                                            
                                         </div>
                                     </td>
                                 </tr>

@@ -494,7 +494,7 @@
                     position: relative;
                     #canvas {
                         position: absolute;
-                        bottom: 0;
+                        top: 0;
                         right: 0;
                         z-index: 100;
                     }
@@ -532,11 +532,12 @@
                             }
                         }
                         .midDiv {
-                            position: absolute;
+                            position: relative;
                             left: 50%;
                             top: .08rem;
-                            width: 10.546875rem;
-                            transform: translateX(-50%);
+                            margin-left: -5rem;
+                            width: 10rem;
+                            // transform: translateX(-50%);
                         }
                         .midDivTop {
                             // position: absolute;
@@ -1114,10 +1115,12 @@
         .am-image-picker-list .am-flexbox {
             float: left;
             margin-right: 5px;
-            overflow: auto;
+            // overflow: auto;
         }
         .am-image-picker-item {
             position: relative;
+            top: 0;
+            transform: translateX(0);
             .am-image-picker-item-content {
                 width: 1.5rem;
                 height: 1.5rem;

@@ -50,7 +50,8 @@ export default class Quality extends React.Component {
                             <Link to='/qualityList' style={{ color: "#fff" }}><span>历史验收单</span></Link>
                         </h3>}
                     ></TableHeads>
-                    <button id="downloadPng">下载图片</button>
+                    <button id="btnGenerate">下载图片</button>
+                    <a id="downloadPng"></a>    <input id="filename" style={{ display: "none" }} />
                     {/* <button id="download">下载PDF</button> */}
                     <div className="qualityWrap">
                         <div className="qualityWrapTop">

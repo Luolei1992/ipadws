@@ -198,67 +198,76 @@ export const Quality = (props) => (
         </li>
     </ul>
 )
-export const div2png =(dom, name) => {         //html转图片
-    var width = dom.offsetWidth;  // 获取(原生）dom 宽度
-    var height = dom.offsetHeight; // 获取(原生）dom 高
-    var offsetTop = dom.offsetTop;  //元素距离顶部的偏移量
+// export const div2png =(dom, name) => {         //html转图片
+    // var width = dom.offsetWidth;  // 获取(原生）dom 宽度
+    // var height = dom.offsetHeight; // 获取(原生）dom 高
+    // var offsetTop = dom.offsetTop;  //元素距离顶部的偏移量
 
-    var canvas = document.createElement('canvas');  //创建canvas 对象
-    document.body.appendChild(canvas);
-    canvas.id = "mycanvas";
-    var newCanvas = document.getElementById("mycanvas");
-    var type = "png";
-    var context = canvas.getContext('2d');
-    var scaleBy = 3;  //获取像素密度的方法 (也可以采用自定义缩放比例)
-    canvas.width = width * scaleBy;   //这里 由于绘制的dom 为固定宽度，居中，所以没有偏移
-    canvas.height = (height + offsetTop) * scaleBy;  // 注意高度问题，由于顶部有个距离所以要加上顶部的距离，解决图像高度偏移问题
-    context.scale(scaleBy, scaleBy);
+    // var getPixelRatio = function (context) {
+    //     var backingStore = context.backingStorePixelRatio ||
+    //         context.webkitBackingStorePixelRatio ||
+    //         context.mozBackingStorePixelRatio ||
+    //         context.msBackingStorePixelRatio ||
+    //         context.oBackingStorePixelRatio ||
+    //         context.backingStorePixelRatio || 1;
+    //     return (window.devicePixelRatio || 1) / backingStore;
+    // };
 
-    var opts = {
-        allowTaint: true,//允许加载跨域的图片
-        tainttest: true, //检测每张图片都已经加载完成
-        scale: scaleBy, // 添加的scale 参数
-        canvas: canvas, //自定义 canvas
-        logging: true, //日志开关，发布的时候记得改成false
-        width: width, //dom 原始宽度
-        height: height //dom 原始高度
-    };
-    html2canvas(dom, opts).then(function (canvas) {
-        var body = document.getElementsByTagName("body");
-        body[0].appendChild(canvas);
-        var imgData = canvas.toDataURL(type);
-        console.log(imgData);
-        var _fixType = function (type) {
-            type = type.toLowerCase().replace(/jpg/i, 'jpeg');
-            var r = type.match(/png|jpeg|bmp|gif/)[0];
-            return 'image/' + r;
-        };
-        imgData = imgData.replace(_fixType(type), 'image/octet-stream');
-        var saveFile = function (data, filename) {
-            var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
-            save_link.href = data;
-            save_link.download = filename;
-            var event = document.createEvent('MouseEvents');
-            event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-            save_link.dispatchEvent(event);
-        };
-        // 下载后的问题名
-        var filename = name + '_' + (new Date()).getTime() + '.' + type;
-        // download
-        saveFile(imgData, filename);
-        //   $("#mycanvas").remove();
-        newCanvas.remove();
-    });
+    // var canvas = document.createElement('canvas');  //创建canvas 对象
+    // document.body.appendChild(canvas);
+    // canvas.id = "mycanvas";
+    // var newCanvas = document.getElementById("mycanvas");
+    // var type = "png";
+    // var context = canvas.getContext('2d');
+    // // var ratio = getPixelRatio(context);    
+    // // var scaleBy = 3;  //获取像素密度的方法 (也可以采用自定义缩放比例)
+    // // canvas.width = width * scaleBy;   //这里 由于绘制的dom 为固定宽度，居中，所以没有偏移
+    // // canvas.height = (height + offsetTop) * scaleBy;  // 注意高度问题，由于顶部有个距离所以要加上顶部的距离，解决图像高度偏移问题
+    // // context.scale(scaleBy, scaleBy);
 
-    
-}
-export const readyDo = () => {
-    let downloadPng = document.getElementById("downloadPng");
-    let fromHTMLtestdiv = document.getElementById("fromHTMLtestdiv");
-    let download = document.getElementById("download");
-    downloadPng.onclick = function () {
-        div2png(fromHTMLtestdiv, 'png');
-    }
+    // var opts = {
+    //     allowTaint: true,//允许加载跨域的图片
+    //     tainttest: true, //检测每张图片都已经加载完成
+    //     scale: 3, // 添加的scale 参数
+    //     canvas: canvas, //自定义 canvas
+    //     logging: true, //日志开关，发布的时候记得改成false
+    //     width: width, //dom 原始宽度
+    //     height: height //dom 原始高度
+    // };
+    // html2canvas(dom, opts).then(function (canvas) {
+    //     var body = document.getElementsByTagName("body");
+    //     body[0].appendChild(canvas);
+    //     var imgData = canvas.toDataURL(type);
+    //     console.log(imgData);
+    //     // var _fixType = function (type) {
+    //     //     type = type.toLowerCase().replace(/jpg/i, 'jpeg');
+    //     //     var r = type.match(/png|jpeg|bmp|gif/)[0];
+    //     //     return 'image/' + r;
+    //     // };
+    //     // imgData = imgData.replace(_fixType(type), 'image/octet-stream');
+    //     // var saveFile = function (data, filename) {
+    //     //     var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+    //     //     save_link.href = data;
+    //     //     save_link.download = filename;
+    //     //     var event = document.createEvent('MouseEvents');
+    //     //     event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+    //     //     save_link.dispatchEvent(event);
+    //     // };
+    //     // // 下载后的问题名
+    //     // var filename = name + '_' + (new Date()).getTime() + '.' + type;
+    //     // // download
+    //     // saveFile(imgData, filename);
+    //     //   $("#mycanvas").remove();
+    //     newCanvas.remove();
+    // });
+// }
+// export const readyDo = () => {
+//     let downloadPng = document.getElementById("downloadPng");
+//     let fromHTMLtestdiv = document.getElementById("fromHTMLtestdiv");
+//     let download = document.getElementById("download");
+//     downloadPng.onclick = function () {
+//         div2png(fromHTMLtestdiv, 'png');
+//     }
     // download.onclick = function () {
     //     html2canvas(fromHTMLtestdiv, {
     //         onrendered: function (canvas) {
@@ -285,9 +294,163 @@ export const readyDo = () => {
     //         useCORS: true
     //     });
     // };
-}
+// }
 
+export const readyDo = () => {
+    // var base64text = document.getElementById("base64text");
+    var filename = document.getElementById("filename");
+    // var filename={};
+    var btnGenerate = document.getElementById("btnGenerate");
+    var downloadPng = document.getElementById("downloadPng");
+    let dom = document.getElementById("fromHTMLtestdiv");
+    // let download = document.getElementById("download");
+    var MIME = {
+        "application/x-zip-compressed": "zip",
+        "application/javascript": "js",
+        "text/css": "css",
+        "text/plain": "txt",
+        "text/html": "html",
+        "text/xml": "xml",
+        "image/jpeg": "jpeg",
+        "image/png": "png",
+        "image/gif": "gif",
+        "image/svg+xml": "svg"
+    };
+    //文件名默认当前时间戳  
+    filename.value = Date.now();
+    //检测点击下载按钮  
+    btnGenerate.addEventListener("click", function (e) {
+        var width = dom.offsetWidth;  // 获取(原生）dom 宽度
+        var height = dom.offsetHeight; // 获取(原生）dom 高
+        var offsetTop = dom.offsetTop;  //元素距离顶部的偏移量
 
+        // var getPixelRatio = function (context) {
+        //     var backingStore = context.backingStorePixelRatio ||
+        //         context.webkitBackingStorePixelRatio ||
+        //         context.mozBackingStorePixelRatio ||
+        //         context.msBackingStorePixelRatio ||
+        //         context.oBackingStorePixelRatio ||
+        //         context.backingStorePixelRatio || 1;
+        //     return (window.devicePixelRatio || 1) / backingStore;
+        // };
+
+        var canvas = document.createElement('canvas');  //创建canvas 对象
+        document.body.appendChild(canvas);
+        canvas.id = "mycanvas";
+        var newCanvas = document.getElementById("mycanvas");
+        var type = "png";
+        var context = canvas.getContext('2d');
+        // var ratio = getPixelRatio(context);    
+        // var scaleBy = 3;  //获取像素密度的方法 (也可以采用自定义缩放比例)
+        // canvas.width = width * scaleBy;   //这里 由于绘制的dom 为固定宽度，居中，所以没有偏移
+        // canvas.height = (height + offsetTop) * scaleBy;  // 注意高度问题，由于顶部有个距离所以要加上顶部的距离，解决图像高度偏移问题
+        // context.scale(scaleBy, scaleBy);
+
+        var opts = {
+            allowTaint: true,//允许加载跨域的图片
+            tainttest: true, //检测每张图片都已经加载完成
+            scale: 3, // 添加的scale 参数
+            canvas: canvas, //自定义 canvas
+            logging: true, //日志开关，发布的时候记得改成false
+            width: width, //dom 原始宽度
+            height: height //dom 原始高度
+        };
+        html2canvas(dom, opts).then(function (canvas) {
+            var body = document.getElementsByTagName("body");
+            body[0].appendChild(canvas);
+            var base64text = canvas.toDataURL(type);
+            // console.log(imgData);
+            // var _fixType = function (type) {
+            //     type = type.toLowerCase().replace(/jpg/i, 'jpeg');
+            //     var r = type.match(/png|jpeg|bmp|gif/)[0];
+            //     return 'image/' + r;
+            // };
+            // imgData = imgData.replace(_fixType(type), 'image/octet-stream');
+            // var saveFile = function (data, filename) {
+            //     var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+            //     save_link.href = data;
+            //     save_link.download = filename;
+            //     var event = document.createEvent('MouseEvents');
+            //     event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+            //     save_link.dispatchEvent(event);
+            // };
+            // // 下载后的问题名
+            // var filename = name + '_' + (new Date()).getTime() + '.' + type;
+            // // download
+            // saveFile(imgData, filename);
+            //   $("#mycanvas").remove();
+
+            var fname = filename.value + "." + MIME[getContentType(base64text)];
+            var blob = getBlob(base64text);
+            console.log(blob);
+            if (navigator.msSaveBlob) {
+                navigator.msSaveBlob(blob, fname);
+                newCanvas.remove();                
+            }
+            else {
+                downloadPng.download = fname;
+                downloadPng.href = URL.createObjectURL(blob);
+                downloadPng.click();
+                newCanvas.remove();                
+            }
+        });
+        
+    });
+
+    /** 
+     * 获取Blob 
+     * @param {stirng} base64 
+     */
+    function getBlob(base64) {
+        return b64toBlob(getData(base64), getContentType(base64));
+    }
+
+    /** 
+     * 获取文件类型 
+     * @param {string} base64 
+     */
+    function getContentType(base64) {
+        return /data:([^;]*);/i.exec(base64)[1];
+    }
+
+    /** 
+     * 获取base64中的数据 
+     * @param {string} base64 
+     */
+    function getData(base64) {
+        return base64.substr(base64.indexOf("base64,") + 7, base64.length);
+    }
+
+    /** 
+     * base64转Blob 
+     * @param {string} b64Data 
+     * @param {string} contentType 
+     * @param {number} sliceSize 
+     */
+    function b64toBlob(b64Data, contentType, sliceSize) {
+        contentType = contentType || '';
+        sliceSize = sliceSize || 512;
+
+        var byteCharacters = atob(b64Data);
+        var byteArrays = [];
+
+        for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+            var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+            var byteNumbers = new Array(slice.length);
+            for (var i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+
+            var byteArray = new Uint8Array(byteNumbers);
+
+            byteArrays.push(byteArray);
+        }
+
+        var blob = new Blob(byteArrays, { type: contentType });
+        return blob;
+    }  
+} 
 export const init = (textarea) => {
     var observe;
     if (window.attachEvent) {
