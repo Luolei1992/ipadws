@@ -1,98 +1,158 @@
 import React from "react";
 import { hashHistory } from "react-router";
-import { TableHeads, Customs} from './templates';
+import { TableHeads, Customs } from './templates';
 import { Modal, List } from 'antd-mobile';
 
 const urls = {
     wordMsg: require('../images/wordMsg.png'),
-    custom:require('../images/custom.png')
+    custom: require('../images/custom.png')
 }
-function closest(el, selector) {
-    const matchesSelector = el.matches || el.webkitMatchesSelector || el.mozMatchesSelector || el.msMatchesSelector;
-    while (el) {
-        if (matchesSelector.call(el, selector)) {
-            return el;
-        }
-        el = el.parentElement;
-    }
-    return null;
-}
+// function closest(el, selector) {
+//     const matchesSelector = el.matches || el.webkitMatchesSelector || el.mozMatchesSelector || el.msMatchesSelector;
+//     while (el) {
+//         if (matchesSelector.call(el, selector)) {
+//             return el;
+//         }
+//         el = el.parentElement;
+//     }
+//     return null;
+// }
 
 export default class Custom extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            show:false,
-            show2:false,
-            modal:false,            
-            modal1:false,            
-            order:"全部",
-            check:"全部",
-            company:"",
-            job:"",
-            name:"",
-            phone:"",
-            email:"",
-            remark:"",
-            hasError1:false,
-            hasError2:false,
-            data: [
-                {
-                    company: "上海泰宇信息技术有限公司",
-                    tag: "年度服务",
-                    content: "1.都是空氛围foe扣分点我咖啡我看号入口it日如题个人简介热干面。",
-                    remark: "备注带我去二无群二多撒付热无若翁群若群",
-                    resean: "条件丰富的的沙发丰富的的沙发丰富的的沙发丰富的的沙发",
-                    rules: "验收标准萨达萨达撒的违法人的双方都是",
-                    path: urls.custom,
-                    duty: "55",
-                    visit: "88",
-                    summary: "8",
-                    validate:"0",
-                    relate: ["张三", "李四", "王五"],
-                    id:"1"
-                },
-                {
-                    company: "北京齐天大圣科技有限公司",
-                    tag: "智能设备",
-                    content: "没有什么是理所应当",
-                    remark: "这是一场无情的战争，只需成功，不许失败！",
-                    resean: "没范德萨范德萨KJM大数据量第三款的撒娇考虑分散",
-                    rules: "个付过的风格萨达上的人复古风",
-                    path: "",
-                    duty: "5",
-                    visit: "65",
-                    summary: "14",
-                    validate: "0",
-                    relate: ["张三", "李四", "王五", "赵六"],
-                    id:"2"
-                }
-            ],
+            show: false,
+            show2: false,
+            modal: false,
+            modal1: false,
+            order: "全部",
+            check: "全部",
+            company: "",
+            job: "",
+            name: "",
+            phone: "",
+            email: "",
+            remark: "",
+            hasError1: false,
+            hasError2: false,
+            data: [],
             happenTime: "",
             content: "",
             finishTime: "",
             give: ""
+        },
+        this.handleProjectGet = (res) => {
+            console.log(res);
+            res = {
+                "success": true,
+                "data": {
+                    "item_list": [
+                        {
+                            "id": "1",
+                            "gd_company_id": "120",
+                            "remark": "备注内容太短",
+                            "condition": "条件太多",
+                            "document_id": "V.S.C-H20180208123926000",
+                            "add_time": "2018-02-08 19:39:26",
+                            "start_time": "2018-02-08 19:40:50",
+                            "end_time": "2018-02-28 19:40:52",
+                            "type": "2",
+                            "appendix": "",
+                            "score": null,
+                            "master_id": "67554",
+                            "name": "测试项目",
+                            "contract_no": "HT123",
+                            "file_path": "",
+                            "other_name": "测试项目123",
+                            "file_path_title": "",
+                            "master_name": "张5",       //负责人
+                            "company_name": "广东东源新地物流有限公司",
+                            "path": "https://huakewang.b0.upaiyun.com/2015/02/15/20150215125816452397.jpg",
+                            "user_list": [   //相关人员
+                                {
+                                    "id": "2",
+                                    "is_in_survey": 1,
+                                    "user_id": "67547",
+                                    "username": "13957192040",
+                                    "nick_name": "hkw5719204",
+                                    "real_name": null,
+                                    "email": "oob400@126.com",
+                                    "job_name": "设计师"
+                                },
+                                {
+                                    "id": "25",
+                                    "is_in_survey": 1,
+                                    "user_id": "67599",
+                                    "username": "13954584550",
+                                    "nick_name": "hkw5796204",
+                                    "real_name": null,
+                                    "email": "oob950@163.com",
+                                    "job_name": "前端开发"
+                                }
+                            ],
+                            "visit_back_count": "0",
+                            "meeting_count": "0",
+                            "record_count": "0",
+                            "check_count": "0",
+                            "mission_count": "0"
+                        }
+                    ],
+                    "total_count": "1"
+                }
+            }
+            if(res.success) {
+                this.setState({
+                    data:res.data.item_list
+                })
+            }else{
+
+            }
+        },
+        this.handleUserGet=(res)=>{
+            console.log(res)
         }
     }
-    componentDidMount(){
-        
+    componentDidMount() {
+        runPromise('get_project_list', {
+            "type": "0",
+            "offset": 0,
+            "limit": 10,
+            "sort": "add_time",
+            "choose": 0
+        }, this.handleProjectGet, false, "post");
     }
-    changeOrder(e){
+    getCustomList=(id)=>{
+        runPromise('get_project_linker_list',{
+            gd_project_id:id
+        }, this.handleUserGet, false, "post")
+    }
+    changeOrder(e,type) {
         this.setState({
             order: e.currentTarget.innerHTML,
-            show:!this.state.show
-        })
+            show: !this.state.show
+        });
+        runPromise('get_project_list', {
+            "type": "0",
+            "offset": 0,
+            "limit": 10,
+            "sort": type,
+            "choose": 0
+        }, this.handleProjectGet, false, "post");
     }
-    changeCheck(e){  
+    setBaseStateFun = (id) => {
+        this.props.setBaseId(id);
+    }
+    changeCheck(e) {
         this.setState({
-            check:e.currentTarget.innerHTML,
+            check: e.currentTarget.innerHTML,
             show2: !this.state.show2
         })
     }
-    delPerson(e){      //删除联系人
+    delPerson(e) {      //删除联系人
         e.currentTarget.parentNode.style.display = "none";
     }
-    showModal = key => (e,id) => {
+    showModal = key => (e, id) => {
         e.preventDefault(); // 修复 Android 上点击穿透
         this.setState({
             [key]: true,
@@ -104,14 +164,14 @@ export default class Custom extends React.Component {
             [key]: false,
         });
     }
-    onChangePhone(e){
+    onChangePhone(e) {
         let val = e.currentTarget.value;
         this.setState({
             hasError1: validate.CheckPhone(val).hasError,
             phone: val
         });
     }
-    onChangeEmail(e){
+    onChangeEmail(e) {
         let val = e.currentTarget.value;
         this.setState({
             hasError2: validate.CheckEmail(val).hasError,
@@ -123,17 +183,17 @@ export default class Custom extends React.Component {
             company: e.currentTarget.value
         });
     }
-    onChangeJob(e){
+    onChangeJob(e) {
         this.setState({
             job: e.currentTarget.value
         });
     }
-    onChangeName(e){
+    onChangeName(e) {
         this.setState({
             name: e.currentTarget.value
         });
     }
-    onChangeRemark(e){
+    onChangeRemark(e) {
         this.setState({
             remark: e.currentTarget.value
         });
@@ -158,49 +218,51 @@ export default class Custom extends React.Component {
             give: e.currentTarget.value
         })
     }
-    render(){
+    render() {
         return (
             <div className="customsLists visitRecordWrap">
                 <TableHeads url={urls.wordMsg} isHide={true}></TableHeads>
                 <div className="customsHead ">
-                    <h3 className="center" onClick={this.showModal('modal')}>
+                    <h3 className="center">
                         我的客户
                     </h3>
                     <div className="right pub">
                         <div className="selectWrap">
                             <span>排序：</span>
-                            <div style={{display:"inline-block"}}>
+                            <div style={{ display: "inline-block" }}>
                                 <span onClick={() => {
                                     this.setState({
                                         show: !this.state.show
                                     })
-                                    this.state.show2 ? this.setState({ show2: false }) : "";                                    
+                                    this.state.show2 ? this.setState({ show2: false }) : "";
                                 }}>{this.state.order} <i className="iconfont icon-tubiao-"></i></span>
-                                <ul style={{ display: this.state.show?"block":"none"}}>
-                                    <li onClick={(e) => { this.changeOrder(e)}}>全部</li>
-                                    <li onClick={(e) => { this.changeOrder(e)}}>最新</li>
-                                    <li onClick={(e) => { this.changeOrder(e)}}>即将过期</li>
+                                <ul style={{ display: this.state.show ? "block" : "none" }}>
+                                    <li onClick={(e) => { this.changeOrder(e,"") }}>全部</li>
+                                    <li onClick={(e) => { this.changeOrder(e,"start_time") }}>最新合作</li>
+                                    <li onClick={(e) => { this.changeOrder(e,"end_time") }}>即将过期</li>
+                                    <li onClick={(e) => { this.changeOrder(e,"score") }}>评价高低</li>
                                 </ul>
                             </div>
-                            <span style={{ marginLeft: "0.5rem" }}>筛选：</span>
-                            <div style={{display:"inline-block"}}>
-                                <span onClick={()=>{
+                            {/* <span style={{ marginLeft: "0.5rem" }}>筛选：</span>
+                            <div style={{ display: "inline-block" }}>
+                                <span onClick={() => {
                                     this.setState({
                                         show2: !this.state.show2
                                     })
                                     this.state.show ? this.setState({ show: false }) : "";
                                 }}>{this.state.check} <i className="iconfont icon-tubiao-"></i></span>
                                 <ul style={{ display: this.state.show2 ? "block" : "none" }}>
-                                    <li onClick={(e) => {this.changeCheck(e)}}>全部</li>
-                                    <li onClick={(e) => {this.changeCheck(e)}}>合作中</li>
-                                    <li onClick={(e) => {this.changeCheck(e)}}>已过期</li>
+                                    <li onClick={(e) => { this.changeOrder(e,"") }}>全部</li>
+                                    <li onClick={(e) => { this.changeOrder(e,"start_time") }}>最新合作</li>
+                                    <li onClick={(e) => { this.changeOrder(e,"end_time") }}>即将过期</li>
+                                    <li onClick={(e) => { this.changeOrder(e,"score") }}>评价高低</li>
                                 </ul>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
                 <Modal
-                    visible={ this.state.modal }
+                    visible={this.state.modal}
                     transparent
                     maskClosable={true}
                     onClose={this.onClose('modal')}
@@ -209,7 +271,7 @@ export default class Custom extends React.Component {
                         { text: '取消', onPress: () => { console.log('cancle'); this.onClose('modal')(); } },
                         { text: '确定', onPress: () => { console.log('ok'); this.onClose('modal')(); } }
                     ]}
-                    // wrapProps={{ onTouchStart: this.onWrapTouchStart }}
+                // wrapProps={{ onTouchStart: this.onWrapTouchStart }}
                 >
                     <div className="personalLink">
                         <div className="personalLinkList">
@@ -244,7 +306,7 @@ export default class Custom extends React.Component {
                                         type="text"
                                         value={this.state.phone}
                                         onChange={(e) => { this.onChangePhone(e) }}
-                                        className={this.state.hasError1 ?"txtRed":""}
+                                        className={this.state.hasError1 ? "txtRed" : ""}
                                     />
                                 </li>
                                 <li>
@@ -253,7 +315,7 @@ export default class Custom extends React.Component {
                                         type="text"
                                         value={this.state.email}
                                         onChange={(e) => { this.onChangeEmail(e) }}
-                                        className={this.state.hasError2 ? "txtRed" : ""}                                        
+                                        className={this.state.hasError2 ? "txtRed" : ""}
                                     />
                                 </li>
                                 <li>
@@ -269,11 +331,13 @@ export default class Custom extends React.Component {
                     </div>
                 </Modal>
                 <div className="mainCustomList">
-                    <Customs 
-                        dataList={this.state.data} 
+                    <Customs
+                        dataList={this.state.data}
                         del={this.delPerson}
                         showModal={this.showModal('modal')}
                         addJobs={this.showModal('modal1')}
+                        getCustomList={this.getCustomList}
+                        setBaseStateFun={this.setBaseStateFun}
                     ></Customs>
                 </div>
                 <Modal
@@ -297,7 +361,7 @@ export default class Custom extends React.Component {
                                         type="text"
                                         value={this.state.name}
                                         onChange={(e) => { this.onChangeHappenTime(e) }}
-                                        style={{paddingLeft:"5px"}}
+                                        style={{ paddingLeft: "5px" }}
                                     />
                                 </li>
                                 <li>
@@ -307,7 +371,7 @@ export default class Custom extends React.Component {
                                         type="text"
                                         value={this.state.job}
                                         onChange={(e) => { this.onChangeContent(e) }}
-                                        style={{paddingLeft:"5px"}}
+                                        style={{ paddingLeft: "5px" }}
                                     />
                                 </li>
                                 <li>
@@ -316,7 +380,7 @@ export default class Custom extends React.Component {
                                         type="text"
                                         value={this.state.phone}
                                         onChange={(e) => { this.onChangeFinishTime(e) }}
-                                        style={{paddingLeft:"5px"}}
+                                        style={{ paddingLeft: "5px" }}
                                     />
                                 </li>
                                 <li>
@@ -325,7 +389,7 @@ export default class Custom extends React.Component {
                                         type="text"
                                         value={this.state.email}
                                         onChange={(e) => { this.onChangeGive(e) }}
-                                        style={{paddingLeft:"5px"}}
+                                        style={{ paddingLeft: "5px" }}
                                     />
                                 </li>
                             </ul>

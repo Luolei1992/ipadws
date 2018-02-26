@@ -1,7 +1,8 @@
 import React from "react";
+import axios from "axios";
 import { List, InputItem, Toast, Button, Modal } from 'antd-mobile';
 import { Link, hashHistory } from 'react-router';
-
+import { GetLocationParam } from './templates'
 const urls = {
     wordLogo:require('../images/wordLogo.png'),
     left:require('../images/left.png'),
@@ -20,13 +21,37 @@ export default class Login extends React.Component {
             modal: false,
             animating: false,
             value: '15657185156',
-            keywords: 'luolei1992',
+            keywords: 'luolei251537',
             code: "",
             codeNum: 2
+        },
+        this.handleSend=(res)=>{
+            console.log(res);
+            if(res.success) {
+                validate.setCookie('user_id', res.data.id);
+                let to = GetLocationParam('to');
+                let tab = GetLocationParam('tab');
+                hashHistory.push({
+                    pathname: '/'+to,
+                    query: { tab:tab }
+                });
+            }else{
+                Toast.info(res.message, 2, null, false);
+            }
         }
     }
     componentDidMount(){
-        
+        if (validate.getCookie('user_id')) {
+            hashHistory.push({
+                pathname: '/',
+            });
+        };
+    }
+    onLogin = () => {
+        runPromise("login", {
+            username: this.state.value,
+            password: this.state.keywords,
+        }, this.handleSend, false, "post");
     }
     onChange = (value) => {  //用户名输入
         this.setState({
@@ -86,6 +111,7 @@ export default class Login extends React.Component {
                     <Button
                         className="btn"
                         type="primary"
+                        onClick={this.onLogin}
                     >登 陆</Button>
                 </div>
                 {/* <i className="iconfont icon-leftarrow" onClick={() => { hashHistory.goBack();}}></i> */}

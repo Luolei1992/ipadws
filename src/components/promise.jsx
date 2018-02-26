@@ -5,7 +5,7 @@ import axios from 'axios';
 import qs from 'qs';
 
 let Ajax = axios.create({
-    baseURL: 'https://www.huakewang.com/',
+    baseURL: 'https://www.huakewang.com/',      
     timeout: 2000,
     withCredentials: true,
     crossDomain: true,
@@ -13,24 +13,11 @@ let Ajax = axios.create({
 });
 
 const ajaxURLList = {
-    get_user_list_ex: "hkw_newapi/get_user_list_ex", //获取设计师列表 
-    search: "hkw_newapi/search", //获取搜索设计师列表
-    get_works_list: "hkw_newapi/get_works_list/NULL/add_time/16/1/f", //临时测试
-    get_blance: "payapi/get_blance", //支付-获取现金余额
-    get_designer_tree:"hkw_newapi/get_designer_tree",
+    login:"hkapi/login",         //登陆
+    get_project_list: "gdApi/get_project_list",      //获取项目列表
+    get_project_info:"gdApi/get_project_info",         //获取项目详细信息
     book_service_simple: "quoteApi/book_service_simple", //创建订单-给设计师下单
-    get_main_project_list:"quoteApi/get_main_project_list", //获取服务订单和约见订单
-    login:"hkw_newapi/login",   //登陆
-    reg:"hkw_newapi/reg",    //注册
-    get_pass:"hkw_newapi/get_pass",    //修改密码
-    check:"verifycode/check",  //图形验证码验证
-    get_reg_sms_code:"hkw_newapi/get_reg_sms_code",  //获取短信验证码
-    get_reg_status:"hkw_newapi/get_reg_status",     //判断是否注册过
-    get_self_info:"hkw_newapi/get_self_info",       //获取个人信息
-    get_user_info:"hkw_newapi/get_user_info",       //获取个人信息需登陆
-    get_frozen_cash:"payapi/get_frozen_cash",       //获取冻结资金
-    get_real_name_auth:"hkw_newapi/get_real_name_auth",       //获取实名认证状态
-    get_financial_list:"payapi/get_financial_list",       //获取交易记录
+    get_project_linker_list: "gdApi/get_project_linker_list", //获取项目相关联系人
 }
 
 //定义一个基于Promise的异步任务执行器
@@ -43,7 +30,6 @@ function run(taskDef) {
 
     //递归函数遍历
     (function step() {
-
         //如果有更多任务要做
         if (!result.done) {
             //用一个Promise来解决会简化问题
@@ -58,7 +44,6 @@ function run(taskDef) {
         }
     }())
 }
-
 
 /**
  * 执行异步任务执行器的函数
@@ -76,7 +61,7 @@ export default function runPromise(ajaxName, param, handle, mustLogin = false, m
         //如果没登录，跳转到登录页
         hashHistory.push({
             pathname: '/login',
-            query: { form: 'promise' }
+            query: { form: 'promise' },
         });
         return;
     }

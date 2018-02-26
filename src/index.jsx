@@ -21,6 +21,7 @@ import NewSurveyHistory from './components/NewSurveyHistory';
 import MeetingList from './components/MeetingList';
 import QualityList from './components/QualityList';
 import SurveyHistoryStatic from './components/SurveyHistoryStatic';
+import BaseState from './components/BaseState';
 import Test from './components/test';
 
 import 'lib-flexible/flexible';
@@ -29,28 +30,31 @@ import './css/font/iconfont.css';
 
 ReactDOM.render(
     <Router history={hashHistory}>
-        <Route path="/" component={App}>
+        <Router path="/" component={BaseState}>
             <IndexRoute component={GuidePage} />
-            <Route path="/guide" component={GuidePage} />
-        </Route>
-        <Route path="/mycustom" component={Mycustom}>
-            <IndexRoute component={Company} />
-            <Route path="/company" component={Company} />  
-            <Route path="/visitRecord" component={VisitRecord} />
-            <Route path="/visitLists" component={VisitLists} />          
-            <Route path="/meetingList" component={MeetingList} />            
-            <Route path="/surveyHistoryStatic" component={SurveyHistoryStatic} />
-        </Route>
-        <Route path="/meeting" component={Meeting} />
-        <Route path="/survey" component={Survey} />            
-        <Route path="/customs" component={Customs} />
-        <Route path="/login" component={Login} />
-        <Route path="/visit" component={Visit} />
-        <Route path="/scene" component={SceneVisit} />
-        <Route path="/quality" component={Quality} />
-        <Route path="/surveyHistory" component={SurveyHistory} />
-        <Route path="/newSurveyHistory" component={NewSurveyHistory} />
-        <Route path="/qualityList" component={QualityList} />
-        <Route path="/Test" component={Test} />
+            <Route path="/" component={App}>
+                <IndexRoute component={GuidePage} />
+                <Route path="/guide" component={GuidePage} />
+            </Route>
+            <Route path="/mycustom" component={Mycustom}>
+                <IndexRoute component={Company} />
+                <Route path="/company" component={Company} />  
+                <Route path="/visitRecord" component={VisitRecord} />
+                <Route path="/visitLists" component={VisitLists} />          
+                <Route path="/meetingList" component={MeetingList} />            
+                <Route path="/surveyHistoryStatic" component={SurveyHistoryStatic} />
+            </Route>
+            <Route path="/meeting" component={Meeting} />
+            <Route path="/survey" component={Survey} />            
+            <Route path="/customs" component={Customs} />
+            <Route path="/login" component={Login} />
+            <Route path="/visit" component={Visit} />
+            <Route path="/scene" component={SceneVisit} />
+            <Route path="/quality" component={Quality} />
+            <Route path="/surveyHistory" component={SurveyHistory} />
+            <Route path="/newSurveyHistory" component={NewSurveyHistory} />
+            <Route path="/qualityList" component={QualityList} />
+            <Route path="/Test" component={Test} />
+        </Router>
     </Router>
 , document.getElementById('mainWrap'));

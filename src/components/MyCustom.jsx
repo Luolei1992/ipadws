@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { Modal } from 'antd-mobile';
+import { GetLocationParam } from './templates'
 
 export default class MyCustom extends React.Component {
     constructor(props) {
@@ -18,7 +19,7 @@ export default class MyCustom extends React.Component {
     }
     componentDidMount() {
         let newflag = [false, false, false, false, false, false];
-        let number = window.location.href.split('=')[1];
+        let number = GetLocationParam('tab');
         newflag[number] = true;
         this.setState({
             flag: newflag
@@ -79,7 +80,8 @@ export default class MyCustom extends React.Component {
         const { mode } = this.state;
         return (
             <div className="myCustomWrap">
-                {this.props.children && React.cloneElement(this.props.children, { state: this.state, props: this.props, setState: this.setState.bind(this) })}
+                {this.props.children && React.cloneElement(
+                    this.props.children, { state: this.state, props: this.props, setState: this.setState.bind(this) })}
                 <div className="tableBottom">
                     <ul className="tableBottomMainList">
                         <li

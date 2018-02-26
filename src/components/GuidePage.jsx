@@ -1,5 +1,5 @@
 import React from "react";
-import {Link} from "react-router"
+import {Link,hashHistory} from "react-router"
 
 const urls = {
     logo: require('../images/logo.png'),
@@ -17,30 +17,41 @@ export default class Guide extends React.Component {
             
         }
     }
+    beforeLogin=(page,tab)=>{
+        validate.getCookie('user_id')? 
+            hashHistory.push({
+                pathname: '/'+page,
+                query: { tab:tab }
+            })   
+            :hashHistory.push({
+                pathname: '/login',
+                query: { to: page,tab:tab }
+            })
+    }
     render() {
         return (
             <div className="guideWrap" style={{ background:"url("+urls.guideBg+") no-repeat center center / 100% 100%"}}>
                 <div className="head">
                     <img src={urls.logo} />
                 </div>
-                <Link to='/customs'><img className="midCenter" src={urls.play} /></Link>
+                <a><img className="midCenter" src={urls.play} onClick={()=>{this.beforeLogin('customs','0')}}/></a>
                 <div className="main">
                     <h2><span>同心</span>共进&nbsp;&nbsp;<span>感恩</span>汇聚</h2>
                     <ul className="guideList">
                         <li>
-                            <Link to='/newSurveyHistory?tab=5'>
+                            <a onClick={()=>{this.beforeLogin('newSurveyHistory','5')}}>
                                 <img src={urls.guide1} />调 研
-                            </Link>
+                            </a>
                         </li>
                         <li>
-                            <Link to='/customs?tab=0'>
+                            <a onClick={()=>{this.beforeLogin('customs','0')}}>
                                 <img src={urls.guide2} />回 访
-                            </Link>
+                            </a>
                         </li>
                         <li>
-                            <Link to='/visit'>
+                            <a onClick={()=>{this.beforeLogin('visit','0')}}>
                                 <img src={urls.guide3} />质 检
-                            </Link>
+                            </a>
                         </li>
                     </ul>
                 </div>
