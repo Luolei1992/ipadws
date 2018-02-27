@@ -148,7 +148,7 @@ export default class Visit extends React.Component {
                             this.state.list.map((value, index) => (
                                 this.state.showIndex == index && this.state.open ? 
                                     <Quality isShow={true} index={index} show={this.show} changeAlert={this.changeAlert}></Quality> 
-                                    : 
+                                    :
                                     <Quality isShow={false} index={index} show={this.show} changeAlert={this.changeAlert}></Quality>
                             ))
                         }

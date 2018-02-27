@@ -6,7 +6,7 @@ import qs from 'qs';
 
 let Ajax = axios.create({
     baseURL: 'https://www.huakewang.com/',      
-    timeout: 2000,
+    timeout: 4000,
     withCredentials: true,
     crossDomain: true,
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
@@ -18,6 +18,13 @@ const ajaxURLList = {
     get_project_info:"gdApi/get_project_info",         //获取项目详细信息
     book_service_simple: "quoteApi/book_service_simple", //创建订单-给设计师下单
     get_project_linker_list: "gdApi/get_project_linker_list", //获取项目相关联系人
+    get_mission_list: "gdApi/get_mission_list", //获取任务交割记录
+    add_mission: "gdApi/add_mission", //添加任务交割记录
+    get_visit_back_list: "gdApi/get_visit_back_list", //获取回访列表
+    add_visit_back: "gdApi/add_visit_back", //添加现场回访
+    get_record_list: "gdApi/get_record_list", //现场记录列表
+    get_record_info: "gdApi/get_record_info", //现场记录详细
+    get_plan_list: "gdApi/get_plan_list", //获取计划列表
 }
 
 //定义一个基于Promise的异步任务执行器

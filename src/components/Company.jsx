@@ -6,6 +6,9 @@ import { Modal } from 'antd-mobile';
 
 const urls = {
     wordMsg: require('../images/wordMsg.png'),
+    addPic1: require('../images/addPic.png'),
+    addPic2: require('../images/addPic.png'),
+    addPic3: require('../images/addPic.png'),
 }
 let canvas;
 let drawBoard;
@@ -20,7 +23,8 @@ export default class Company extends React.Component {
                 company_info:{
                     start_time:""
                 },
-                plan_list:[]
+                plan_list:[],
+                appendixs:[]
             }
         },
             this.handleProjectGet = (res) => {
@@ -38,7 +42,7 @@ export default class Company extends React.Component {
                         "end_time": "2018-02-28 19:40:52", //项目结束时间
                         "type": "2", //项目类型，1：包年项目，2：一次性项目，3：调研
                         "appendix": "",
-                        "score": null, //客户意见，0很不满意，1不满意，2满意，3很满意
+                        "score": "1", //客户意见，0很不满意，1不满意，2满意，3很满意
                         "master_id": "67554", //项目负责人id
                         "name": "测试项目", //合同名称
                         "contract_no": "HT123", //合同编号
@@ -64,10 +68,12 @@ export default class Company extends React.Component {
                                 "nick_name": "hkw5719204",
                                 "real_name": null,
                                 "email": "oob400@126.com",
-                                "job_name": ""
+                                "job_name": "前端开发"
                             }
                         ],
-                        "appendixs": [], //附件图片列表
+                        "appendixs": [
+                            urls.addPic1, urls.addPic2, urls.addPic3
+                        ], //附件图片列表
                         "company_info": {
                             //公司信息
                             "company_name": "广东东源新地物流有限公司", //公司名称
@@ -78,7 +84,7 @@ export default class Company extends React.Component {
                         "plan_list": [//下一步的行动和计划列表
                             {
                                 "id": "4",
-                                "seq": "1", //序号
+                                "seq": "2", //序号
                                 "content": "这是第二步计划", //内容（事项）
                                 "user_id": "27", //责任人id
                                 "exp_time": "2018-03-11 00:00:00", //计划完成实际
@@ -209,10 +215,33 @@ export default class Company extends React.Component {
                                 <tr>
                                     <td colSpan="4" className="darkbg">合同内容</td>
                                 </tr>
-                                <tr >
+                                <tr>
                                     <td colSpan="4">
-                                        <textarea className="allBox" value={ tempDate.content } readOnly>{tempDate.content}</textarea>
-                                        文件上传
+                                        {/* <div style={{float:"left",width:"100%"}}>
+                                            <textarea className="allBox" value={ tempDate.content } readOnly>{tempDate.content}</textarea>
+                                        </div> */}
+                                        <table style={{ border: "0 none", marginBottom: ".3rem"}}>
+                                            <tr>
+                                                <td colSpan="4" style={{ border: "0 none",padding:"10px",lineHeight:"10px"}}>
+                                                    <pre dangerouslySetInnerHTML={{ __html: tempDate.content }}>
+                                                        {/* {tempDate.content} */}
+                                                    </pre>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <div style={{float:"left",width:"100%"}}>
+                                            <ul>
+                                                {
+                                                    tempDate.appendixs.map( (value)=> (
+                                                        <li style={{ width: "3.5rem", height: "2.8rem", paddingLeft: ".5rem" }}>
+                                                            <img src={value} style={{ width: "100%" }} />
+                                                        </li>
+                                                    ))
+                                                }
+                                                
+                                            </ul>
+                                        </div>
+                                        
                                     </td>
                                 </tr>
                                 <tr>
@@ -227,42 +256,47 @@ export default class Company extends React.Component {
                                                 <td style={{ borderTop: "0 none" }}>责任人</td>
                                                 <td style={{ borderTop: "0 none", borderRight: "0 none" }}>完成时间</td>
                                             </tr>
-                                            <tr>
-                                                <td style={{ borderLeft: "0 none" }}></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
+                                            {
+                                                tempDate.plan_list.map((value) => (
+                                                    <tr>
+                                                        <td style={{ borderLeft: "0 none" }}>{value.seq}</td>
+                                                        <td>{value.content}</td>
+                                                        <td>{value.real_name}</td>
+                                                        <td>{value.exp_time.split(" ")[0]}</td>
+                                                    </tr>
+                                                ))
+                                            }
+                                            
                                         </table>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colSpan="4" className="signatureTxt">
                                         <div className="suggess">
-                                            <div className="midDiv">
+                                            <div className="midDiv" style={{top:"-0.2rem"}}>
                                                 <span style={{ lineHeight: "46px" }}>总体印象: </span>
                                                 <ul>
                                                     <li>
-                                                        <input type="checkbox" id="gloab" />
+                                                        <input type="checkbox" id="gloab" checked={tempDate.score == 3?true:false}/>
                                                         <label htmlFor="gloab"> 很满意</label>
                                                     </li>
                                                     <li>
-                                                        <input type="checkbox" id="just" />
-                                                        <label htmlFor="just"> 一般</label>
+                                                        <input type="checkbox" id="just"  checked={tempDate.score == 2?true:false}/>
+                                                        <label htmlFor="just"> 满意</label>
                                                     </li>
                                                     <li>
-                                                        <input type="checkbox" id="dont" />
+                                                        <input type="checkbox" id="dont"  checked={tempDate.score == 1?true:false}/>
                                                         <label htmlFor="dont"> 不满意</label>
                                                     </li>
                                                     <li>
-                                                        <input type="checkbox" id="bad" />
+                                                        <input type="checkbox" id="bad"  checked={tempDate.score == 0?true:false}/>
                                                         <label htmlFor="bad"> 很不满意</label>
                                                     </li>
                                                 </ul>
                                             </div>
                                             <div className="midDivTop">
                                                 <span>您的宝贵建议: </span>&nbsp;&nbsp;
-                                            <textarea className="suggessMsg"></textarea>
+                                                <textarea className="suggessMsg" readOnly></textarea>
                                             </div>
                                         </div>
                                     </td>

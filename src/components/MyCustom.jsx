@@ -15,15 +15,27 @@ export default class MyCustom extends React.Component {
             finishTime:"",
             give:"",
             jobList:[]
+        },
+        this.handleAddMission=(res)=>{
+            console.log(res);
         }
     }
     componentDidMount() {
         let newflag = [false, false, false, false, false, false];
-        let number = GetLocationParam('tab');
+        let number = window.location.href.split("tab=")[1].slice(0, 1);
         newflag[number] = true;
         this.setState({
             flag: newflag
         })
+    }
+    addMission = () => {
+        runPromise('add_mission', {
+            "gd_project_id": GetLocationParam('id') || this.props.state.baseFlagId,
+            "add_time": this.state.happenTime,
+            "finish_time": this.state.finishTime,
+            "content": this.state.content,
+            "rtn_info": this.state.give,
+        }, this.handleAddMission, false, "post");
     }
     showModal = key => (e, id) => {
         e.preventDefault(); // 修复 Android 上点击穿透
@@ -54,7 +66,6 @@ export default class MyCustom extends React.Component {
         this.setState({
             [key]: true,
         });
-        console.log(id);    //得到对应id的元素
     }
     onChangeHappenTime =(e)=>{
         this.setState({
@@ -133,23 +144,24 @@ export default class MyCustom extends React.Component {
                         className="personalLinkWrap myCustomModal"
                         footer={[
                             { text: '取消', onPress: () => { console.log('cancle'); this.onClose('modal')(); } },
-                            { text: '确定', onPress: () => { console.log('ok'); this.onClose('modal')(); } }
+                            { text: '确定', onPress: () => { this.onClose('modal')(); this.addMission() } }
                         ]}
                     >
                         <div className="personalLink">
                             <div className="personalLinkList">
                                 <ul>
                                     <li>
-                                        <span style={{ textAlignLast:"justify",width:"25%"}}>发生时间</span>
+                                        <span style={{ textAlignLast:"justify",width:"25%",color:"#333"}}>发生时间:</span>
                                         <input
                                             type="text"
                                             value={this.state.name}
                                             onChange={(e) => { this.onChangeHappenTime(e) }}
                                             style={{paddingLeft:"5px"}}
+                                            placeholder="0000-00-00"
                                         />
                                     </li>
                                     <li>
-                                        <span style={{ textAlignLast:"justify",width:"25%"}}>内容</span>
+                                        <span style={{ textAlignLast:"justify",width:"25%",color:"#333"}}>内容:</span>
                                         {/* <span>内容：</span> */}
                                         <input
                                             type="text"
@@ -159,16 +171,17 @@ export default class MyCustom extends React.Component {
                                         />
                                     </li>
                                     <li>
-                                        <span style={{ textAlignLast:"justify",width:"25%"}}>完成时间</span>
+                                        <span style={{ textAlignLast:"justify",width:"25%",color:"#333"}}>完成时间:</span>
                                         <input
                                             type="text"
                                             value={this.state.phone}
                                             onChange={(e) => { this.onChangeFinishTime(e) }}
-                                            style={{paddingLeft:"5px"}}
+                                            style={{ paddingLeft: "5px" }}
+                                            placeholder="0000-00-00"
                                         />
                                     </li>
                                     <li>
-                                        <span style={{ textAlignLast:"justify",width:"25%"}}>交割情况</span>
+                                        <span style={{ textAlignLast:"justify",width:"25%",color:"#333"}}>交割情况:</span>
                                         <input
                                             type="text"
                                             value={this.state.email}

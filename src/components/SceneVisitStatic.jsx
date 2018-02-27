@@ -8,7 +8,7 @@ let drawBoard;
 const urls = {
     wordMsg: require('../images/wordMsg.png'),
 }
-export default class SceneVisit extends React.Component {
+export default class SceneVisitStatic extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -35,7 +35,7 @@ export default class SceneVisit extends React.Component {
                     "title": "现场记录标题", //回访主题
                     "user_ids": "_24_27_25_",
                     "customer_ids": "_67553_67554_",
-                    "content": "<p>1></p><div>2</div>", //回访内容及成果
+                    "content": "<p>1>dsadsa</p><div>2zzzzzzdfzs</div>", //回访内容及成果
                     "score": "2", //总体印象
                     "suggest": "客户建议", //客户建议
                     "add_time": "2018-02-11 16:34:25", //添加时间
@@ -114,13 +114,11 @@ export default class SceneVisit extends React.Component {
         }
     }
     componentDidMount() {
-        init("sceneResult");
-        init("sceneNext");
         readyDo();
         canvas = document.getElementById("canvas");
         drawBoard = new DrawBoard(canvas);  // 初始化
         runPromise('get_record_info', {
-            "record_id": GetLocationParam('id') || this.props.state.baseFlagId
+            "record_id": GetLocationParam('id')
         }, this.handleSceneVisitGet, false, "post");
     }
     clearAll = function () {
@@ -224,15 +222,27 @@ export default class SceneVisit extends React.Component {
                         <table className="topTable">
                             <tr className="sixToOne">
                                 <td className="darkbg">顾客单位</td>
-                                <td><input type="text" className="qualityIpt" />848</td>
+                                <td>{this.state.sceneVisits.id}</td>
                                 <td className="darkbg">回访主题</td>
-                                <td><input type="text" className="qualityIpt" /></td>
+                                <td>{this.state.sceneVisits.title}</td>
                             </tr>
                             <tr className="sixToOne">
                                 <td className="darkbg">受访人员</td>
-                                <td><input type="text" className="qualityIpt" /></td>
+                                <td>
+                                    {
+                                        this.state.sceneVisits.customer_list.map((value)=>(
+                                            <span style={{margin:"0 5px"}}>{value.name}</span>
+                                        ))
+                                    }
+                                </td>
                                 <td className="darkbg">回访人员</td>
-                                <td><input type="text" className="qualityIpt" /></td>
+                                <td>
+                                    {
+                                        this.state.sceneVisits.user_list.map((value) => (
+                                            <span style={{ margin: "0 5px" }}>{value.name}</span>
+                                        ))
+                                    }
+                                </td>
                             </tr>
                         </table>
                         <table className="sceneTable">
@@ -240,8 +250,10 @@ export default class SceneVisit extends React.Component {
                                 <td style={{ textAlign: "center", fontWeight: "800" }} colSpan="4" className="darkbg">回访内容及成果</td>
                             </tr>
                             <tr >
-                                <td colSpan="4">
-                                    <textarea className="allBox" id="sceneResult" style={{ minHeight: "3rem" }}></textarea>
+                                <td colSpan="4" style={{padding:"0 5px"}}>
+                                    <pre dangerouslySetInnerHTML={{ __html: this.state.sceneVisits.content }}>
+
+                                    </pre>
                                 </td>
                             </tr>
                             <tr>
@@ -249,7 +261,31 @@ export default class SceneVisit extends React.Component {
                             </tr>
                             <tr>
                                 <td colSpan="4">
-                                    <textarea className="allBox" id="sceneNext" style={{ minHeight: "3rem" }}></textarea>
+                                    <table className="plan">
+                                        <tr>
+                                            <td style={{ borderTop: "0 none", borderLeft: "0 none" }}>序号</td>
+                                            <td style={{ borderTop: "0 none" }}>事项</td>
+                                            <td style={{ borderTop: "0 none" }}>责任人</td>
+                                            <td style={{ borderTop: "0 none", borderRight: "0 none" }}>完成时间</td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        {/* {
+                                            tempDate.plan_list.map((value) => (
+                                                <tr>
+                                                    <td style={{ borderLeft: "0 none" }}>{value.seq}</td>
+                                                    <td>{value.content}</td>
+                                                    <td>{value.real_name}</td>
+                                                    <td>{value.exp_time.split(" ")[0]}</td>
+                                                </tr>
+                                            ))
+                                        } */}
+
+                                    </table>
                                 </td>
                             </tr>
                             <tr>

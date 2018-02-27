@@ -1,29 +1,47 @@
 import React from 'react';
 import { hashHistory } from "react-router";
-import { div2png, readyDo, TableHeads } from './templates';
+import { div2png, readyDo, TableHeads, GetLocationParam } from './templates';
 
 const urls = {
     wordMsg: require('../images/wordMsg.png'),
 }
 
 export default class VisitRecord extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
         this.state = {
+            mission:{
+                item_list:[
+                    {
+                        "add_time": "",
+                        "finish_time": ""
+                    },
+                ]
+            }
+        },
+        this.handleMissionGet = (res) => {
+            console.log(res);
             
+            this.setState({
+                mission:res.data
+            })
         }
     }
-    componentDidMount () {
+    componentDidMount() {
         readyDo();
-        // console.log(jobList);
+        runPromise('get_mission_list', {
+            "gd_project_id": GetLocationParam('id') || this.props.props.state.baseFlagId,
+            "offset": "0",
+            "limit": "10"
+        }, this.handleMissionGet, false, "post");
     }
-    render(){
+    render() {
         return (
             <div id="fromHTMLtestdiv">
                 <form className="visitRecordWrap">
-                    <TableHeads 
-                        url={urls.wordMsg} 
-                        isHide={false} 
+                    <TableHeads
+                        url={urls.wordMsg}
+                        isHide={false}
                         tag={<h3>任务记录</h3>}
                     ></TableHeads>
                     <button id="btnGenerate">下载图片</button>
@@ -45,33 +63,21 @@ export default class VisitRecord extends React.Component {
                         <div className="tableDetails">
                             <table className="recordTable">
                                 <tr>
-                                    <th>发生时间</th>
-                                    <th>内容</th>
-                                    <th>完成时间</th>
-                                    <th>交割情况<span>（格式 , 数量 , 方式）</span></th>
+                                    <th style={{ textAlign: "center" }}>发生时间</th>
+                                    <th style={{ textAlign: "center" }}>内容</th>
+                                    <th style={{ textAlign: "center" }}>完成时间</th>
+                                    <th style={{ textAlign: "center" }}>交割情况<span>（格式 , 数量 , 方式）</span></th>
                                 </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                {/* {
-                                this.state.jobList.map((value,idx)=>{
-                                    return <tr>
-                                        <td>value.happenTime</td>
-                                        <td>value.content</td>
-                                        <td>value.finishTime</td>
-                                        <td>value.give</td>
-                                    </tr>
-                                })
-                            } */}
+                                {
+                                    this.state.mission.item_list.map((value)=>(
+                                        <tr style={{textAlign:"center"}}>
+                                            <td>{value.add_time.split(" ")[0]}</td>
+                                            <td>{value.content}</td>
+                                            <td>{value.finish_time.split(" ")[0]}</td>
+                                            <td>{value.rtn_info}</td>
+                                        </tr>
+                                    ))
+                                }
                             </table>
                         </div>
                     </div>

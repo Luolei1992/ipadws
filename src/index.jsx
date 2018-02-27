@@ -11,6 +11,7 @@ import Visit from './components/Visit';
 import Signature from './components/Signature';
 import VisitRecord from './components/VisitRecord';
 import SceneVisit from './components/SceneVisit';
+import SceneVisitStatic from './components/SceneVisitStatic';
 import Meeting from './components/Meeting';
 import Quality from './components/Quality';
 import VisitLists from './components/VisitLists';
@@ -50,6 +51,7 @@ ReactDOM.render(
             <Route path="/login" component={Login} />
             <Route path="/visit" component={Visit} />
             <Route path="/scene" component={SceneVisit} />
+            <Route path="/sceneStatic" component={SceneVisitStatic} />
             <Route path="/quality" component={Quality} />
             <Route path="/surveyHistory" component={SurveyHistory} />
             <Route path="/newSurveyHistory" component={NewSurveyHistory} />
