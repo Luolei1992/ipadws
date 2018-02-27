@@ -1,10 +1,18 @@
 import React from 'react';
-// import { Checkbox, Flex } from 'antd-mobile';
+import { Modal,Toast } from 'antd-mobile';
 import { div2png, readyDo, TableHeads, init, GetLocationParam } from './templates';
 import { DrawBoard } from './drawBoard';
+import { get } from 'https';
 
 let canvas;
 let drawBoard;
+let surveyArr=[
+    { score: "2", survey_menu_id: "1" },
+    { score: "2", survey_menu_id: "2" },
+    { score: "2", survey_menu_id: "3" },
+    { score: "2", survey_menu_id: "4" },
+    { score: "2", survey_menu_id: "5" },
+];
 const urls = {
     wordMsg: require('../images/wordMsg.png'),
 }
@@ -14,103 +22,45 @@ export default class SceneVisit extends React.Component {
         this.state = {
             allChecked: true,
             silent: true,
+            modal: true,            
+            modal2: false,
+            order: "",
+            things: "",
+            duty: "",
+            finishTime: "",
+            orderList:[],
             checkArr1: [true, false, false],
             checkArr2: [true, false, false],
             checkArr3: [true, false, false],
             checkArr4: [true, false, false],
             checkArr5: [true, false, false],
-            sceneVisits:{
-                survey_list:[],
-                user_list:[],
-                customer_list:[]
-            }
+            firstMet:[true,false,false,false],
+            gd_company_id:"",
+            title:"",
+            user_ids:"",
+            customer_ids:"",
+            content:"",
+            suggest:"",
+            score:"3",
+            plans:[
+                {
+                    seq:"",
+                    content:"",
+                    user_id:"",
+                    exp_time:""
+                },
+            ],
+            surveys:[
+                { score: "2", survey_menu_id:"1"},
+                { score: "2", survey_menu_id:"2"},
+                { score: "2", survey_menu_id:"3"},
+                { score: "2", survey_menu_id:"4"},
+                { score: "2", survey_menu_id:"5"},
+            ]
         },
         this.handleSceneVisitGet = (res) => {
             console.log(res);
-            res = {
-                "success": true,
-                "data": {
-                    "id": "1",
-                    "gd_company_id": "120", //公司id
-                    "title": "现场记录标题", //回访主题
-                    "user_ids": "_24_27_25_",
-                    "customer_ids": "_67553_67554_",
-                    "content": "<p>1></p><div>2</div>", //回访内容及成果
-                    "score": "2", //总体印象
-                    "suggest": "客户建议", //客户建议
-                    "add_time": "2018-02-11 16:34:25", //添加时间
-                    "signed_file_path": null, //签名文件路径
-                    "survey_list": [//满意度调查列表
-                        {
-                            "id": "3",
-                            "survey_menu_id": "3", //满意度调查问卷菜单id
-                            "score": "2", //满意度打分
-                            "name": "工作成果"	//满意度调查问卷菜单名称
-                        },
-                        {
-                            "id": "2",
-                            "survey_menu_id": "2",
-                            "score": "1",
-                            "name": "沟通能力"
-                        },
-                        {
-                            "id": "1",
-                            "survey_menu_id": "1",
-                            "score": "1",
-                            "name": "仪容仪表"
-                        },
-                        {
-                            "id": "5",
-                            "survey_menu_id": "5",
-                            "score": "0",
-                            "name": "是否准时到达"
-                        },
-                        {
-                            "id": "4",
-                            "survey_menu_id": "4",
-                            "score": "2",
-                            "name": "服务态度"
-                        }
-                    ],
-                    "user_list": [//回访人员列表
-                        {
-                            "user_id": "24",
-                            "mobile": "13958054563", //手机号码
-                            "email": "oob400@126.com", //邮箱
-                            "name": "张兰"	//姓名
-                        },
-                        {
-                            "user_id": "27",
-                            "mobile": "010-59273171",
-                            "email": "service@eicodesign.c",
-                            "name": null
-                        },
-                        {
-                            "user_id": "25",
-                            "mobile": "18666024194",
-                            "email": "270859699@qq.com",
-                            "name": null
-                        }
-                    ],
-                    "customer_list": [//被访人员列表
-                        {
-                            "user_id": "67553",
-                            "mobile": "13767896789", //手机号码
-                            "email": "123@123.com", //邮箱
-                            "name": "测试人员"	//姓名
-                        },
-                        {
-                            "user_id": "67554",
-                            "mobile": "13756785679",
-                            "email": "",
-                            "name": "张5"
-                        }
-                    ]
-                }
-            };
-            this.setState({
-                sceneVisits:res.data
-            })
+            
         }
     }
     componentDidMount() {
@@ -119,8 +69,16 @@ export default class SceneVisit extends React.Component {
         readyDo();
         canvas = document.getElementById("canvas");
         drawBoard = new DrawBoard(canvas);  // 初始化
-        runPromise('get_record_info', {
-            "record_id": GetLocationParam('id') || this.props.state.baseFlagId
+        runPromise('add_record', {
+            "gd_company_id": this.props.state.baseFlagId,
+            "title": this.state.title,
+            "user_ids": this.state.user_ids,
+            "customer_ids": this.state.customer_ids,
+            "content": this.state.content,
+            "suggest": this.state.suggest,
+            "score": this.state.score,
+            "plans": this.state.orderList,
+            "surveys": this.state.surveys
         }, this.handleSceneVisitGet, false, "post");
     }
     clearAll = function () {
@@ -128,6 +86,17 @@ export default class SceneVisit extends React.Component {
     }
     cancelLast = function () {
         drawBoard.cancel();
+    }
+    showModal = key => (e, id) => {
+        e.preventDefault(); // 修复 Android 上点击穿透
+        this.setState({
+            [key]: true,
+        });
+    }
+    onClose = key => () => {
+        this.setState({
+            [key]: false,
+        });
     }
     save = function () {
         drawBoard.save('only-draw', function (url) {
@@ -157,28 +126,38 @@ export default class SceneVisit extends React.Component {
         };
         switch (num) {
             case 1:
+                surveyArr[0].score=(idx == 2?0:idx == 0?2:1);
                 this.setState({
-                    checkArr1: arr
+                    checkArr1: arr,
+                    surveys: surveyArr
                 })
                 break;
             case 2:
+                surveyArr[1].score = (idx == 2 ? 0 : idx == 0 ? 2 : 1);
                 this.setState({
-                    checkArr2: arr
+                    checkArr2: arr,
+                    surveys: surveyArr
                 })
                 break;
             case 3:
+                surveyArr[2].score = (idx == 2 ? 0 : idx == 0 ? 2 : 1);
                 this.setState({
-                    checkArr3: arr
+                    checkArr3: arr,
+                    surveys: surveyArr
                 })
                 break;
             case 4:
+                surveyArr[3].score = (idx == 2 ? 0 : idx == 0 ? 2 : 1);
                 this.setState({
-                    checkArr4: arr
+                    checkArr4: arr,
+                    surveys: surveyArr
                 })
                 break;
             case 5:
+                surveyArr[4].score = (idx == 2 ? 0 : idx == 0 ? 2 : 1);
                 this.setState({
-                    checkArr5: arr
+                    checkArr5: arr,
+                    surveys: surveyArr
                 })
                 break;
             default:
@@ -189,6 +168,56 @@ export default class SceneVisit extends React.Component {
         //         allChecked: true
         //     });
         // };
+    }
+    getWhichChecked = () =>{
+        
+    }
+    addOrderMsg() {       //下一任行动和计划
+        let lis = {
+            seq: this.state.order,
+            content: this.state.things,
+            user_id: this.state.duty,
+            exp_time: this.state.finishTime
+        }
+        if (this.state.things == "") {
+            Toast.info('请填写事项！', .8);
+        } else if (this.state.duty == "") {
+            Toast.info('请填写责任人！', .8);
+        } else if (this.state.finishTime == "") {
+            Toast.info('请填写完成时间！', .8);
+        } else {
+            this.onClose('modal2')();
+            this.state.orderList.push(lis);
+            this.setState({
+                order: "",
+                things: "",
+                duty: "",
+                finishTime: ""
+            })
+        }
+    }
+    firstMet=(idx)=>{
+        let arr = [false,false,false,false];
+        arr[idx] = true;
+        this.setState({
+            firstMet:arr,
+            score:idx == 0?3:idx==1?2:idx==2?1:0
+        })
+    }
+    onChangeThings(e) {
+        this.setState({
+            things: e.currentTarget.value
+        });
+    }
+    onChangeDuty(e) {
+        this.setState({
+            duty: e.currentTarget.value
+        });
+    }
+    onChangeFinish(e) {
+        this.setState({
+            finishTime: e.currentTarget.value
+        });
     }
     toggleAgree = () => {
         if (!this.state.allChecked) {
@@ -224,15 +253,47 @@ export default class SceneVisit extends React.Component {
                         <table className="topTable">
                             <tr className="sixToOne">
                                 <td className="darkbg">顾客单位</td>
-                                <td><input type="text" className="qualityIpt" />848</td>
+                                <td>
+                                    <input type="text" className="qualityIpt" />
+                                </td>
                                 <td className="darkbg">回访主题</td>
-                                <td><input type="text" className="qualityIpt" /></td>
+                                <td>
+                                    <input type="text" className="qualityIpt"
+                                        onChange={(e, value) => {
+                                            console.log(e.currentTarget.value);
+                                            this.setState({
+                                                title: e.currentTarget.value
+                                            })
+                                        }}
+                                     />
+                                </td>
                             </tr>
                             <tr className="sixToOne">
                                 <td className="darkbg">受访人员</td>
-                                <td><input type="text" className="qualityIpt" /></td>
+                                <td>
+                                    {/* <i 
+                                        className="iconfont icon-jia" 
+                                        style={{fontSize:"28px",lineHeight:"0.88rem"}}
+                                        onClick={this.showModal('modal')}
+                                    ></i> */}
+                                    <input type="text" className="qualityIpt" 
+                                        onChange={(e, value) => {
+                                            this.setState({
+                                                customer_ids: e.currentTarget.value
+                                            })
+                                        }}
+                                    />
+                                </td>
                                 <td className="darkbg">回访人员</td>
-                                <td><input type="text" className="qualityIpt" /></td>
+                                <td>
+                                    <input type="text" className="qualityIpt" 
+                                        onChange={(e, value) => {
+                                            this.setState({
+                                                user_ids: e.currentTarget.value
+                                            })
+                                        }}
+                                    />
+                                </td>
                             </tr>
                         </table>
                         <table className="sceneTable">
@@ -241,15 +302,92 @@ export default class SceneVisit extends React.Component {
                             </tr>
                             <tr >
                                 <td colSpan="4">
-                                    <textarea className="allBox" id="sceneResult" style={{ minHeight: "3rem" }}></textarea>
+                                    <textarea className="allBox" id="sceneResult" style={{ minHeight: "3rem" }}
+                                        onChange={(e, value) => {
+                                            console.log(e.currentTarget.value);
+                                            this.setState({
+                                                content: e.currentTarget.value
+                                            })
+                                        }}
+                                    ></textarea>
                                 </td>
                             </tr>
                             <tr>
-                                <td style={{ textAlign: "center", fontWeight: "800" }} colSpan="4" className="darkbg">下一步计划和行动</td>
+                                <td style={{ textAlign: "center", fontWeight: "800" }} colSpan="4" className="darkbg newPersonalMsg">
+                                    下一步计划和行动<span onClick={this.showModal('modal2')}>新增 <i className="iconfont icon-jia"></i></span>
+                                </td>
                             </tr>
+                            <Modal
+                                visible={this.state.modal2}
+                                transparent
+                                maskClosable={true}
+                                onClose={this.onClose('modal2')}
+                                className="personalLinkWrap"
+                                footer={[
+                                    { text: '取消', onPress: () => { this.onClose('modal2')() } },
+                                    { text: '确定', onPress: () => { this.addOrderMsg(); } }
+                                ]}
+                            >
+                                <div className="personalLink addDutyList">
+                                    <div className="personalLinkList">
+                                        <ul>
+                                            <li style={{ display: "none" }}>
+                                                <span>序 号</span>
+                                                <input
+                                                    type="text"
+                                                    value={this.state.order}
+                                                />
+                                            </li>
+                                            <li>
+                                                <span style={{color:"#333"}}>事 项</span>
+                                                <input
+                                                    type="text"
+                                                    value={this.state.things}
+                                                    onChange={(e) => { this.onChangeThings(e) }}
+                                                />
+                                            </li>
+                                            <li>
+                                                <span style={{color:"#333"}}>责任人</span>
+                                                <input
+                                                    type="text"
+                                                    value={this.state.duty}
+                                                    onChange={(e) => { this.onChangeDuty(e) }}
+                                                />
+                                            </li>
+                                            <li>
+                                                <span style={{color:"#333"}}>完成时间</span>
+                                                <input
+                                                    type="text"
+                                                    value={this.state.finishTime}
+                                                    onChange={(e) => { this.onChangeFinish(e) }}
+                                                    placeholder="0000-00-00"
+                                                />
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </Modal>
                             <tr>
                                 <td colSpan="4">
-                                    <textarea className="allBox" id="sceneNext" style={{ minHeight: "3rem" }}></textarea>
+                                    <table className="plan">
+                                        <tr>
+                                            <td style={{ borderTop: "0 none", borderLeft: "0 none" }}>序号</td>
+                                            <td style={{ borderTop: "0 none" }}>事项</td>
+                                            <td style={{ borderTop: "0 none" }}>责任人</td>
+                                            <td style={{ borderTop: "0 none", borderRight: "0 none" }}>完成时间</td>
+                                        </tr>
+                                        {
+                                            this.state.orderList.map((value, idx) => {
+                                                return <tr>
+                                                    <td style={{ borderLeft: "0 none" }}>{idx + 1}</td>
+                                                    <td>{value.content}</td>
+                                                    <td>{value.user_id}</td>
+                                                    <td>{value.exp_time}</td>
+                                                </tr>
+                                            })
+                                        }
+
+                                    </table>
                                 </td>
                             </tr>
                             <tr>
@@ -305,30 +443,30 @@ export default class SceneVisit extends React.Component {
                             <tr>
                                 <td colSpan="4" className="signatureTxt">
                                     <div className="suggess">
-                                        <div className="midDiv">
+                                        <div className="midDiv" style={{top:"-0.2rem"}}>
                                             <span style={{ lineHeight: "46px" }}>总体印象: </span>
                                             <ul>
                                                 <li>
-                                                    <input type="checkbox" id="gloab" />
+                                                    <input type="checkbox" id="gloab" checked={this.state.firstMet[0]} onClick={()=>{this.firstMet(0)}} />
                                                     <label htmlFor="gloab"> 很满意</label>
                                                 </li>
                                                 <li>
-                                                    <input type="checkbox" id="just" />
+                                                    <input type="checkbox" id="just" checked={this.state.firstMet[1]} onClick={() => { this.firstMet(1) }} />
                                                     <label htmlFor="just"> 一般</label>
                                                 </li>
                                                 <li>
-                                                    <input type="checkbox" id="dont" />
+                                                    <input type="checkbox" id="dont" checked={this.state.firstMet[2]} onClick={() => { this.firstMet(2) }} />
                                                     <label htmlFor="dont"> 不满意</label>
                                                 </li>
                                                 <li>
-                                                    <input type="checkbox" id="bad" />
+                                                    <input type="checkbox" id="bad" checked={this.state.firstMet[3]} onClick={() => { this.firstMet(3) }} />
                                                     <label htmlFor="bad"> 很不满意</label>
                                                 </li>
                                             </ul>
                                         </div>
                                         <div className="midDivTop">
                                             <span>您的宝贵建议: </span>&nbsp;&nbsp;
-                                            <textarea className="suggessMsg"></textarea>
+                                            <textarea id="sceneNext" className="suggessMsg" onChange={(e)=>{this.setState({suggest:e.currentTarget.value})}}></textarea>
                                         </div>
                                     </div>
                                 </td>
@@ -364,6 +502,48 @@ export default class SceneVisit extends React.Component {
                             </tr>
                         </table>
                     </div>
+
+                    {/* <Modal
+                        visible={this.state.modal}
+                        transparent
+                        maskClosable={true}
+                        onClose={this.onClose('modal')}
+                        style={{ width: "800px" }}
+                        className="personalLinkWrap myCustomModal"
+                        id="personalLinkWrap"
+                        footer={[
+                            { text: '取消', onPress: () => { console.log('cancle'); this.onClose('modal')(); } },
+                            { text: '确定', onPress: () => { console.log('ok'); this.onClose('modal')(); } }
+                        ]}
+                    >
+                        <table className="personVisit">
+                            <tr>
+                                <td style={{width:"10%"}}>姓名</td>
+                                <td style={{width:"20%"}}>职位</td>
+                                <td style={{width:"20%"}}>手机号</td>
+                                <td style={{width:"20%"}}>邮箱</td>
+                                <td style={{width:"30%"}}>备注</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="radio" style={{ width: "16px", height: "16px", position: "relative", top: "2px" }} /> 名字
+                                </td>
+                                <td>大大</td>
+                                <td>大大</td>
+                                <td>发大润发</td>
+                                <td>挺好听</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="radio" style={{ width: "16px", height: "16px", position: "relative", top: "2px" }} /> 名字
+                                </td>
+                                <td>大大</td>
+                                <td>大大</td>
+                                <td>发大润发</td>
+                                <td>挺好听</td>
+                            </tr>
+                        </table>
+                    </Modal> */}
                 </div>
             </div>
         )

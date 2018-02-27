@@ -1,6 +1,6 @@
 import React from 'react';
 import { hashHistory } from "react-router";
-import { div2png, readyDo, TableHeads,init } from './templates';
+import { div2png, readyDo, TableHeads } from './templates';
 import { DrawBoard } from './drawBoard';
 
 let canvas;
@@ -8,7 +8,7 @@ let drawBoard;
 const urls = {
     wordMsg: require('../images/wordMsg.png'),
 }
-export default class Meeting extends React.Component {
+export default class MeetingStatic extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
@@ -17,8 +17,6 @@ export default class Meeting extends React.Component {
     }
     componentDidMount () {
         readyDo();
-        init("meetingResult");
-        init("whatNext");
         canvas = document.getElementById("canvas");
         drawBoard = new DrawBoard(canvas);  // 初始化
         // console.log(drawBoard);
@@ -53,38 +51,38 @@ export default class Meeting extends React.Component {
                             <table className="topTable">
                                 <tr>
                                     <th className="darkbg">会议日期</th>
-                                    <td><input type="text" className="surveyIpt"/></td>
+                                    <td></td>
                                     <th className="darkbg">会议地址</th>
-                                    <td><input type="text" className="surveyIpt"/></td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <th className="darkbg">主持人</th>
-                                    <td><input type="text" className="surveyIpt"/></td>
+                                    <td></td>
                                     <th className="darkbg">记录人</th>
-                                    <td><input type="text" className="surveyIpt"/></td>
+                                    <td></td>
                                 </tr>
                             </table>
                             <table className="sceneTable">
                                 <tr>
-                                    <td className="darkbg">参加人员</td>
-                                    <td colSpan="3"><input type="text" className="surveyIpt" style={{padding:"0 5px"}}/></td>
-                                </tr>
-                                {/* <tr>
+                                    <td rowSpan="3" className="darkbg">参加人员</td>
                                     <td colSpan="3"></td>
                                 </tr>
                                 <tr>
                                     <td colSpan="3"></td>
-                                </tr> */}
+                                </tr>
+                                <tr>
+                                    <td colSpan="3"></td>
+                                </tr>
                                 <tr>
                                     <td className="darkbg">会议主题</td>
-                                    <td colSpan="3"><input type="text" className="surveyIpt" style={{padding:"0 5px"}}/></td>
+                                    <td colSpan="3"></td>
                                 </tr>
                                 <tr>
                                     <td colSpan="4" className="darkbg">会议内容及成果</td>
                                 </tr>
                                 <tr >
                                     <td colSpan="4">
-                                        <textarea className="allBox" id="meetingResult" style={{minHeight:"4rem"}}></textarea>
+                                        <textarea className="allBox"></textarea>
                                     </td>
                                 </tr>
                                 <tr>
@@ -92,7 +90,7 @@ export default class Meeting extends React.Component {
                                 </tr>
                                 <tr>
                                     <td colSpan="4">
-                                        <textarea className="allBox" id="whatNext" style={{ minHeight: "4rem" }}></textarea>
+                                        <textarea className="allBox"></textarea>
                                     </td>
                                 </tr>
                                 <tr>

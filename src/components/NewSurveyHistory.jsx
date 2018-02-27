@@ -504,7 +504,6 @@ export default class NewSurveyHistory extends React.Component {
                                                     </tr>
                                                 })
                                             }
-                                            
                                         </table>
                                     </td>
                                 </tr>

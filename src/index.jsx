@@ -13,6 +13,7 @@ import VisitRecord from './components/VisitRecord';
 import SceneVisit from './components/SceneVisit';
 import SceneVisitStatic from './components/SceneVisitStatic';
 import Meeting from './components/Meeting';
+import MeetingStatic from './components/MeetingStatic';
 import Quality from './components/Quality';
 import VisitLists from './components/VisitLists';
 import Company from './components/Company';
@@ -41,11 +42,12 @@ ReactDOM.render(
                 <IndexRoute component={Company} />
                 <Route path="/company" component={Company} />  
                 <Route path="/visitRecord" component={VisitRecord} />
-                <Route path="/visitLists" component={VisitLists} />          
-                <Route path="/meetingList" component={MeetingList} />            
+                <Route path="/visitLists" component={VisitLists} />
+                <Route path="/meetingList" component={MeetingList} />
                 <Route path="/surveyHistoryStatic" component={SurveyHistoryStatic} />
             </Route>
             <Route path="/meeting" component={Meeting} />
+            <Route path="/meetingStatic" component={MeetingStatic} />
             <Route path="/survey" component={Survey} />            
             <Route path="/customs" component={Customs} />
             <Route path="/login" component={Login} />

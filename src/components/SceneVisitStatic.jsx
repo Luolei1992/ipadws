@@ -5,6 +5,7 @@ import { DrawBoard } from './drawBoard';
 
 let canvas;
 let drawBoard;
+let ischeck=true;
 const urls = {
     wordMsg: require('../images/wordMsg.png'),
 }
@@ -19,10 +20,15 @@ export default class SceneVisitStatic extends React.Component {
             checkArr3: [true, false, false],
             checkArr4: [true, false, false],
             checkArr5: [true, false, false],
-            sceneVisits:{
-                survey_list:[],
-                user_list:[],
-                customer_list:[]
+            sceneVisits: {
+                survey_list: [
+                    {},{},{},{},{}
+                ],
+                user_list: [],
+                customer_list: []
+            },
+            scenePlan:{
+                item_list:[]
             }
         },
         this.handleSceneVisitGet = (res) => {
@@ -108,10 +114,69 @@ export default class SceneVisitStatic extends React.Component {
                     ]
                 }
             };
-            this.setState({
-                sceneVisits:res.data
+            res.data.survey_list.map((value)=>{
+                if(value.score != 2){
+                    ischeck = false;
+                };
+                return ischeck;
             })
-        }
+            this.setState({
+                sceneVisits: res.data
+            })
+        },
+        this.handleScenePlanGet = (req) => {
+            console.log(req);
+            req = {
+                "success": true,
+                "data": {
+                    "item_list": [
+                        {
+                            "id": "5",
+                            "seq": "0", //序号
+                            "content": "这是计划的详细内容", //下一步计划和行动的具体内容
+                            "user_id": "24", //责任人id
+                            "exp_time": "2018-02-01 00:00:00", //期望完成的时间
+                            "action_type": "project",
+                            "add_time": "2018-02-11 15:12:57", //添加时间
+                            "action_id": "4",
+                            "username": "13958054563", //责任人的username
+                            "nick_name": "Mia Zhang", //责任人的昵称
+                            "real_name": "张兰"	//责任人的真实姓名
+                        },
+                        {
+                            "id": "3",
+                            "seq": "1",
+                            "content": "这是第一步计划",
+                            "user_id": "24",
+                            "exp_time": "2018-02-11 00:00:00",
+                            "action_type": "project",
+                            "add_time": "2018-02-11 14:46:58",
+                            "action_id": "4",
+                            "username": "13958054563",
+                            "nick_name": "Mia Zhang",
+                            "real_name": "张兰"
+                        },
+                        {
+                            "id": "4",
+                            "seq": "2",
+                            "content": "这是第二步计划",
+                            "user_id": "27",
+                            "exp_time": "2018-03-11 00:00:00",
+                            "action_type": "project",
+                            "add_time": "2018-02-11 14:46:59",
+                            "action_id": "4",
+                            "username": "service@eicodesign.com",
+                            "nick_name": "eico design",
+                            "real_name": null
+                        }
+                    ],
+                    "total_count": "3"
+                }
+            };
+            this.setState({
+                scenePlan: req.data
+            })
+        };
     }
     componentDidMount() {
         readyDo();
@@ -120,6 +185,12 @@ export default class SceneVisitStatic extends React.Component {
         runPromise('get_record_info', {
             "record_id": GetLocationParam('id')
         }, this.handleSceneVisitGet, false, "post");
+        runPromise('get_plan_list', {
+            "limit": "20",
+            "offset": "0",
+            "action_type": "record",
+            "action_id": GetLocationParam('id')
+        }, this.handleScenePlanGet, false, "post");
     }
     clearAll = function () {
         drawBoard.clear();
@@ -141,52 +212,6 @@ export default class SceneVisitStatic extends React.Component {
         this.setState({
             allChecked: !this.state.allChecked
         })
-    }
-    isCheck1 = (num, idx) => {
-        let arr = [false, false, false];
-        if (idx) {
-            arr[idx] = !arr[idx];
-            arr[0] = false;
-            this.setState({
-                allChecked: false
-            });
-        } else {
-            arr[idx] = !arr[idx];
-        };
-        switch (num) {
-            case 1:
-                this.setState({
-                    checkArr1: arr
-                })
-                break;
-            case 2:
-                this.setState({
-                    checkArr2: arr
-                })
-                break;
-            case 3:
-                this.setState({
-                    checkArr3: arr
-                })
-                break;
-            case 4:
-                this.setState({
-                    checkArr4: arr
-                })
-                break;
-            case 5:
-                this.setState({
-                    checkArr5: arr
-                })
-                break;
-            default:
-                break;
-        }
-        // if (this.state.checkArr1[0] && this.state.checkArr2[0] && this.state.checkArr3[0] && this.state.checkArr4[0] && this.state.checkArr5[0]) {
-        //     this.setState({
-        //         allChecked: true
-        //     });
-        // };
     }
     toggleAgree = () => {
         if (!this.state.allChecked) {
@@ -230,8 +255,8 @@ export default class SceneVisitStatic extends React.Component {
                                 <td className="darkbg">受访人员</td>
                                 <td>
                                     {
-                                        this.state.sceneVisits.customer_list.map((value)=>(
-                                            <span style={{margin:"0 5px"}}>{value.name}</span>
+                                        this.state.sceneVisits.customer_list.map((value) => (
+                                            <span style={{ margin: "0 5px" }}>{value.name}</span>
                                         ))
                                     }
                                 </td>
@@ -250,7 +275,7 @@ export default class SceneVisitStatic extends React.Component {
                                 <td style={{ textAlign: "center", fontWeight: "800" }} colSpan="4" className="darkbg">回访内容及成果</td>
                             </tr>
                             <tr >
-                                <td colSpan="4" style={{padding:"0 5px"}}>
+                                <td colSpan="4" style={{ padding: "0 5px" }}>
                                     <pre dangerouslySetInnerHTML={{ __html: this.state.sceneVisits.content }}>
 
                                     </pre>
@@ -268,22 +293,16 @@ export default class SceneVisitStatic extends React.Component {
                                             <td style={{ borderTop: "0 none" }}>责任人</td>
                                             <td style={{ borderTop: "0 none", borderRight: "0 none" }}>完成时间</td>
                                         </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        {/* {
-                                            tempDate.plan_list.map((value) => (
+                                        {
+                                            this.state.scenePlan.item_list.map((value) => (
                                                 <tr>
-                                                    <td style={{ borderLeft: "0 none" }}>{value.seq}</td>
+                                                    <td>{value.seq}</td>
                                                     <td>{value.content}</td>
                                                     <td>{value.real_name}</td>
-                                                    <td>{value.exp_time.split(" ")[0]}</td>
+                                                    <td>{(value.exp_time+'').split(" ")[0]}</td>
                                                 </tr>
                                             ))
-                                        } */}
+                                        }
 
                                     </table>
                                 </td>
@@ -297,7 +316,9 @@ export default class SceneVisitStatic extends React.Component {
                                     className="darkbg"
                                 >
                                     满意度调查 <span style={{ float: "right", fontWeight: 500, marginRight: "0.3rem" }}>
-                                        <input type="checkbox" id="allAgree" checked={this.state.allChecked} onChange={() => { this.toggleAgree() }} onClick={() => { this.changeCheck() }} />&nbsp;
+                                        <input type="checkbox" id="allAgree" checked={
+                                            ischeck
+                                        } />&nbsp;
                                         <label htmlFor="allAgree">全满意</label>
                                     </span>
                                 </td>
@@ -310,61 +331,61 @@ export default class SceneVisitStatic extends React.Component {
                             </tr>
                             <tr className="fourToOne">
                                 <td>仪容仪表</td>
-                                <td><input type="checkbox" checked={this.state.checkArr1[0]} onClick={(e) => { this.isCheck1(1, 0) }} /></td>
-                                <td><input type="checkbox" checked={this.state.checkArr1[1]} onClick={(e) => { this.isCheck1(1, 1) }} /></td>
-                                <td><input type="checkbox" checked={this.state.checkArr1[2]} onClick={(e) => { this.isCheck1(1, 2) }} /></td>
+                                <td><input type="checkbox" checked={this.state.sceneVisits.survey_list[2].score==2?true:false}/></td>
+                                <td><input type="checkbox" checked={this.state.sceneVisits.survey_list[2].score==1?true:false}/></td>
+                                <td><input type="checkbox" checked={this.state.sceneVisits.survey_list[2].score==0?true:false}/></td>
                             </tr>
                             <tr className="fourToOne">
                                 <td>沟通能力</td>
-                                <td><input type="checkbox" checked={this.state.checkArr2[0]} onClick={(e) => { this.isCheck1(2, 0) }} /></td>
-                                <td><input type="checkbox" checked={this.state.checkArr2[1]} onClick={(e) => { this.isCheck1(2, 1) }} /></td>
-                                <td><input type="checkbox" checked={this.state.checkArr2[2]} onClick={(e) => { this.isCheck1(2, 2) }} /></td>
+                                <td><input type="checkbox" checked={this.state.sceneVisits.survey_list[1].score == 2 ? true : false} /></td>
+                                <td><input type="checkbox" checked={this.state.sceneVisits.survey_list[1].score == 1 ? true : false} /></td>
+                                <td><input type="checkbox" checked={this.state.sceneVisits.survey_list[1].score == 0 ? true : false} /></td>
                             </tr>
                             <tr className="fourToOne">
                                 <td>工作成果</td>
-                                <td><input type="checkbox" checked={this.state.checkArr3[0]} onClick={(e) => { this.isCheck1(3, 0) }} /></td>
-                                <td><input type="checkbox" checked={this.state.checkArr3[1]} onClick={(e) => { this.isCheck1(3, 1) }} /></td>
-                                <td><input type="checkbox" checked={this.state.checkArr3[2]} onClick={(e) => { this.isCheck1(3, 2) }} /></td>
+                                <td><input type="checkbox" checked={this.state.sceneVisits.survey_list[0].score == 2 ? true : false} /></td>
+                                <td><input type="checkbox" checked={this.state.sceneVisits.survey_list[0].score == 1 ? true : false} /></td>
+                                <td><input type="checkbox" checked={this.state.sceneVisits.survey_list[0].score == 0 ? true : false} /></td>
                             </tr>
                             <tr className="fourToOne">
                                 <td>服务态度</td>
-                                <td><input type="checkbox" checked={this.state.checkArr4[0]} onClick={(e) => { this.isCheck1(4, 0) }} /></td>
-                                <td><input type="checkbox" checked={this.state.checkArr4[1]} onClick={(e) => { this.isCheck1(4, 1) }} /></td>
-                                <td><input type="checkbox" checked={this.state.checkArr4[2]} onClick={(e) => { this.isCheck1(4, 2) }} /></td>
+                                <td><input type="checkbox" checked={this.state.sceneVisits.survey_list[4].score == 2 ? true : false} /></td>
+                                <td><input type="checkbox" checked={this.state.sceneVisits.survey_list[4].score == 1 ? true : false} /></td>
+                                <td><input type="checkbox" checked={this.state.sceneVisits.survey_list[4].score == 0 ? true : false} /></td>
                             </tr>
                             <tr className="fourToOne">
                                 <td>是否准时到达</td>
-                                <td><input type="checkbox" checked={this.state.checkArr5[0]} onClick={(e) => { this.isCheck1(5, 0) }} /></td>
-                                <td><input type="checkbox" checked={this.state.checkArr5[1]} onClick={(e) => { this.isCheck1(5, 1) }} /></td>
-                                <td><input type="checkbox" checked={this.state.checkArr5[2]} onClick={(e) => { this.isCheck1(5, 2) }} /></td>
+                                <td><input type="checkbox" checked={this.state.sceneVisits.survey_list[3].score == 2 ? true : false} /></td>
+                                <td><input type="checkbox" checked={this.state.sceneVisits.survey_list[3].score == 1 ? true : false} /></td>
+                                <td><input type="checkbox" checked={this.state.sceneVisits.survey_list[3].score == 0 ? true : false} /></td>
                             </tr>
                             <tr>
                                 <td colSpan="4" className="signatureTxt">
                                     <div className="suggess">
-                                        <div className="midDiv">
+                                        <div className="midDiv" style={{top:"-0.2rem"}}>
                                             <span style={{ lineHeight: "46px" }}>总体印象: </span>
                                             <ul>
                                                 <li>
-                                                    <input type="checkbox" id="gloab" />
+                                                    <input type="checkbox" id="gloab" checked={this.state.sceneVisits.score == 3 ? true : false} />
                                                     <label htmlFor="gloab"> 很满意</label>
                                                 </li>
                                                 <li>
-                                                    <input type="checkbox" id="just" />
+                                                    <input type="checkbox" id="just" checked={this.state.sceneVisits.score == 2?true:false} />
                                                     <label htmlFor="just"> 一般</label>
                                                 </li>
                                                 <li>
-                                                    <input type="checkbox" id="dont" />
+                                                    <input type="checkbox" id="dont" checked={this.state.sceneVisits.score == 1?true:false} />
                                                     <label htmlFor="dont"> 不满意</label>
                                                 </li>
                                                 <li>
-                                                    <input type="checkbox" id="bad" />
+                                                    <input type="checkbox" id="bad" checked={this.state.sceneVisits.score == 0?true:false} />
                                                     <label htmlFor="bad"> 很不满意</label>
                                                 </li>
                                             </ul>
                                         </div>
                                         <div className="midDivTop">
                                             <span>您的宝贵建议: </span>&nbsp;&nbsp;
-                                            <textarea className="suggessMsg"></textarea>
+                                            <textarea className="suggessMsg" value={this.state.sceneVisits.suggest} readOnly></textarea>
                                         </div>
                                     </div>
                                 </td>

@@ -25,6 +25,10 @@ const ajaxURLList = {
     get_record_list: "gdApi/get_record_list", //现场记录列表
     get_record_info: "gdApi/get_record_info", //现场记录详细
     get_plan_list: "gdApi/get_plan_list", //获取计划列表
+    add_record: "gdApi/add_record", //添加现场记录
+    get_meeting_list: "gdApi/get_meeting_list", //会议记录列表
+    add_meeting: "gdApi/add_meeting", //添加会议记录
+    get_record_info: "gdApi/get_record_info", //添加会议记录
 }
 
 //定义一个基于Promise的异步任务执行器
