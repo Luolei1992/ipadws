@@ -1,7 +1,7 @@
 import React from 'react';
 import { hashHistory,Link } from "react-router";
 import { Modal, ImagePicker,Toast } from 'antd-mobile';
-import { div2png, readyDo, TableHeads, init} from './templates';
+import { div2png, readyDo, TableHeads, init, GetLocationParam } from './templates';
 import { DrawBoard } from './drawBoard';
 
 const urls = {
@@ -9,18 +9,23 @@ const urls = {
 }
 let canvas;
 let drawBoard;
+let numPlus=0;
+let fileNum = 0;
 export default class NewSurveyHistory extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
             company: "",
+            id:"",
             job: "",
             name: "",
             phone: "",
             email: "",
             remark: "",
+            researchResult:"",
             hasError1: false,
             hasError2: false,
+            title:"",
             meetingTime:'',
             meetingAddress:'',
             companyName:'',
@@ -31,13 +36,47 @@ export default class NewSurveyHistory extends React.Component {
             finishTime:'',
             txt: "",
             files: [],
+            ids:[],
             modal1:false,
             modal2:false,
             modal3:false,
+            modal4:false,
             personLink: [],
             orderList:[],
-            impress:[false,false,false,false],
-            choose:''
+            impress:[true,false,false,false],
+            suggest:"",
+            choose:'',
+            score:3,
+            companyList:{
+                item_list:[]
+            }
+        },
+        this.handleResearchAdd=(res)=>{
+            console.log(res);
+
+            this.setState({
+                id:res.message.id
+            })
+        },
+        this.handleBackPicSrc=(res)=>{
+            console.log(res);
+            let tmpArrIds = this.state.ids;
+            tmpArrIds.push(res.data.id);
+            this.setState({
+                ids: tmpArrIds
+            })
+        },
+        this.handleSrc=(res)=>{
+            console.log(res);
+        },
+        this.handleCompanyListGet=(res)=>{
+            console.log(res);
+            this.setState({
+                companyList:res.data
+            })
+        },
+        this.handleDetailsGet=(res)=>{
+            console.log(res);
         }
     }
 
@@ -47,6 +86,37 @@ export default class NewSurveyHistory extends React.Component {
         readyDo();
         canvas = document.getElementById("canvas");
         drawBoard = new DrawBoard(canvas);  // 初始化
+        // setInterval(() => {
+        //     this.addResearch();
+        // }, 3000);
+        runPromise('get_company_list',{
+            offset:"0",
+            limit:"20"
+        },this.handleCompanyListGet,false,"post");
+    }
+    addResearch=()=>{
+        runPromise('add_project', {
+            "gd_company_id": this.state.id,
+            "add_time":this.state.meetingTime,  //缺少
+            "meetingAddress":"",   //缺少
+            "companyAddress":"",    //缺少
+            "suggest":this.state.suggest,  //缺少
+            "type":"",
+            "score":this.state.score,
+            "content":this.state.researchResult,
+            "file_Path":"",
+            "id":this.state.id,
+            "file_path_title":"",
+            "title": this.state.companyName,
+            "appendix":this.state.ids.join("_"),
+            "linkers":this.state.personLink,
+            "plans":this.state.orderList,
+        }, this.handleResearchAdd, false, "post");
+    }
+    getCompanyDetails=(id)=>{
+        runPromise('get_company_info', {
+            "gd_company_id":id
+        }, this.handleDetailsGet, false, "post");
     }
     clearAll = function () {
         drawBoard.clear();
@@ -55,16 +125,15 @@ export default class NewSurveyHistory extends React.Component {
         drawBoard.cancel();
     }
     save = (e) => {
-        drawBoard.save('only-draw', function (url) {
+        drawBoard.save('only-draw',  (url)=> {
             if (!url) {
                 alert("请先签字后再保存");
                 return;
             } else {
                 console.log(url);
-                // let a = document.getElementById("canvasPic");
-                // let b = document.getElementById("canvasWrap");
-                // b.style.display = "block";
-                // a.src = url;
+                runPromise('upload_image_byw_upy2', {
+                    "arr":url
+                }, this.handleSrc, false, "post");
             }
         });
         // console.log(e.currentTarget.scrollTop);
@@ -82,6 +151,11 @@ export default class NewSurveyHistory extends React.Component {
     }
     onChangeFile = (files, type, index) => {
         console.log(files, type, index);
+        if(type == "add") {
+            runPromise('upload_image_byw_upy2', {
+                "arr":files[files.length-1].url
+            }, this.handleBackPicSrc, false, "post");
+        };
         this.setState({
             files,
         });
@@ -98,11 +172,6 @@ export default class NewSurveyHistory extends React.Component {
         this.setState({
             hasError2: validate.CheckEmail(val).hasError,
             email: val
-        });
-    }
-    onChangeCompany(e) {
-        this.setState({
-            company: e.currentTarget.value
         });
     }
     onChangeJob(e) {
@@ -140,29 +209,9 @@ export default class NewSurveyHistory extends React.Component {
             finishTime: e.currentTarget.value
         });
     }
-    onChangeCompanyName(e) {
-        this.setState({
-            meetingTime: e.currentTarget.value
-        });
-    }
-    onChangeMeetingAddress(e){
-        this.setState({
-            meetingAddress: e.currentTarget.value
-        });
-    }
-    onChangeCompanys(e) {
-        this.setState({
-            companyName: e.currentTarget.value
-        });
-    }
-    onChangeCompanyAddress(e){
-        this.setState({
-            companyAddress: e.currentTarget.value
-        });
-    }
+   
     addPersonLink(){     //添加联系人
         let tmp = {
-            company: this.state.company,
             job: this.state.job,
             name: this.state.name,
             phone: this.state.phone,
@@ -181,7 +230,6 @@ export default class NewSurveyHistory extends React.Component {
             this.onClose('modal1')();
             this.state.personLink.push(tmp);
             this.setState( {
-                company: "",
                 job: "",
                 name: "",
                 phone: "",
@@ -191,8 +239,9 @@ export default class NewSurveyHistory extends React.Component {
         };
     }
     addOrderMsg(){       //下一任行动和计划
+        ++numPlus;
         let lis = {
-            order:this.state.order,
+            order: numPlus,
             things:this.state.things,
             duty:this.state.duty,
             finishTime:this.state.finishTime
@@ -220,7 +269,8 @@ export default class NewSurveyHistory extends React.Component {
         impress[idx] = true;
         this.setState({
             impress: impress,
-            choose:idx
+            choose:idx,
+            score:idx==0?3:idx==1?2:idx==2?1:0
         })
     }
     render(){
@@ -248,13 +298,16 @@ export default class NewSurveyHistory extends React.Component {
                     }}><img src='' id="canvasPic"/></div> */}
                     {/* <button id="download">下载PDF</button> */}
                     <div className="recordMain">
-                        <h2 style={{letterSpacing:"1px",marginTop:"0.8rem"}}>上海泰宇信息技术有限公司</h2>
-                        <p style={{textAlign:"center"}}>
-                            文件编号: 54648566565441
-                            <span style={{ padding: "0 15px" }}></span>
+                        {/* <h2 style={{letterSpacing:"1px",marginTop:"0.8rem"}}> */}
+                            {/* 上海泰宇信息技术有限公司 */}
+                            {/* <input type="text" style={{ border: "0 none", borderBottom: "1px solid #ccc" }} autoFocus/> */}
+                        {/* </h2> */}
+                        {/* <p style={{textAlign:"center"}}> */}
+                            {/* 文件编号: 54648566565441 */}
+                            {/* <span style={{ padding: "0 15px" }}></span> */}
                             {/* 起止时间: <input type="text"/>
                             <span style={{ padding: "0 15px" }}></span> */}
-                        </p>
+                        {/* </p> */}
                         <div className="tableDetails">
                             <table className="topTable">
                                 <tr>
@@ -263,29 +316,64 @@ export default class NewSurveyHistory extends React.Component {
                                 <tr>
                                     <th className="darkbg">公司名称</th>
                                     <td className="lightbg">
-                                        <input 
+                                        {/* <input 
                                             type="text" 
                                             className="surveyIpt" 
-                                            value={this.state.meetingTime} 
-                                            onChange={(e)=>{this.onChangeCompanyName(e)}} 
-                                        /></td>
+                                            readOnly
+                                            value={this.state.companyName} 
+                                            onChange={(e) => { this.setState({ companyName:e.currentTarget.value})}} 
+                                        /> */}
+                                        {this.state.company}
+                                        <i onClick={this.showModal('modal4')} className="iconfont icon-jia" style={{float:"right",fontSize:"28px",marginTop:"2px"}}></i>
+                                    </td>
                                     <th className="darkbg">成立时间</th>
                                     <td className="lightbg">
                                         <input 
                                         type="text" 
                                         className="surveyIpt" 
-                                        value={this.state.meetingAddress}
-                                        onChange={(e) => { this.onChangeMeetingAddress(e) }}                                         
+                                        value={this.state.meetingTime}
+                                        onChange={(e) => { this.setState({ meetingTime: e.currentTarget.value }) }}                                     
                                     /></td>
                                 </tr>
+                                <Modal
+                                    visible={this.state.modal4}
+                                    transparent
+                                    maskClosable={true}
+                                    onClose={this.onClose('modal4')}
+                                    className="personalLinkWrap"
+                                >
+                                    <div className="personalLink" style={{color:"#333"}}>
+                                        <h4 style={{fontSize:"22px",marginBottom:"8px"}}>选择公司名称</h4>
+                                        <ul>
+                                            {
+                                                this.state.companyList.item_list.map((value)=>(
+                                                    <li style={{
+                                                            borderBottom:"1px solid #ccc",
+                                                            height:"0.6rem",
+                                                            lineHeight:"0.6rem"
+                                                        }}
+                                                        onClick={(e) => { 
+                                                            this.setState({ 
+                                                                company: e.currentTarget.innerHTML,
+                                                                id:value.id
+                                                            }); 
+                                                            this.onClose('modal4')();
+                                                            this.getCompanyDetails(value.id);
+                                                        }}
+                                                    >{value.company_name}</li>
+                                                ))
+                                            }
+                                        </ul>
+                                    </div>
+                                </Modal>
                                 <tr>
                                     <th className="darkbg">公司地址</th>
                                     <td className="lightbg">
                                         <input 
                                         type="text" 
                                         className="surveyIpt" 
-                                        value={this.state.companyName} 
-                                        onChange={(e) => { this.onChangeCompanys(e) }} 
+                                        value={this.state.meetingAddress} 
+                                        onChange={(e) => { this.setState({ meetingAddress: e.currentTarget.value }) }}
                                     /></td>
                                     <th className="darkbg">公司网址</th>
                                     <td className="lightbg">
@@ -293,7 +381,7 @@ export default class NewSurveyHistory extends React.Component {
                                         type="text" 
                                         className="surveyIpt" 
                                         value={this.state.companyAddress} 
-                                            onChange={(e) => { this.onChangeCompanyAddress(e) }}                                         
+                                        onChange={(e) => { this.setState({ companyAddress: e.currentTarget.value }) }}                                      
                                     /></td>
                                 </tr>
                             </table>
@@ -396,7 +484,9 @@ export default class NewSurveyHistory extends React.Component {
                                 <tr >
                                     <td colSpan="4">
                                         <div style={{overflow:"hidden"}}>
-                                            <textarea className="allBox textareaPub" id="allBox"></textarea>
+                                            <textarea className="allBox textareaPub" id="allBox"
+                                                onChange={(e) => { this.setState({ researchResult: e.currentTarget.value }) }}     
+                                            ></textarea>
                                         </div>
                                         <div className="surveyUpload">
                                             <div className="staticUpload">
@@ -558,7 +648,8 @@ export default class NewSurveyHistory extends React.Component {
                                                     className="allBox textareaPub" 
                                                     id="suggest" 
                                                     style={{float:"left",width:"80%",padding:"2px 10px"}}
-                                                >{this.state.suggess}</textarea>
+                                                    onChange={(e) => { this.setState({ suggest: e.currentTarget.value }) }} 
+                                                ></textarea>
                                             </div>
                                         </div>
                                     </td>
@@ -578,13 +669,13 @@ export default class NewSurveyHistory extends React.Component {
                                                     <span>日期：</span>
                                                     <ul>
                                                         <li>
-                                                            <span>年</span>
+                                                            {/* <span>年</span> */}
                                                         </li>
                                                         <li>
-                                                            <span>月</span>
+                                                            {/* <span>月</span> */}
                                                         </li>
                                                         <li>
-                                                            <span>日</span>
+                                                            {/* <span>日</span> */}
                                                         </li>
                                                     </ul>
                                                 </div>

@@ -14,40 +14,40 @@ export default class MeetingList extends React.Component {
                 item_list:[]
             }
         },
-            this.handleMeetingListGet = (res) => {
-                console.log(res);
-                res = {
-                    "success": true,
-                    "data": {
-                        "item_list": [
-                            {
-                                "id": "1",
-                                "gd_company_id": "120",
-                                "start_time": "2018-02-11 13:00:00",
-                                "end_time": "2018-02-11 14:00:00",
-                                "address": "杭州滨江",
-                                "title": "现场记录标题",
-                                "master_name": "测试人员",
-                                "recorder_name": null
-                            },
-                            {
-                                "id": "2",
-                                "gd_company_id": "120",
-                                "start_time": "2018-02-11 13:00:00",
-                                "end_time": "2018-02-11 14:00:00",
-                                "address": "杭州滨江48",
-                                "title": "现场记录标题84",
-                                "master_name": "测试人员88",
-                                "recorder_name": null
-                            }
-                        ],
-                        "total_count": "1"
-                    }
+        this.handleMeetingListGet = (res) => {
+            console.log(res);
+            res = {
+                "success": true,
+                "data": {
+                    "item_list": [
+                        {
+                            "id": "1",
+                            "gd_company_id": "120",
+                            "start_time": "2018-02-11 13:00:00",
+                            "end_time": "2018-02-11 14:00:00",
+                            "address": "杭州滨江",
+                            "title": "现场记录标题",
+                            "master_name": "测试人员",
+                            "recorder_name": null
+                        },
+                        {
+                            "id": "2",
+                            "gd_company_id": "120",
+                            "start_time": "2018-02-11 13:00:00",
+                            "end_time": "2018-02-11 14:00:00",
+                            "address": "杭州滨江48",
+                            "title": "现场记录标题84",
+                            "master_name": "测试人员88",
+                            "recorder_name": null
+                        }
+                    ],
+                    "total_count": "1"
                 }
-                this.setState({
-                    meetingList:res.data
-                })
             }
+            this.setState({
+                meetingList:res.data
+            })
+        }
     }
     componentDidMount() {
         readyDo();
