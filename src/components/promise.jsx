@@ -33,6 +33,7 @@ const ajaxURLList = {
     upload_image_byw_upy2: "upload/upload_image_byw_upy2", //base64文件上传
     get_company_list: "gdApi/get_company_list", //获取公司列表
     get_company_info: "gdApi/get_company_info", //获取公司详细
+    get_user_info: "gdApi/get_user_info", //获取联系人信息
 }
 
 //定义一个基于Promise的异步任务执行器

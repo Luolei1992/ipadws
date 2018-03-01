@@ -159,61 +159,64 @@ export const Customs = (props) =>(         //我的客户信息展示
 
 export const Quality = (props) => (
     <ul className="details">
-        <li className="fullWidth">
-            <div className="top">
-                <ul className="fn-left">
-                    <li><i></i></li>
-                    <li>张兰</li>
-                    <li style={{ color: "#ADADAD" }}>杭州画客科技有限公司</li>
-                    <li style={{ color: "#ADADAD" }}>总经理</li>
-                </ul>
-                <span className="slideDown iconfont icon-tubiao-" onClick={() => props.show(props.index, props.isShow)}></span>
-            </div>
-            <div className="btm">
-                <div className="btmLeft">
-                    <h4>不满意</h4>
-                    <p>设计师迟到，态度不好</p>
-                </div>
-                <div className="btmCenter">
-                    <span className="dataNum" style={{ color: "red" }}>5</span>
-                    <div className="explain">
-                        <p className="end" style={{ color: "red" }}>天到期</p>
-                        <p className="prey" style={{ color: "#ADADAD" }}>02-03</p>
+        {
+            props.visitLis.map((value,idx)=>(
+                <li className="fullWidth" id={"visit?" + idx + "F"}>
+                    <div className="top">
+                        <ul className="fn-left">
+                            <li><i></i></li>
+                            <li>{value.user_name}</li>
+                            <li style={{ color: "#ADADAD" ,margin:"0 5px"}}>{value.company_name}</li>
+                            <li style={{ color: "#ADADAD" }}>{value.job_name}</li>
+                        </ul>
+                        <span className="slideDown iconfont icon-tubiao-" onClick={() => props.show(idx)}></span>
                     </div>
-                </div>
-                <div className="btmRight">
-                    <button onClick={() => { props.changeAlert() }}>回访结果</button>
-                </div>
-            </div>
-            <div className="attach" style={{ display: props.isShow ? "block" : "none" }}>
-                <div className="attachTop">
-                    手机：15856595686<span></span>邮箱：13565854858@qq.com<span></span>微信：15848486845<span></span>QQ：11452565684
-                    <p>2014年涣发大号书法家爱大家撒，上大街上的，上的那时间段内啥</p>
-                </div>
-                <div className="attachList">
-                    <ul className="attachListUl">
-                        <li>
-                            <div style={{ overflow: "hidden" }}>
-                                <span className="attachListLeft"><i className="iconfont icon-sanjiao1"></i>满意 <i className="date">12-03</i></span>
-                                <span className="attachListRight">12月</span>
+                    <div className="btm">
+                        <div className="btmLeft">
+                            <h4>{value.score==2?"满意":value.score==1?"一般":"不满意"}</h4>
+                            <p>{value.content}</p>
+                        </div>
+                        <div className="btmCenter">
+                            <span className="dataNum" style={{ color: "red" }}>{value.time_least}</span>
+                            <div className="explain">
+                                <p className="end" style={{ color: "red" }}>天到期</p>
+                                <p className="prey" style={{ color: "#ADADAD" }}>{(value.out_time + '').split(" ")[0].split("-").slice(1).join("-")}</p>
                             </div>
-                            <p>附加信息</p>
-                            <ul>
+                        </div>
+                        <div className="btmRight">
+                            <button onClick={() => { props.changeAlert() }}>回访结果</button>
+                        </div>
+                    </div>
+                    <div className="attach" style={{ display: props.isShow == idx ? "block" : "none" }}>
+                        <div className="attachTop">
+                            手机：{value.customer_mobile}<span></span>邮箱：{value.customer_email}
+                            <p>{value.remark}</p>
+                        </div>
+                        <div className="attachList">
+                            <ul className="attachListUl">
                                 <li>
-                                    <img src={urls.addPic} />
-                                </li>
-                                <li>
-                                    <img src={urls.addPic} />
-                                </li>
-                                <li>
-                                    <img src={urls.addPic} />
+                                    <div style={{ overflow: "hidden" }}>
+                                        <span className="attachListLeft"><i className="iconfont icon-sanjiao1"></i>{value.score == 2 ? "满意" : value.score == 1 ? "一般" : "不满意"} <i className="date">{(value.add_time + '').split(" ")[0].split("-").slice(1).join("-")}</i></span>
+                                        <span className="attachListRight">{(value.add_time + '').split(" ")[0].split("-")[1]}月</span>
+                                    </div>
+                                    <p>附加信息</p>
+                                    <ul>
+                                        {
+                                            value.appendixs.map((value)=>(
+                                                <li style={{width:"3.5rem",height:"2.8rem"}}>
+                                                    <img src={value.path} style={{width:"100%"}}/>
+                                                </li>
+                                            ))
+                                        }
+                                    </ul>
                                 </li>
                             </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </li>
+                        </div>
+                    </div>
+                </li>
+            ))
+        }
+        
     </ul>
 )
 // export const div2png =(dom, name) => {         //html转图片

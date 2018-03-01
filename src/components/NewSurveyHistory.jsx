@@ -77,6 +77,11 @@ export default class NewSurveyHistory extends React.Component {
         },
         this.handleDetailsGet=(res)=>{
             console.log(res);
+            this.setState({
+                meetingTime:res.data.start_time.split(" ")[0],
+                meetingAddress: res.data.address,
+                companyAddress:res.data.url
+            })
         }
     }
 
@@ -331,6 +336,7 @@ export default class NewSurveyHistory extends React.Component {
                                         <input 
                                         type="text" 
                                         className="surveyIpt" 
+                                        readOnly
                                         value={this.state.meetingTime}
                                         onChange={(e) => { this.setState({ meetingTime: e.currentTarget.value }) }}                                     
                                     /></td>
@@ -373,6 +379,7 @@ export default class NewSurveyHistory extends React.Component {
                                         type="text" 
                                         className="surveyIpt" 
                                         value={this.state.meetingAddress} 
+                                        readOnly
                                         onChange={(e) => { this.setState({ meetingAddress: e.currentTarget.value }) }}
                                     /></td>
                                     <th className="darkbg">公司网址</th>
@@ -380,6 +387,7 @@ export default class NewSurveyHistory extends React.Component {
                                         <input 
                                         type="text" 
                                         className="surveyIpt" 
+                                        readOnly
                                         value={this.state.companyAddress} 
                                         onChange={(e) => { this.setState({ companyAddress: e.currentTarget.value }) }}                                      
                                     /></td>
