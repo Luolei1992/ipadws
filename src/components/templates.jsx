@@ -219,107 +219,72 @@ export const Quality = (props) => (
         
     </ul>
 )
-// export const div2png =(dom, name) => {         //html转图片
-    // var width = dom.offsetWidth;  // 获取(原生）dom 宽度
-    // var height = dom.offsetHeight; // 获取(原生）dom 高
-    // var offsetTop = dom.offsetTop;  //元素距离顶部的偏移量
 
-    // var getPixelRatio = function (context) {
-    //     var backingStore = context.backingStorePixelRatio ||
-    //         context.webkitBackingStorePixelRatio ||
-    //         context.mozBackingStorePixelRatio ||
-    //         context.msBackingStorePixelRatio ||
-    //         context.oBackingStorePixelRatio ||
-    //         context.backingStorePixelRatio || 1;
-    //     return (window.devicePixelRatio || 1) / backingStore;
-    // };
+// export const div2png = (dom, name) => {
+//     html2canvas(dom, {
+//         onrendered: function (canvas) {
+//             canvas.id = "mycanvas";
+//             document.body.appendChild(canvas);
 
-    // var canvas = document.createElement('canvas');  //创建canvas 对象
-    // document.body.appendChild(canvas);
-    // canvas.id = "mycanvas";
-    // var newCanvas = document.getElementById("mycanvas");
-    // var type = "png";
-    // var context = canvas.getContext('2d');
-    // // var ratio = getPixelRatio(context);    
-    // // var scaleBy = 3;  //获取像素密度的方法 (也可以采用自定义缩放比例)
-    // // canvas.width = width * scaleBy;   //这里 由于绘制的dom 为固定宽度，居中，所以没有偏移
-    // // canvas.height = (height + offsetTop) * scaleBy;  // 注意高度问题，由于顶部有个距离所以要加上顶部的距离，解决图像高度偏移问题
-    // // context.scale(scaleBy, scaleBy);
+//             var newCanvas = document.getElementById("mycanvas");
+//             var type = "png";
+//             var imgData = newCanvas.toDataURL(type);
+//             var _fixType = function (type) {
+//                 type = type.toLowerCase().replace(/jpg/i, 'jpeg');
+//                 var r = type.match(/png|jpeg|bmp|gif/)[0];
+//                 return 'image/' + r;
+//             };
+//             runPromise('upload_image_byw_upy2', {
+//                 "arr": imgData
+//             }, (res) => {
+//                 alert(res.data.path);
+//                 download(res.data.path);
+//             }, false, "post");
+//             // imgData = imgData.replace(_fixType(type), 'image/octet-stream');
+            
+//             // var saveFile = function (data, filename) {
+//             //     var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+//             //     save_link.href = data;
+//             //     save_link.download = filename;
 
-    // var opts = {
-    //     allowTaint: true,//允许加载跨域的图片
-    //     tainttest: true, //检测每张图片都已经加载完成
-    //     scale: 3, // 添加的scale 参数
-    //     canvas: canvas, //自定义 canvas
-    //     logging: true, //日志开关，发布的时候记得改成false
-    //     width: width, //dom 原始宽度
-    //     height: height //dom 原始高度
-    // };
-    // html2canvas(dom, opts).then(function (canvas) {
-    //     var body = document.getElementsByTagName("body");
-    //     body[0].appendChild(canvas);
-    //     var imgData = canvas.toDataURL(type);
-    //     console.log(imgData);
-    //     // var _fixType = function (type) {
-    //     //     type = type.toLowerCase().replace(/jpg/i, 'jpeg');
-    //     //     var r = type.match(/png|jpeg|bmp|gif/)[0];
-    //     //     return 'image/' + r;
-    //     // };
-    //     // imgData = imgData.replace(_fixType(type), 'image/octet-stream');
-    //     // var saveFile = function (data, filename) {
-    //     //     var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
-    //     //     save_link.href = data;
-    //     //     save_link.download = filename;
-    //     //     var event = document.createEvent('MouseEvents');
-    //     //     event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-    //     //     save_link.dispatchEvent(event);
-    //     // };
-    //     // // 下载后的问题名
-    //     // var filename = name + '_' + (new Date()).getTime() + '.' + type;
-    //     // // download
-    //     // saveFile(imgData, filename);
-    //     //   $("#mycanvas").remove();
-    //     newCanvas.remove();
-    // });
+//             //     var event = document.createEvent('MouseEvents');
+//             //     event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+//             //     save_link.dispatchEvent(event);
+//             // };
+//             // // 下载后的问题名
+//             // var filename = name + '_' + (new Date()).getTime() + '.' + type;
+//             // // download
+//             // saveFile(imgData, filename);
+//             // //   $("#mycanvas").remove();
+//             // newCanvas.remove();
+//         },
+//         useCORS: true
+//     });
 // }
+
 // export const readyDo = () => {
-//     let downloadPng = document.getElementById("downloadPng");
-//     let fromHTMLtestdiv = document.getElementById("fromHTMLtestdiv");
-//     let download = document.getElementById("download");
-//     downloadPng.onclick = function () {
-//         div2png(fromHTMLtestdiv, 'png');
+//     var filename = document.getElementById("filename");
+//     // var filename={};
+//     var btnGenerate = document.getElementById("btnGenerate");
+//     var downloadPng = document.getElementById("downloadPng");
+//     let dom = document.getElementById("fromHTMLtestdiv");
+//     downloadPng.onclick =  () => {
+//         div2png(fromHTMLtestdiv, 'png')
 //     }
-    // download.onclick = function () {
-    //     html2canvas(fromHTMLtestdiv, {
-    //         onrendered: function (canvas) {
-    //             var imgData = canvas.toDataURL('image/png');
-    //             var imgWidth = 210;
-    //             var pageHeight = 295;
-    //             var imgHeight = canvas.height * imgWidth / canvas.width;
-    //             var heightLeft = imgHeight;
-
-    //             var doc = new jsPDF('p', 'mm');
-    //             var position = 0;
-
-    //             doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-    //             heightLeft -= pageHeight;
-
-    //             while (heightLeft >= 0) {
-    //                 position = heightLeft - imgHeight;
-    //                 doc.addPage();
-    //                 doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-    //                 heightLeft -= pageHeight;
-    //             }
-    //             doc.save('sample-file.pdf');
-    //         },
-    //         useCORS: true
-    //     });
-    // };
 // }
+function download(src) {
+    var $a = document.createElement('a');
+    $a.setAttribute("href", src);
+    $a.setAttribute("download", "");
+
+    var evObj = document.createEvent('MouseEvents');
+    evObj.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, true, false, 0, null);
+    $a.dispatchEvent(evObj);
+};
 
 export const readyDo = () => {
     // var base64text = document.getElementById("base64text");
-    var filename = document.getElementById("filename");
+    // var filename = document.getElementById("filename");
     // var filename={};
     var btnGenerate = document.getElementById("btnGenerate");
     var downloadPng = document.getElementById("downloadPng");
@@ -338,9 +303,9 @@ export const readyDo = () => {
         "image/svg+xml": "svg"
     };
     //文件名默认当前时间戳  
-    filename.value = Date.now();
+    // filename.value = Date.now();
     //检测点击下载按钮  
-    btnGenerate.addEventListener("click", function (e) {
+    downloadPng.addEventListener("click", function (e) {
         var width = dom.offsetWidth;  // 获取(原生）dom 宽度
         var height = dom.offsetHeight; // 获取(原生）dom 高
         var offsetTop = dom.offsetTop;  //元素距离顶部的偏移量
@@ -379,7 +344,16 @@ export const readyDo = () => {
         html2canvas(dom, opts).then(function (canvas) {
             var body = document.getElementsByTagName("body");
             body[0].appendChild(canvas);
+            
             var base64text = canvas.toDataURL(type);
+            
+            runPromise('upload_image_byw_upy2', {
+                "arr": base64text
+            }, (res) => {
+                alert(res.data.path);
+                download(res.data.path);
+                newCanvas.remove(); 
+            }, false, "post");
             // console.log(imgData);
             // var _fixType = function (type) {
             //     type = type.toLowerCase().replace(/jpg/i, 'jpeg');
@@ -401,19 +375,19 @@ export const readyDo = () => {
             // saveFile(imgData, filename);
             //   $("#mycanvas").remove();
 
-            var fname = filename.value + "." + MIME[getContentType(base64text)];
-            var blob = getBlob(base64text);
-            console.log(blob);
-            if (navigator.msSaveBlob) {
-                navigator.msSaveBlob(blob, fname);
-                newCanvas.remove();                
-            }
-            else {
-                downloadPng.download = fname;
-                downloadPng.href = URL.createObjectURL(blob);
-                downloadPng.click();
-                newCanvas.remove();                
-            }
+            // var fname = filename.value + "." + MIME[getContentType(base64text)];
+            // var blob = getBlob(base64text);
+            // console.log(blob,1111255);
+            // if (navigator.msSaveBlob) {
+            //     navigator.msSaveBlob(blob, fname);
+            //     newCanvas.remove();                
+            // }
+            // else {
+            //     downloadPng.download = fname;
+            //     downloadPng.href = URL.createObjectURL(blob);
+            //     downloadPng.click();
+            //     newCanvas.remove();                
+            // }
         });
         
     });
@@ -472,6 +446,44 @@ export const readyDo = () => {
         return blob;
     }  
 } 
+export const fileApi = () =>{
+    var choose = document.getElementById('chooseUploadFile');
+    FileAPI.event.on(choose, 'change', function (evt) {
+        var files = FileAPI.getFiles(evt); // Retrieve file list
+        FileAPI.filterFiles(files, function (file, info/**Object*/) {
+            if (/^image/.test(file.type)) {
+                if (file.size > 10 * FileAPI.MB) {
+                    // alertUploadMsg("文件大小限制在10M以内！");
+                    return false;
+                };
+                return true;
+            } else {
+                return false;
+            };
+        }, function (files/**Array*/, rejected/**Array*/) {
+            console.log(files);
+            var uploadFile = files[0];
+            console.log(uploadFile);
+            
+            // if (files.length) {
+            //     // Uploading Files
+            //     FileAPI.upload({
+            //         url: 'https://www.huakewang.com/upload/upload_images_for_mobile',
+            //         files: {
+            //             Filedata: uploadFile
+            //         },
+            //         complete: function (err, xhr) {
+            //             var upfileFilePath = (JSON.parse(xhr.responseText));
+            //             console.log(upfileFilePath);
+            //             let a = document.getElementById("imgcc");
+            //             a.src="https://huakewang.b0.upaiyun.com/2018/03/01/20180301155328260299.jpg!160x115";
+            //             // a.src = "data:image/png;base64,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";
+            //         }
+            //     });
+            // }
+        });
+    });
+}
 export const init = (textarea) => {
     var observe;
     if (window.attachEvent) {

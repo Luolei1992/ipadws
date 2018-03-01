@@ -246,7 +246,7 @@ export default class SceneVisit extends React.Component {
                     isHide={true}
                 ></TableHeads>
                 <button id="btnGenerate">下载图片</button>
-                <a id="downloadPng"></a>    <input id="filename" style={{ display: "none" }} />
+                <a id="downloadPng"></a><input id="filename" style={{ display: "none" }} />
                 <div className="recordMain">
                     <h2>现场回访记录</h2>
                     <div className="tableDetails">
@@ -474,7 +474,7 @@ export default class SceneVisit extends React.Component {
                             <tr>
                                 <td colSpan="4" className="signatureTxt">
                                     <div className="suggess">
-                                        <canvas id="canvas" width="768" height="150"></canvas>
+                                        <canvas id="canvas" width="1536" height="300"></canvas>
                                         <div className="signature" style={{ position: "relative", zIndex: "100" }}>
                                             <span style={{ backgroundColor: "#fff" }}>顾客/客户(签字): </span>
                                         </div>
