@@ -57,10 +57,17 @@ export default class NewSurveyHistory extends React.Component {
         },
         this.handleResearchAdd=(res)=>{
             console.log(res);
-
-            this.setState({
-                id:res.message.id
-            })
+            if(res.success) {
+                this.setState({
+                    id: res.message.id
+                })
+            }else{
+                if (res.message == '公司id不能为空'){
+                    // Toast.info("请先选择公司", 2, null, false);
+                    alert("请先选择公司名称");
+                }
+            }
+            
         },
         this.handleBackPicSrc=(res)=>{
             console.log(res);
@@ -86,22 +93,25 @@ export default class NewSurveyHistory extends React.Component {
                 meetingAddress: res.data.address,
                 companyAddress:res.data.url
             })
+        },
+        this.saveProject=(res)=>{
+            console.log(res);
         }
     }
 
     componentDidMount () {
         init('allBox');
         init('suggest');
-        readyDo();
+        readyDo(this.alerts);
         canvas = document.getElementById("canvas");
         drawBoard = new DrawBoard(canvas);  // 初始化
-        // setInterval(() => {
-        //     this.addResearch();
-        // }, 3000);
+        setTimeout(() => {
+            this.addResearch();
+        }, 2000);
         runPromise('get_company_list',{
             offset:"0",
             limit:"20"
-        },this.handleCompanyListGet,false,"post");
+        },this.handleCompanyListGet,true,"post");
     }
     addResearch=()=>{
         runPromise('add_project', {
@@ -111,24 +121,31 @@ export default class NewSurveyHistory extends React.Component {
             "score":this.state.score,
             "content":this.state.researchResult,
             "file_Path":"",
-            "id":this.state.id,
+            "project_id":this.state.id,
             "file_path_title":"",
             "title": this.state.companyName,
             "appendix":this.state.ids.join("_"),
             "linkers":this.state.personLink,
             "plans":this.state.orderList,
-        }, this.handleResearchAdd, false, "post");
+        }, this.handleResearchAdd, true, "post");
     }
     getCompanyDetails=(id)=>{
         runPromise('get_company_info', {
             "gd_company_id":id
-        }, this.handleDetailsGet, false, "post");
+        }, this.handleDetailsGet, true, "post");
     }
     clearAll = function () {
         drawBoard.clear();
     }
     cancelLast = function () {
         drawBoard.cancel();
+    }
+    alerts = (a) =>{
+        runPromise('sign_up_document',{
+            action_type:"project",
+            action_id:this.state.id,
+            signed_file_path:a
+        },this.saveProject,true,"post");
     }
     save = (e) => {
         drawBoard.save('only-draw',  (url)=> {
@@ -277,14 +294,6 @@ export default class NewSurveyHistory extends React.Component {
             var dataURL = reader.result;
             // 下面逻辑处理
             ++uploadFiles;
-            // runPromise('upload_image_byw_upy2', {
-            //     "arr": dataURL
-            // }, (res) => {
-            //     arrIds.push(res.data.id);
-            //     this.setState({
-            //         ids:arrIds
-            //     })
-            // }, false, "post");
             let a = document.getElementById("upload" + uploadFiles);
             console.log(a);
             a.src=dataURL;

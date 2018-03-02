@@ -18,11 +18,12 @@ export default class MyCustom extends React.Component {
         },
         this.handleAddMission=(res)=>{
             console.log(res);
+            location.reload();
         }
     }
     componentDidMount() {
         let newflag = [false, false, false, false, false, false];
-        let number = window.location.href.split("tab=")[1].slice(0, 1);
+        let number = window.location.href.split("tab=")[1].slice(0, 1)-0;
         newflag[number] = true;
         this.setState({
             flag: newflag
@@ -31,10 +32,10 @@ export default class MyCustom extends React.Component {
     addMission = () => {
         runPromise('add_mission', {
             "gd_project_id": GetLocationParam('id') || this.props.state.baseFlagId,
-            "add_time": this.state.happenTime,
+            "start_time": this.state.happenTime,
             "finish_time": this.state.finishTime,
             "content": this.state.content,
-            "rtn_info": this.state.give,
+            "rtn_ifo": this.state.give,
         }, this.handleAddMission, false, "post");
     }
     showModal = key => (e, id) => {
@@ -118,7 +119,7 @@ export default class MyCustom extends React.Component {
                         <li
                             style={this.state.flag[4] ? { borderBottom: "3px solid red" } : { borderBottom: "3px solid transparent" }}
                             onClick={() => { this.handleClickLi(4) }}>
-                            <Link>联系人</Link>
+                            <Link to='/PersonalList?tab=4'>联系人</Link>
                         </li>
                         <li
                             style={this.state.flag[5] ? { borderBottom: "3px solid red" } : { borderBottom: "3px solid transparent" }}
@@ -130,6 +131,7 @@ export default class MyCustom extends React.Component {
                     <div className="addNewList" style={{display:this.state.slideUp?"block":"none"}}>
                         <ul>
                             <li onClick={this.showModal('modal')}>任务</li>
+                            <li onClick={this.showModal('modal')}>联系人</li>
                             <Link to="/scene"><li>回访</li></Link>
                             <Link to="/meeting"><li>纪要</li></Link>
                             <Link to="/quality"><li>验收</li></Link>
@@ -144,7 +146,7 @@ export default class MyCustom extends React.Component {
                         className="personalLinkWrap myCustomModal"
                         footer={[
                             { text: '取消', onPress: () => { console.log('cancle'); this.onClose('modal')(); } },
-                            { text: '确定', onPress: () => { this.onClose('modal')(); this.addMission() } }
+                            { text: '确定', onPress: () => { this.onClose('modal')(); this.addMission(); window.location.href; } }
                         ]}
                     >
                         <div className="personalLink">

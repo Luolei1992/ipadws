@@ -24,10 +24,12 @@ export default class SceneVisit extends React.Component {
             silent: true,
             modal: true,            
             modal2: false,
+            id:"",
             order: "",
             things: "",
             duty: "",
             finishTime: "",
+            currentCompany:"",
             orderList:[],
             checkArr1: [true, false, false],
             checkArr2: [true, false, false],
@@ -60,26 +62,43 @@ export default class SceneVisit extends React.Component {
         },
         this.handleSceneVisitGet = (res) => {
             console.log(res);
-            
+            if(res.success) {
+                this.setState({
+                    id:res.message.id
+                })
+            }
+        },
+        this.saveProject = (res) => {
+            console.log(res);
         }
     }
     componentDidMount() {
         init("sceneResult");
         init("sceneNext");
-        readyDo();
+        readyDo(this.alerts);
         canvas = document.getElementById("canvas");
         drawBoard = new DrawBoard(canvas);  // 初始化
-        runPromise('add_record', {
-            "gd_company_id": this.props.state.baseFlagId,
-            "title": this.state.title,
-            "user_ids": this.state.user_ids,
-            "customer_ids": this.state.customer_ids,
-            "content": this.state.content,
-            "suggest": this.state.suggest,
-            "score": this.state.score,
-            "plans": this.state.orderList,
-            "surveys": this.state.surveys
-        }, this.handleSceneVisitGet, false, "post");
+        setTimeout(() => {
+            runPromise('add_record', {
+                "gd_company_id": validate.getCookie('baseId'),
+                "title": this.state.title,
+                "user_ids": this.state.user_ids,
+                "customer_ids": this.state.customer_ids,
+                "content": this.state.content,
+                "suggest": this.state.suggest,
+                "score": this.state.score,
+                "plans": this.state.orderList,
+                "surveys": this.state.surveys,
+                "company_name": this.state.currentCompany
+            }, this.handleSceneVisitGet, false, "post");
+        }, 2000);
+    }
+    alerts = (a) => {
+        runPromise('sign_up_document', {
+            action_type: "record",
+            action_id: this.state.id,
+            signed_file_path: a
+        }, this.saveProject, true, "post");
     }
     clearAll = function () {
         drawBoard.clear();
@@ -245,8 +264,7 @@ export default class SceneVisit extends React.Component {
                     url={urls.wordMsg}
                     isHide={true}
                 ></TableHeads>
-                <button id="btnGenerate">下载图片</button>
-                <a id="downloadPng"></a><input id="filename" style={{ display: "none" }} />
+                <button id="downloadPng">下载图片</button>
                 <div className="recordMain">
                     <h2>现场回访记录</h2>
                     <div className="tableDetails">
@@ -254,13 +272,18 @@ export default class SceneVisit extends React.Component {
                             <tr className="sixToOne">
                                 <td className="darkbg">顾客单位</td>
                                 <td>
-                                    <input type="text" className="qualityIpt" />
+                                    <input type="text" className="qualityIpt" 
+                                        onChange={(e, value) => {
+                                            this.setState({
+                                                currentCompany: e.currentTarget.value
+                                            })
+                                        }}
+                                    />
                                 </td>
                                 <td className="darkbg">回访主题</td>
                                 <td>
                                     <input type="text" className="qualityIpt"
                                         onChange={(e, value) => {
-                                            console.log(e.currentTarget.value);
                                             this.setState({
                                                 title: e.currentTarget.value
                                             })

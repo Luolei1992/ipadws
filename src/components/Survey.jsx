@@ -1,5 +1,6 @@
 import React from 'react';
 import { hashHistory, Link } from "react-router";
+import { Toast } from 'antd-mobile';
 import { TableHeads, Customs } from './templates';
 
 const urls = {
@@ -16,66 +17,13 @@ export default class survey extends React.Component{
         },
         this.handleProjectGet=(res)=>{
             console.log(res);
-            res = {
-                "success": true,
-                "data": {
-                    "item_list": [
-                        {
-                            "id": "1",
-                            "gd_company_id": "120",
-                            "remark": "备注内容太短",
-                            "condition": "条件太多",
-                            "document_id": "V.S.C-H20180208123926000",
-                            "add_time": "2018-02-08 19:39:26",
-                            "start_time": "2018-02-08 19:40:50",
-                            "end_time": "2018-02-28 19:40:52",
-                            "type": "2",
-                            "appendix": "",
-                            "score": null,
-                            "master_id": "67554",
-                            "name": "测试项目",
-                            "contract_no": "HT123",
-                            "file_path": "",
-                            "other_name": "测试项目123",
-                            "file_path_title": "",
-                            "master_name": "张5",       //负责人
-                            "company_name": "广东东源新地物流有限公司",
-                            "path": "https://huakewang.b0.upaiyun.com/2015/02/15/20150215125816452397.jpg",
-                            "user_list": [   //相关人员
-                                {
-                                    "id": "2",
-                                    "is_in_survey": 1,
-                                    "user_id": "67547",
-                                    "username": "13957192040",
-                                    "nick_name": "hkw5719204",
-                                    "real_name": null,
-                                    "email": "oob400@126.com",
-                                    "job_name": "设计师"
-                                },
-                                {
-                                    "id": "25",
-                                    "is_in_survey": 1,
-                                    "user_id": "67599",
-                                    "username": "13954584550",
-                                    "nick_name": "hkw5796204",
-                                    "real_name": null,
-                                    "email": "oob950@163.com",
-                                    "job_name": "前端开发"
-                                }
-                            ],
-                            "visit_back_count": "0",
-                            "meeting_count": "0",
-                            "record_count": "0",
-                            "check_count": "0",
-                            "mission_count": "0"
-                        }
-                    ],
-                    "total_count": "1"
-                }
+            if(res.success){
+                this.setState({
+                    researchHistoryList:res.data
+                })
+            }else{
+                Toast.info(res.message, 2, null, false);
             }
-            this.setState({
-                researchHistoryList:res.data
-            })
         }
     }
     componentDidMount(){

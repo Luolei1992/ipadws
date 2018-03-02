@@ -24,6 +24,7 @@ import MeetingList from './components/MeetingList';
 import QualityList from './components/QualityList';
 import SurveyHistoryStatic from './components/SurveyHistoryStatic';
 import BaseState from './components/BaseState';
+import PersonalList from './components/PersonalList';
 import Test from './components/test';
 
 import 'lib-flexible/flexible';
@@ -44,6 +45,7 @@ ReactDOM.render(
                 <Route path="/visitRecord" component={VisitRecord} />
                 <Route path="/visitLists" component={VisitLists} />
                 <Route path="/meetingList" component={MeetingList} />
+                <Route path="/PersonalList" component={PersonalList} />
                 <Route path="/surveyHistoryStatic" component={SurveyHistoryStatic} />
             </Route>
             <Route path="/meeting" component={Meeting} />

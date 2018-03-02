@@ -24,24 +24,33 @@ export default class Meeting extends React.Component {
             things:"",
             duty:"",
             finishTime:"",
-            orderList:[]
+            orderList:[],
+            id:""
         },
         this.handleMeetingAdd=(res)=>{
             console.log(res , 55);
+            if(res.success){
+                this.setState({
+                    id: res.message.id
+                })
+            }
+        },
+        this.saveProject = (res) => {
+            console.log(res);
         }
     }
     componentDidMount () {
-        readyDo();
+        readyDo(this.alerts);
         init("meetingResult");
         canvas = document.getElementById("canvas");
         drawBoard = new DrawBoard(canvas);  // 初始化
-        // setInterval(() => {
-        //     this.addMeeting();
-        // }, 2000);
+        setTimeout(() => {
+            this.addMeeting();
+        }, 2000);
     }
     addMeeting = () => {
         runPromise('add_meeting', {
-            "gd_company_id": GetLocationParam('id') || this.props.state.baseFlagId,
+            "gd_company_id": GetLocationParam('id') || validate.getCookie("baseId"),
             "title": this.state.meetingTitle,
             "user_ids": this.state.meetingPersonal,
             "copy_to_ids": "",
@@ -98,6 +107,13 @@ export default class Meeting extends React.Component {
             })
         }
     }
+    alerts = (a) => {
+        runPromise('sign_up_document', {
+            action_type: "meeting",
+            action_id: this.state.id,
+            signed_file_path: a
+        }, this.saveProject, true, "post");
+    }
     onChangeThings(e) {
         this.setState({
             things: e.currentTarget.value
@@ -126,10 +142,9 @@ export default class Meeting extends React.Component {
     render(){
         return (
             <div id="fromHTMLtestdiv">
-                <form className="visitRecordWrap">
+                <div className="visitRecordWrap">
                     <TableHeads url={urls.wordMsg} isHide={true}></TableHeads>
-                    <button id="btnGenerate">下载图片</button>
-                    <a id="downloadPng"></a>    <input id="filename" style={{ display: "none" }} />
+                    <button id="downloadPng">下载图片</button>
                     {/* <button id="download">下载PDF</button> */}
                     <div className="recordMain">
                         <h2>会议纪要</h2>
@@ -306,7 +321,7 @@ export default class Meeting extends React.Component {
                             </table>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
         )
     }

@@ -12,7 +12,7 @@ export default class Quality extends React.Component {
     constructor(props) {
         super (props);
         this.state = {
-
+            htName:""
         }
     }
     componentDidMount(){
@@ -50,9 +50,7 @@ export default class Quality extends React.Component {
                             <Link to='/qualityList' style={{ color: "#fff" }}><span>历史验收单</span></Link>
                         </h3>}
                     ></TableHeads>
-                    <button id="btnGenerate">下载图片</button>
-                    <a id="downloadPng"></a>    <input id="filename" style={{ display: "none" }} />
-                    {/* <button id="download">下载PDF</button> */}
+                    <button id="downloadPng">下载图片</button>
                     <div className="qualityWrap">
                         <div className="qualityWrapTop">
                             <h3>浙江中控技术股份有限公司</h3>
@@ -61,7 +59,9 @@ export default class Quality extends React.Component {
                         <table>
                             <tr>
                                 <td>采购合同名称</td>
-                                <td><input type="text" className="qualityIpt" /></td>
+                                <td><input type="text" className="qualityIpt" 
+                                
+                                /></td>
                                 <td>项目合同号</td>
                                 <td><input type="text" className="qualityIpt" /></td>
                             </tr>

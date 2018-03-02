@@ -34,6 +34,10 @@ const ajaxURLList = {
     get_company_list: "gdApi/get_company_list", //获取公司列表
     get_company_info: "gdApi/get_company_info", //获取公司详细
     get_user_info: "gdApi/get_user_info", //获取联系人信息
+    sign_up_document: "gdApi/sign_up_document", //保存为图片文档
+    del_project_linker: "gdApi/del_project_linker", //删除项目联系人
+    get_company_user_list: "gdApi/get_company_user_list", //获取客户公司联系人
+    get_visit_back_simple_list: "gdApi/get_visit_back_simple_list", //回访的简要信息
 }
 
 //定义一个基于Promise的异步任务执行器
@@ -131,4 +135,3 @@ function getCookie(name) {
     let arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
     if (arr != null) return decodeURIComponent(arr[2]); return null;
 };
-

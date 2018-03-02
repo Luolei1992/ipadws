@@ -11,50 +11,55 @@ export default class VisitList extends React.Component {
         super(props);
         this.state = {
             backVisit: {
-                item_list: []
+                item_list: [],
+                project_info: {
+                    master_name:""
+                }
+            },
+            backVisitDetail: {
+
             }
         },
         this.handleBackVisitGet = (res) => {
             console.log(res);
-            res = {
-                "success": true,
-                "data": {
-                    "item_list": [
-                        {
-                            "id": "1",
-                            "title": "现场记录标题",
-                            "score": "2",
-                            "add_time": "2018-02-21 16:34:25"
-                        }
-                    ],
-                    "total_count": "1"
-                }
+            if(res.success) {
+                this.setState({
+                    backVisit: res.data
+                })
             }
-            this.setState({
-                backVisit: res.data
-            })
+        },
+        this.handleVisitDetailGet = (res) => {
+            console.log(res);
+            if(res.success) {
+                this.setState({
+                    backVisitDetail: res.data
+                })
+            }
         }
     }
     componentDidMount() {
-        readyDo();
         runPromise('get_record_list', {
-            "gd_company_id": GetLocationParam('id') || this.props.props.state.baseFlagId,
+            "gd_company_id": GetLocationParam('id') || validate.getCookie('baseId'),
             "offset": "0",
             "limit": "20"
-        }, this.handleBackVisitGet, false, "post");
+        }, this.handleBackVisitGet, true, "post");
+        runPromise('get_visit_back_simple_list', {
+            "gd_company_id": GetLocationParam('id') || validate.getCookie('baseId'),
+            "offset": "0",
+            "limit": "20"
+        }, this.handleVisitDetailGet, true, "post");
     }
     render() {
         return (
             <div id="fromHTMLtestdiv">
                 <form className="visitRecordWrap">
                     <TableHeads url={urls.wordMsg} isHide={false} tag={<h3>走访记录</h3>}></TableHeads>
-                    <button id="btnGenerate">下载图片</button>
-                    <a id="downloadPng"></a>    <input id="filename" style={{ display: "none" }} />
-                    {/* <button id="download">下载PDF</button> */}
                     <div className="recordMain">
                         <h2 style={{ letterSpacing: "1px", marginTop: "0.8rem" }}>上海泰宇公司回访记录</h2>
                         <p style={{ textAlign: "center" }}>
-                            责任设计师:  <span style={{ padding: "0 15px" }}></span>时间: <span style={{ padding: "0 15px" }}></span>回访:
+                            责任设计师: {this.state.backVisitDetail.master_designer_name} <span style={{ padding: "0 15px" }}></span>
+                            {/* 时间: <span style={{ padding: "0 15px" }}></span> */}
+                            回访: {'共' + this.state.backVisitDetail.total_count + '次回访' + ' '} {this.state.backVisitDetail.low_score_total+'次不满意'}
                         </p>
                         <div className="visitLists">
                             <ul>

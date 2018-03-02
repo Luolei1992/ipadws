@@ -160,7 +160,8 @@ export const Customs = (props) =>(         //我的客户信息展示
 export const Quality = (props) => (
     <ul className="details">
         {
-            props.visitLis.map((value,idx)=>(
+            props.visitLis.map((value,idx)=>{ 
+                return(
                 <li className="fullWidth" id={"visit?" + idx + "F"}>
                     <div className="top">
                         <ul className="fn-left">
@@ -177,14 +178,25 @@ export const Quality = (props) => (
                             <p>{value.content}</p>
                         </div>
                         <div className="btmCenter">
-                            <span className="dataNum" style={{ color: "red" }}>{value.time_least}</span>
-                            <div className="explain">
-                                <p className="end" style={{ color: "red" }}>天到期</p>
-                                <p className="prey" style={{ color: "#ADADAD" }}>{(value.out_time + '').split(" ")[0].split("-").slice(1).join("-")}</p>
-                            </div>
+                        {
+                                value.time_least > 0 ? <div>
+                                    <span className="dataNum" style={{ color: "red" }}>{value.time_least}</span>
+                                    <div className="explain">
+                                        <p className="end" style={{ color: "red" }}>天到期</p>
+                                        <p className="prey" style={{ color: "#ADADAD" }}>{(value.out_time + '').split(" ")[0].split("-").slice(1).join("-")}</p>
+                                    </div>
+                                </div> : <div className="explain"><p className="end" style={{ color: "red",fontSize:"18px" }}>逾期{Math.abs(value.time_least)}天</p></div>
+                        }
+                            
                         </div>
                         <div className="btmRight">
-                            <button onClick={() => { props.changeAlert() }}>回访结果</button>
+                            {
+                                value.time_least > 7 ? 
+                                    <button style={{ backgroundColor:"#E6E6E6",color:"#333"}} onClick={() => { props.changeAlert(value.gd_company_id) }}>回访结果</button> :
+                                    value.time_least>0 && value.time_least<7 ?
+                                    <button style={{ backgroundColor:"#0DA0F4"}} onClick={() => { props.changeAlert(value.gd_company_id) }}>回访结果</button>:
+                                    <button onClick={() => { props.changeAlert(value.gd_company_id) }}>回访结果</button>
+                            }
                         </div>
                     </div>
                     <div className="attach" style={{ display: props.isShow == idx ? "block" : "none" }}>
@@ -214,7 +226,7 @@ export const Quality = (props) => (
                         </div>
                     </div>
                 </li>
-            ))
+            )})
         }
         
     </ul>
@@ -282,7 +294,7 @@ function download(src) {
     $a.dispatchEvent(evObj);
 };
 
-export const readyDo = () => {
+export const readyDo = (a) => {
     // var base64text = document.getElementById("base64text");
     // var filename = document.getElementById("filename");
     // var filename={};
@@ -350,9 +362,14 @@ export const readyDo = () => {
             runPromise('upload_image_byw_upy2', {
                 "arr": base64text
             }, (res) => {
-                alert(res.data.path);
-                download(res.data.path);
-                newCanvas.remove(); 
+                if(res.success) {
+                    // alert(res.data.path);
+                    if(a) {
+                        a(res.data.path);
+                    }
+                    download(res.data.path);
+                    newCanvas.remove();
+                }
             }, false, "post");
             // console.log(imgData);
             // var _fixType = function (type) {

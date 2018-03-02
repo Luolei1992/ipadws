@@ -4,7 +4,7 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);          //es6新的属性，用于类继承
         this.state = {
-            baseFlagId:"120"
+            baseFlagId:""
         };
     }
     setBaseId=(id)=>{
