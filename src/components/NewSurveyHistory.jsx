@@ -14,6 +14,7 @@ let numPlus=0;
 let fileNum = 0;
 let uploadFiles=0;
 let arrIds = [];
+let interval;
 export default class NewSurveyHistory extends React.Component {
     constructor (props) {
         super(props);
@@ -100,18 +101,25 @@ export default class NewSurveyHistory extends React.Component {
     }
 
     componentDidMount () {
+        this.props.router.setRouteLeaveHook(
+            this.props.route,
+            this.routerWillLeave
+        )
         init('allBox');
         init('suggest');
         readyDo(this.alerts);
         canvas = document.getElementById("canvas");
         drawBoard = new DrawBoard(canvas);  // 初始化
-        setTimeout(() => {
+        interval=setInterval(() => {
             this.addResearch();
-        }, 2000);
+        }, 30000);
         runPromise('get_company_list',{
             offset:"0",
             limit:"20"
         },this.handleCompanyListGet,true,"post");
+    }
+    routerWillLeave(nextLocation) {
+        clearInterval(interval);
     }
     addResearch=()=>{
         runPromise('add_project', {

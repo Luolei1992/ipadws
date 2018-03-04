@@ -41,7 +41,7 @@ export const GetLocationParam = (name) => {
 export const Customs = (props) =>(         //我的客户信息展示
     <ul className="customDetails">
         {
-            props.dataList.map(function(value){
+            props.dataList.map(function(value,index){
                 return <li>
                     <div className="liWrap">
                         <div className="left fn-left">
@@ -49,7 +49,7 @@ export const Customs = (props) =>(         //我的客户信息展示
                         </div>
                         <div className="mid fn-left">
                             <h3>
-                                <Link to={'/company?tab=0&id=' + value.gd_company_id} onClick={() => { props.setBaseStateFun(value.gd_company_id)}}>
+                                <Link to={'/company?tab=0&id=' + value.gd_company_id} onClick={() => { props.setBaseStateFun(value.gd_company_id,value.company_name,value.id)}}>
                                     {value.company_name}<span>{value.type == 1?"包年项目":value.type==2?"一次性项目":"调研"}</span>
                                 </Link>
                             </h3>
@@ -109,33 +109,33 @@ export const Customs = (props) =>(         //我的客户信息展示
                             </table>
                         </div>
                         <div className="right fn-right">
-                            <p className="more" onClick={() => { props.setBaseStateFun(value.gd_company_id) }}>
+                            <p className="more" onClick={() => { props.setBaseStateFun(value.gd_company_id,value.company_name,value.id) }}>
                                 <Link to={"/company?tab=0&id="+value.gd_company_id}><i>...</i></Link>
                             </p>
                             <ul>
                                 <li>
-                                    <p className="top" onClick={() => { props.setBaseStateFun(value.gd_company_id) }}>
-                                        <Link to={"/visitRecord?tab=0&id="+value.gd_company_id}>{value.mission_count}</Link>
+                                    <p className="top" onClick={() => { props.setBaseStateFun(value.gd_company_id,value.company_name,value.id) }}>
+                                        <Link to={"/visitRecord?tab=1&id="+value.gd_company_id}>{value.mission_count}</Link>
                                     </p>
-                                    <p className="btm" onClick={(e) => { props.addJobs(e, value.id); props.setBaseStateFun(value.gd_company_id)}}>任务</p>
+                                    <p className="btm" onClick={(e) => { props.addJobs(e, value.id); props.setBaseStateFun(value.gd_company_id,value.company_name,value.id)}}>任务</p>
                                 </li>
                                 <li>
-                                    <p className="top" onClick={() => { props.setBaseStateFun(value.gd_company_id) }}>
-                                        <Link to={"/visitLists?tab=1&id="+value.gd_company_id}>{value.visit_back_count}</Link>
+                                    <p className="top" onClick={() => { props.setBaseStateFun(value.gd_company_id,value.company_name,value.id) }}>
+                                        <Link to={"/visitLists?tab=2&id="+value.gd_company_id}>{value.visit_back_count}</Link>
                                     </p>
-                                    <p className="btm"onClick={() => { props.setBaseStateFun(value.gd_company_id)}}><Link to="/scene">回访</Link></p>
+                                    <p className="btm"onClick={() => { props.setBaseStateFun(value.gd_company_id,value.company_name,value.id)}}><Link to="/scene">回访</Link></p>
                                 </li>
                                 <li>
-                                    <p className="top" onClick={() => { props.setBaseStateFun(value.gd_company_id) }}>
-                                        <Link to={"/meetingList?tab=2&id="+value.gd_company_id}>{value.meeting_count}</Link>
+                                    <p className="top" onClick={() => { props.setBaseStateFun(value.gd_company_id,value.company_name,value.id) }}>
+                                        <Link to={"/meetingList?tab=3&id="+value.gd_company_id}>{value.meeting_count}</Link>
                                     </p>
-                                    <p className="btm"onClick={() => { props.setBaseStateFun(value.gd_company_id)}}><Link to="/meeting">纪要</Link></p>
+                                    <p className="btm"onClick={() => { props.setBaseStateFun(value.gd_company_id,value.company_name,value.id)}}><Link to="/meeting">纪要</Link></p>
                                 </li>
                                 <li>
-                                    <p className="top" onClick={() => { props.setBaseStateFun(value.gd_company_id) }}>
-                                        <Link to={"/qualityList?tab=0&id="+value.gd_company_id}>{value.check_count}</Link>
+                                    <p className="top" onClick={() => { props.setBaseStateFun(value.gd_company_id,value.company_name,value.id) }}>
+                                        <Link to={"/qualityList?tab=6&id="+value.gd_company_id}>{value.check_count}</Link>
                                     </p>
-                                    <p className="btm"onClick={() => { props.setBaseStateFun(value.gd_company_id)}}><Link to="/quality">验收</Link></p>
+                                    <p className="btm"onClick={() => { props.setBaseStateFun(value.gd_company_id,value.company_name,value.id)}}><Link to="/quality">验收</Link></p>
                                 </li>
                             </ul>
                         </div>
@@ -143,12 +143,21 @@ export const Customs = (props) =>(         //我的客户信息展示
                     <div className="line"></div>
                     <div className="person">
                         <p>相关人员 : {
-                            value.user_list.map(function(value){
-                                return <span>{value.nick_name}<i className="iconfont icon-shanchu" onClick={(e) => { props.del(e) }}></i></span>
+                            value.user_list.map((val)=>{
+                                return (<span>{val.nick_name}<i 
+                                    className="iconfont icon-shanchu" 
+                                    onClick={(e) => { props.delPerson(e,val.user_id,value.id) }}>
+                                </i></span>)
                             })
                         }
-                            <a style={{ marginLeft: "0.5rem" }} href="javascript:;" onClick={()=>{props.getCustomList(value.gd_company_id)}}>全部</a>
-                            <a href="javascript:;" onClick={(e) => { props.showModal(e, value.user_id); props.setBaseStateFun(value.gd_company_id)}}>新增</a>
+                            {/* <a style={{ marginLeft: "0.5rem" }} 
+                            href="javascript:;" 
+                            onClick={()=>{props.getCustomList(val.gd_company_id)}}>全部</a> */}
+                            <a href="javascript:;" 
+                                onClick={(e) => { 
+                                    props.showModal(e, value.user_id); 
+                                    props.setBaseStateFun(value.gd_company_id,value.company_name,value.id)
+                                }}>新增</a>
                         </p>
                     </div>
                 </li>

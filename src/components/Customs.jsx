@@ -1,12 +1,13 @@
 import React from "react";
 import { hashHistory } from "react-router";
 import { TableHeads, Customs } from './templates';
-import { Modal, List } from 'antd-mobile';
+import { Modal, List ,Toast} from 'antd-mobile';
 
 const urls = {
     wordMsg: require('../images/wordMsg.png'),
     custom: require('../images/custom.png')
 }
+let currentType="add_time";
 // function closest(el, selector) {
 //     const matchesSelector = el.matches || el.webkitMatchesSelector || el.mozMatchesSelector || el.msMatchesSelector;
 //     while (el) {
@@ -26,6 +27,7 @@ export default class Custom extends React.Component {
             show2: false,
             modal: false,
             modal1: false,
+            type:"add_time",
             order: "全部",
             check: "全部",
             company: "",
@@ -40,7 +42,8 @@ export default class Custom extends React.Component {
             happenTime: "",
             content: "",
             finishTime: "",
-            give: ""
+            give: "",
+            id:""
         },
         this.handleProjectGet = (res) => {
             console.log(res);
@@ -48,43 +51,89 @@ export default class Custom extends React.Component {
                 this.setState({
                     data:res.data.item_list
                 })
-            }else{
-
             }
         },
-        this.handleUserGet=(res)=>{
+        this.handleAddPersonalMsg=(res)=>{
             console.log(res);
+            if(res.success){
+                Toast.info("添加成功", 2, null, false);
+                this.getProjectLis(this.state.type);   //更新项目数据
+                this.setState({name:"",job:"",phone:"",email:"",remark:""}); 
+                this.onClose('modal')(); 
+            }else{
+                Toast.info(res.message, 2, null, false);
+            }
+        },
+        this.handleAddMission=(res)=>{
+            console.log(res);
+            if(res.success){
+                Toast.info("添加成功", 2, null, false);
+                this.getProjectLis(this.state.type);   //更新项目数据                
+                this.setState({happenTime:"",finishTime:"",content:"",give:""});
+                this.onClose('modal1')();
+            }else{
+                Toast.info(res.message, 2, null, false);
+            }
+        },
+        this.handleDel=(res)=>{
+            console.log(res);
+            // if(res.success){
+            //     Toast.info("删除成功", 2, null, false);
+            // }else{
+            //     Toast.info(res.message, 2, null, false);
+            // }
         }
     }
     componentDidMount() {
-        runPromise('get_project_list', {
-            "type": "0",
-            "offset": 0,
-            "limit": 10,
-            "sort": "add_time",
-            "choose": 0
-        }, this.handleProjectGet, false, "post");
+        this.getProjectLis("add_time");
     }
-    getCustomList=(id)=>{
-        runPromise('get_project_linker_list',{
-            gd_project_id:id
-        }, this.handleUserGet, false, "post")
-    }
-    changeOrder(e,type) {
-        this.setState({
-            order: e.currentTarget.innerHTML,
-            show: !this.state.show
-        });
+    getProjectLis=(type)=>{
         runPromise('get_project_list', {
             "type": "0",
             "offset": 0,
             "limit": 10,
             "sort": type,
             "choose": 0
-        }, this.handleProjectGet, false, "post");
+        }, this.handleProjectGet, true, "post");
     }
-    setBaseStateFun = (id) => {
+    addPersonalMsg=()=>{
+        if(this.state.name == ''){
+            Toast.info('请填写名字', 2, null, false);
+        }else if(this.state.phone == ''){
+            Toast.info('请填写手机号', 2, null, false);
+        }else{
+            runPromise('add_project_linker_ex', {
+                "gd_project_id":validate.getCookie('project_id'),
+                "name":this.state.name,
+                "job_name":this.state.job,
+                "mobile":this.state.phone,
+                "email":this.state.email,
+                "remark":this.state.remark
+            }, this.handleAddPersonalMsg, true, "post");
+        }
+    }
+    addMission = () => {
+        runPromise('add_mission', {
+            "gd_project_id": validate.getCookie('project_id'),
+            "start_time": this.state.happenTime,
+            "finish_time": this.state.finishTime,
+            "content": this.state.content,
+            "rtn_ifo": this.state.give,
+        }, this.handleAddMission, true, "post");
+    }
+    changeOrder(e,type) {
+        currentType=type;
+        this.setState({
+            order: e.currentTarget.innerHTML,
+            show: !this.state.show,
+            type:type
+        });
+        this.getProjectLis(type);
+    }
+    setBaseStateFun = (id,name,project) => {
         validate.setCookie("baseId",id);
+        validate.setCookie("company_name",name);
+        validate.setCookie("project_id",project);
     }
     changeCheck(e) {
         this.setState({
@@ -92,15 +141,31 @@ export default class Custom extends React.Component {
             show2: !this.state.show2
         })
     }
-    delPerson(e) {      //删除联系人
-        e.currentTarget.parentNode.style.display = "none";
+    delPerson(e,id,project_id) {      //删除联系人
+        runPromise('del_project_linker',{
+            gd_project_id:project_id,
+            user_id:id
+        }, (res)=>{
+            if(res.success){
+                runPromise('get_project_list', {
+                    "type": "0",
+                    "offset": 0,
+                    "limit": 10,
+                    "sort": currentType,
+                    "choose": 0
+                }, ()=>{location.reload();}, true, "post");
+                Toast.info("删除成功", 2, null, false);
+            }else{
+                Toast.info(res.message, 2, null, false);
+            }
+        }, true, "post")
     }
     showModal = key => (e, id) => {
         e.preventDefault(); // 修复 Android 上点击穿透
         this.setState({
             [key]: true,
+            id:id
         });
-        console.log(id);    //得到对应id的元素
     }
     onClose = key => () => {
         this.setState({
@@ -211,8 +276,10 @@ export default class Custom extends React.Component {
                     onClose={this.onClose('modal')}
                     className="personalLinkWrap"
                     footer={[
-                        { text: '取消', onPress: () => { console.log('cancle'); this.onClose('modal')(); } },
-                        { text: '确定', onPress: () => { console.log('ok'); this.onClose('modal')(); } }
+                        { text: '取消', onPress: () => { this.onClose('modal')(); } },
+                        { text: '确定', onPress: () => { 
+                            this.addPersonalMsg();
+                        } }
                     ]}
                 // wrapProps={{ onTouchStart: this.onWrapTouchStart }}
                 >
@@ -276,7 +343,7 @@ export default class Custom extends React.Component {
                 <div className="mainCustomList">
                     <Customs
                         dataList={this.state.data}
-                        del={this.delPerson}
+                        delPerson={this.delPerson}
                         showModal={this.showModal('modal')}
                         addJobs={this.showModal('modal1')}
                         getCustomList={this.getCustomList}
@@ -291,8 +358,8 @@ export default class Custom extends React.Component {
                     style={{ width: "300px" }}
                     className="personalLinkWrap myCustomModal"
                     footer={[
-                        { text: '取消', onPress: () => { console.log('cancle'); this.onClose('modal1')(); } },
-                        { text: '确定', onPress: () => { console.log('ok'); this.onClose('modal1')(); } }
+                        { text: '取消', onPress: () => { this.onClose('modal1')(); } },
+                        { text: '确定', onPress: () => { this.addMission(); } }
                     ]}
                 >
                     <div className="personalLink">
@@ -302,7 +369,8 @@ export default class Custom extends React.Component {
                                     <span style={{ textAlignLast: "justify", width: "25%" }}>发生时间</span>:
                                     <input
                                         type="text"
-                                        value={this.state.name}
+                                        value={this.state.happenTime}
+                                        placeholder="0000-00-00"
                                         onChange={(e) => { this.onChangeHappenTime(e) }}
                                         style={{ paddingLeft: "5px" }}
                                     />
@@ -312,7 +380,7 @@ export default class Custom extends React.Component {
                                     {/* <span>内容：</span> */}
                                     <input
                                         type="text"
-                                        value={this.state.job}
+                                        value={this.state.content}
                                         onChange={(e) => { this.onChangeContent(e) }}
                                         style={{ paddingLeft: "5px" }}
                                     />
@@ -321,7 +389,8 @@ export default class Custom extends React.Component {
                                     <span style={{ textAlignLast: "justify", width: "25%" }}>完成时间</span>:
                                     <input
                                         type="text"
-                                        value={this.state.phone}
+                                        value={this.state.finishTime}
+                                        placeholder="0000-00-00"
                                         onChange={(e) => { this.onChangeFinishTime(e) }}
                                         style={{ paddingLeft: "5px" }}
                                     />
@@ -330,7 +399,7 @@ export default class Custom extends React.Component {
                                     <span style={{ textAlignLast: "justify", width: "25%" }}>交割情况</span>:
                                     <input
                                         type="text"
-                                        value={this.state.email}
+                                        value={this.state.give}
                                         onChange={(e) => { this.onChangeGive(e) }}
                                         style={{ paddingLeft: "5px" }}
                                     />

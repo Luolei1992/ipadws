@@ -24,7 +24,6 @@ export default class MeetingList extends React.Component {
         }
     }
     componentDidMount() {
-        readyDo();
         runPromise('get_meeting_list', {
             "gd_company_id": GetLocationParam('id') || validate.getCookie('baseId'),
             "offset": "0",
@@ -36,9 +35,6 @@ export default class MeetingList extends React.Component {
             <div id="fromHTMLtestdiv">
                 <form className="visitRecordWrap">
                     <TableHeads url={urls.wordMsg} isHide={false} tag={<h3>会议纪要</h3>}></TableHeads>
-                    <button id="btnGenerate">下载图片</button>
-                    <a id="downloadPng"></a>    <input id="filename" style={{ display: "none" }} />
-                    {/* <button id="download">下载PDF</button> */}
                     <div className="recordMain">
                         <h2 style={{ letterSpacing: "1px", marginTop: "0.8rem" }}>上海泰宇公司会议纪要</h2>
                         <p style={{ textAlign: "center" }}>

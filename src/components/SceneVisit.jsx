@@ -14,7 +14,7 @@ let surveyArr=[
     { score: "2", survey_menu_id: "5" },
 ];
 const urls = {
-    wordMsg: require('../images/wordMsg.png'),
+    wordMsg: require('../images/wordMsg.png')
 }
 export default class SceneVisit extends React.Component {
     constructor(props) {

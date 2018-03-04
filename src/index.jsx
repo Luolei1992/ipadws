@@ -25,6 +25,7 @@ import QualityList from './components/QualityList';
 import SurveyHistoryStatic from './components/SurveyHistoryStatic';
 import BaseState from './components/BaseState';
 import PersonalList from './components/PersonalList';
+import QualityStatic from './components/QualityStatic';
 import Test from './components/test';
 
 import 'lib-flexible/flexible';
@@ -47,8 +48,10 @@ ReactDOM.render(
                 <Route path="/meetingList" component={MeetingList} />
                 <Route path="/PersonalList" component={PersonalList} />
                 <Route path="/surveyHistoryStatic" component={SurveyHistoryStatic} />
+                <Route path="/qualityList" component={QualityList} />
             </Route>
             <Route path="/meeting" component={Meeting} />
+            <Route path="/quality" component={Quality} />
             <Route path="/meetingStatic" component={MeetingStatic} />
             <Route path="/survey" component={Survey} />            
             <Route path="/customs" component={Customs} />
@@ -56,10 +59,9 @@ ReactDOM.render(
             <Route path="/visit" component={Visit} />
             <Route path="/scene" component={SceneVisit} />
             <Route path="/sceneStatic" component={SceneVisitStatic} />
-            <Route path="/quality" component={Quality} />
+            <Route path="/qualityStatic" component={QualityStatic} />
             <Route path="/surveyHistory" component={SurveyHistory} />
             <Route path="/newSurveyHistory" component={NewSurveyHistory} />
-            <Route path="/qualityList" component={QualityList} />
             <Route path="/Test" component={Test} />
         </Router>
     </Router>

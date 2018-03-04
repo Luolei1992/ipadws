@@ -7,7 +7,7 @@ export default class MyCustom extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            flag: [false, false, false, false, false, false],
+            flag: [false, false, false, false, false, false,false],
             slideUp:false,
             modal:false,
             happenTime:"",
@@ -22,7 +22,7 @@ export default class MyCustom extends React.Component {
         }
     }
     componentDidMount() {
-        let newflag = [false, false, false, false, false, false];
+        let newflag = [false, false, false, false, false, false,false];
         let number = window.location.href.split("tab=")[1].slice(0, 1)-0;
         newflag[number] = true;
         this.setState({
@@ -51,7 +51,7 @@ export default class MyCustom extends React.Component {
         });
     }
     handleClickLi(index) {
-        let newflag = [false, false, false, false, false, false];
+        let newflag = [false, false, false, false, false, false,false];
         newflag[index] = true;
         this.setState({
             flag: newflag
@@ -125,6 +125,11 @@ export default class MyCustom extends React.Component {
                             style={this.state.flag[5] ? { borderBottom: "3px solid red" } : { borderBottom: "3px solid transparent" }}
                             onClick={() => { this.handleClickLi(5) }}>
                             <Link to='/surveyHistoryStatic?tab=5'>调研档案</Link>
+                        </li>
+                        <li
+                            style={this.state.flag[6] ? { borderBottom: "3px solid red" } : { borderBottom: "3px solid transparent" }}
+                            onClick={() => { this.handleClickLi(6) }}>
+                            <Link to='/QualityList?tab=6'>验收</Link>
                         </li>
                     </ul>
                     <span onClick={this.addNewList} >新增</span>

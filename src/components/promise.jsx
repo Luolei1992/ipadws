@@ -16,6 +16,7 @@ const ajaxURLList = {
     login:"hkapi/login",         //登陆
     get_project_list: "gdApi/get_project_list",      //获取项目列表
     get_project_info:"gdApi/get_project_info",         //获取项目详细信息
+    get_meeting_info:"gdApi/get_meeting_info",         //获取会议详细信息
     book_service_simple: "quoteApi/book_service_simple", //创建订单-给设计师下单
     get_project_linker_list: "gdApi/get_project_linker_list", //获取项目相关联系人
     get_mission_list: "gdApi/get_mission_list", //获取任务交割记录
@@ -35,9 +36,12 @@ const ajaxURLList = {
     get_company_info: "gdApi/get_company_info", //获取公司详细
     get_user_info: "gdApi/get_user_info", //获取联系人信息
     sign_up_document: "gdApi/sign_up_document", //保存为图片文档
-    del_project_linker: "gdApi/del_project_linker", //删除项目联系人
     get_company_user_list: "gdApi/get_company_user_list", //获取客户公司联系人
     get_visit_back_simple_list: "gdApi/get_visit_back_simple_list", //回访的简要信息
+    get_check_list: "gdApi/get_check_list", //获取验收阶段列表
+    add_check: "gdApi/add_check", //添加验收单
+    add_project_linker_ex: "gdApi/add_project_linker_ex", //添加项目相关人员
+    del_project_linker: "gdApi/del_project_linker", //删除项目联系人
 }
 
 //定义一个基于Promise的异步任务执行器
