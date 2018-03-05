@@ -7,13 +7,13 @@ const urls = {
 }
 
 export const TableHead = (props) => (     
-    <div className="tableHead" style={{paddingTop:'20px'}}>
+    <div className="tableHead" style={{paddingTop:'20px',position:"fixed",width:"100%",top:"0",left:"0"}}>
         <div className="leftLogoWord fn-left"><i className="iconfont icon-jiantou"></i>返回</div>
         <Link to='/'><img src={props.url} className="fn-right" /></Link>
     </div>
 )
 export const TableHeads = (props) => (    //公共头部  
-    <div className="tableHead" style={{ paddingTop: '20px' }}>
+    <div className="tableHead" style={{ paddingTop: '20px',position:"fixed",width:"100%",top:"0",left:"0"}}>
         <div className="leftLogoWord fn-left" onClick={()=>{hashHistory.goBack()}}><i className="iconfont icon-jiantou"></i>返回</div>
         {
             props.isHide ? "" : props.tag
@@ -22,7 +22,7 @@ export const TableHeads = (props) => (    //公共头部
     </div>
 )
 export const TableHeada = (props) => (    //公共头部  
-    <div className="tableHead" style={{ paddingTop: '20px' }}>
+    <div className="tableHead" style={{ paddingTop: '20px',position:"fixed",width:"100%",top:"0",left:"0"}}>
         <div className="leftLogoWord fn-left" onClick={() => {
             hashHistory.push({
                 pathname: '/'
@@ -85,7 +85,7 @@ export const Customs = (props) =>(         //我的客户信息展示
                                     <td colSpan="2">
                                         <table>
                                             <tr>
-                                                <td style={{ width: "35px", position: "relative" }}>
+                                                <td style={{ width: "35px", position: "relative",height:"18px" }}>
                                                     <span style={{ 
                                                         float: "left", 
                                                         position: "absolute", 

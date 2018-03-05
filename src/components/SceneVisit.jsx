@@ -13,6 +13,10 @@ let surveyArr=[
     { score: "2", survey_menu_id: "4" },
     { score: "2", survey_menu_id: "5" },
 ];
+let personalLis1 = [];
+let personalLis2 = [];
+let name1 = [];
+let name2=[];
 const urls = {
     wordMsg: require('../images/wordMsg.png')
 }
@@ -24,6 +28,7 @@ export default class SceneVisit extends React.Component {
             silent: true,
             modal: true,            
             modal2: false,
+            modal3:false,
             id:"",
             order: "",
             things: "",
@@ -58,7 +63,11 @@ export default class SceneVisit extends React.Component {
                 { score: "2", survey_menu_id:"3"},
                 { score: "2", survey_menu_id:"4"},
                 { score: "2", survey_menu_id:"5"},
-            ]
+            ],
+            toPersonalList:[],
+            getPersonalList:[],
+            name01:"",
+            name02:""
         },
         this.handleSceneVisitGet = (res) => {
             console.log(res);
@@ -70,6 +79,14 @@ export default class SceneVisit extends React.Component {
         },
         this.saveProject = (res) => {
             console.log(res);
+        },
+        this.toPersonalList = (res) =>{
+            console.log(res)
+            this.setState({toPersonalList:res.data})
+        },
+        this.getPersonalList = (res) =>{
+            console.log(res)
+            this.setState({getPersonalList:res.data})
         }
     }
     componentDidMount() {
@@ -92,6 +109,16 @@ export default class SceneVisit extends React.Component {
                 "company_name": this.state.currentCompany
             }, this.handleSceneVisitGet, true, "post");
         }, 30000);
+        this.getPersonLis();
+        this.toPersonLis();
+    }
+    getPersonLis=()=>{
+        runPromise('get_staff_list', {},this.getPersonalList, false, "get");
+    }
+    toPersonLis=()=>{
+        runPromise('get_company_user_list', {
+            gd_company_id: validate.getCookie('baseId')
+        }, this.toPersonalList, true, "post");
     }
     alerts = (a) => {
         runPromise('sign_up_document', {
@@ -257,6 +284,18 @@ export default class SceneVisit extends React.Component {
             })
         }
     }
+    pullGetPerson=(id,name)=>{
+        personalLis2.push(id);
+        name1.push(name);
+        this.setState({user_ids:personalLis2.join("_"),name02:name1.join(",")});
+        this.onClose('modal3')();
+    }
+    pullToPerson=(id,name)=>{
+        personalLis1.push(id);
+        name2.push(name);
+        this.setState({customer_ids:personalLis1.join("_"),name01:name2.join(",")});     
+        this.onClose('modal4')();   
+    }
     render() {
         return (
             <div className="visitRecordWrap" id="fromHTMLtestdiv">
@@ -294,31 +333,112 @@ export default class SceneVisit extends React.Component {
                             <tr className="sixToOne">
                                 <td className="darkbg">受访人员</td>
                                 <td>
-                                    {/* <i 
+                                    {this.state.name01}
+                                    <i onClick={this.showModal('modal4')}
                                         className="iconfont icon-jia" 
-                                        style={{fontSize:"28px",lineHeight:"0.88rem"}}
-                                        onClick={this.showModal('modal')}
-                                    ></i> */}
-                                    <input type="text" className="qualityIpt" 
+                                        style={{
+                                            float: "right", 
+                                            fontSize: "28px", 
+                                            marginTop: "2px",
+                                            marginRight:"2px"
+                                        }}
+                                    ></i>
+                                    {/* <input type="text" className="qualityIpt" 
                                         onChange={(e, value) => {
                                             this.setState({
                                                 customer_ids: e.currentTarget.value
                                             })
                                         }}
-                                    />
+                                    /> */}
                                 </td>
                                 <td className="darkbg">回访人员</td>
                                 <td>
-                                    <input type="text" className="qualityIpt" 
+                                    {this.state.name02}
+                                    <i onClick={this.showModal('modal3')}
+                                            className="iconfont icon-jia" 
+                                            style={{
+                                                float: "right", 
+                                                fontSize: "28px", 
+                                                marginTop: "2px",
+                                                marginRight:"2px"
+                                            }}
+                                    ></i>
+                                    {/* <input type="text" className="qualityIpt" 
                                         onChange={(e, value) => {
                                             this.setState({
                                                 user_ids: e.currentTarget.value
                                             })
                                         }}
-                                    />
+                                    /> */}
                                 </td>
                             </tr>
                         </table>
+                        <Modal
+                            visible={this.state.modal3}
+                            transparent
+                            maskClosable={true}
+                            onClose={this.onClose('modal3')}
+                            className="personalLinkWrap"
+                            style={{width:"800px"}}
+                        >
+                            <table className="personalLis" style={{
+                                textAlign: "center",
+                                width:"100%",
+                                border:"1px solid #ccc"
+                            }}>
+                                <tr>
+                                    <td style={{width:"15%"}}>姓名</td>
+                                    <td style={{width:"25%"}}>手机号</td>
+                                    <td style={{width:"30%"}}>邮箱</td>
+                                    <td style={{width:"30%"}}>备注</td>
+                                </tr>
+                                {
+                                    this.state.getPersonalList.map((value)=>(
+                                        <tr onClick={()=>{this.pullGetPerson(value.user_id,value.real_name)}}>
+                                            <td>{value.real_name}</td>
+                                            <td>{value.mobile}</td>
+                                            <td>{value.email}</td>
+                                            <td>{value.job_name}</td>
+                                        </tr>
+                                    ))
+                                }
+                            </table>
+                        </Modal>
+                        <Modal
+                            visible={this.state.modal4}
+                            transparent
+                            maskClosable={true}
+                            onClose={this.onClose('modal4')}
+                            className="personalLinkWrap"
+                            style={{width:"800px"}}
+                            // footer={[
+                            //     { text: '取消', onPress: () => { this.onClose('modal3')() } },
+                            //     { text: '确定', onPress: () => { this.addOrderMsg(); } }
+                            // ]}
+                        >
+                            <table className="personalLis" style={{
+                                textAlign: "center",
+                                width:"100%",
+                                border:"1px solid #ccc"
+                            }}>
+                                <tr>
+                                    <td style={{width:"15%"}}>姓名</td>
+                                    <td style={{width:"25%"}}>手机号</td>
+                                    <td style={{width:"30%"}}>邮箱</td>
+                                    <td style={{width:"30%"}}>备注</td>
+                                </tr>
+                                {
+                                    this.state.toPersonalList.map((value)=>(
+                                        <tr onClick={()=>{this.pullToPerson(value.user_id,value.name)}}>
+                                            <td>{value.name}</td>
+                                            <td>{value.mobile}</td>
+                                            <td>{value.email}</td>
+                                            <td>{value.remark}</td>
+                                        </tr>
+                                    ))
+                                }
+                            </table>
+                        </Modal>
                         <table className="sceneTable">
                             <tr>
                                 <td style={{ textAlign: "center", fontWeight: "800" }} colSpan="4" className="darkbg">回访内容及成果</td>

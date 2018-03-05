@@ -59,7 +59,7 @@ export default class Custom extends React.Component {
                 Toast.info("添加成功", 2, null, false);
                 this.getProjectLis(this.state.type);   //更新项目数据
                 this.setState({name:"",job:"",phone:"",email:"",remark:""}); 
-                this.onClose('modal')(); 
+                this.onClose('modal1')(); 
             }else{
                 Toast.info(res.message, 2, null, false);
             }
@@ -112,8 +112,7 @@ export default class Custom extends React.Component {
             }, this.handleAddPersonalMsg, true, "post");
         }
     }
-    addMission = () => {
-        console.log(validate.getCookie('project_id'))        
+    addMission = () => {      
         runPromise('add_mission', {
             "gd_project_id": validate.getCookie('project_id'),
             "start_time": this.state.happenTime,
@@ -151,7 +150,7 @@ export default class Custom extends React.Component {
                 runPromise('get_project_list', {
                     "type": "0",
                     "offset": 0,
-                    "limit": 10,
+                    "limit": 20,
                     "sort": currentType,
                     "choose": 0
                 }, ()=>{location.reload();}, true, "post");

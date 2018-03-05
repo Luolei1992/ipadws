@@ -43,6 +43,7 @@ const ajaxURLList = {
     add_check: "gdApi/add_check", //添加验收单
     add_project_linker_ex: "gdApi/add_project_linker_ex", //添加项目相关人员
     del_project_linker: "gdApi/del_project_linker", //删除项目联系人
+    get_staff_list: "gdApi/get_staff_list", //获取己方联系人
 }
 
 //定义一个基于Promise的异步任务执行器

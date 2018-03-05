@@ -39,7 +39,7 @@ export default class PersonalList extends React.Component {
                                 <td>姓名</td>
                                 <td>手机号</td>
                                 <td>邮箱</td>
-                                <td>备注</td>
+                                <td>职位</td>
                             </tr>
                             {
                                 this.state.personalList.map((value)=>(

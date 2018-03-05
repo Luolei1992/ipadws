@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router';
 import { Modal } from 'antd-mobile';
 import { GetLocationParam } from './templates'
-import validate from '../../../mhuake/mhkw/src/components/validate';
 
 export default class MyCustom extends React.Component {
     constructor(props) {
@@ -11,15 +10,32 @@ export default class MyCustom extends React.Component {
             flag: [false, false, false, false, false, false,false],
             slideUp:false,
             modal:false,
+            modal1:false,
             happenTime:"",
             content:"",
             finishTime:"",
             give:"",
-            jobList:[]
+            jobList:[],
+            job: "",
+            name: "",
+            phone: "",
+            email: "",
+            remark: ""
         },
         this.handleAddMission=(res)=>{
             console.log(res);
             location.reload();
+        },
+        this.handleAddPersonalMsg=(res)=>{
+            console.log(res);
+            if(res.success){
+                Toast.info("添加成功", 2, null, false);
+                this.getProjectLis(this.state.type);   //更新项目数据
+                this.setState({name:"",job:"",phone:"",email:"",remark:""}); 
+                this.onClose('modal')(); 
+            }else{
+                Toast.info(res.message, 2, null, false);
+            }
         }
     }
     componentDidMount() {
@@ -39,6 +55,22 @@ export default class MyCustom extends React.Component {
             "content": this.state.content,
             "rtn_ifo": this.state.give,
         }, this.handleAddMission, false, "post");
+    }
+    addPersonalMsg=()=>{
+        if(this.state.name == ''){
+            Toast.info('请填写名字', 2, null, false);
+        }else if(this.state.phone == ''){
+            Toast.info('请填写手机号', 2, null, false);
+        }else{
+            runPromise('add_project_linker_ex', {
+                "gd_project_id":validate.getCookie('project_id'),
+                "name":this.state.name,
+                "job_name":this.state.job,
+                "mobile":this.state.phone,
+                "email":this.state.email,
+                "remark":this.state.remark
+            }, this.handleAddPersonalMsg, true, "post");
+        }
     }
     showModal = key => (e, id) => {
         e.preventDefault(); // 修复 Android 上点击穿透
@@ -138,7 +170,7 @@ export default class MyCustom extends React.Component {
                     <div className="addNewList" style={{display:this.state.slideUp?"block":"none"}}>
                         <ul>
                             <li onClick={this.showModal('modal')}>任务</li>
-                            <li onClick={this.showModal('modal')}>联系人</li>
+                            <li onClick={this.showModal('modal1')}>联系人</li>
                             <Link to="/scene"><li>回访</li></Link>
                             <Link to="/meeting"><li>纪要</li></Link>
                             <Link to="/quality"><li>验收</li></Link>
@@ -196,6 +228,77 @@ export default class MyCustom extends React.Component {
                                             value={this.state.email}
                                             onChange={(e) => { this.onChangeGive(e) }}
                                             style={{paddingLeft:"5px"}}
+                                        />
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </Modal>
+                    <Modal
+                    visible={this.state.modal1}
+                    transparent
+                    maskClosable={true}
+                    onClose={this.onClose('modal1')}
+                    className="personalLinkWrap"
+                    footer={[
+                        { text: '取消', onPress: () => { this.onClose('modal1')(); } },
+                        { text: '确定', onPress: () => { 
+                            this.addPersonalMsg();
+                        } }
+                    ]}
+                    // wrapProps={{ onTouchStart: this.onWrapTouchStart }}
+                    >
+                        <div className="personalLink">
+                            <div className="personalLinkList">
+                                <ul>
+                                    {/* <li>
+                                        <span>公司：</span>
+                                        <input 
+                                            type="text" 
+                                            value={this.state.company}
+                                            onChange={(e) => { this.onChangeCompany(e)}}
+                                        />
+                                    </li> */}
+                                    <li>
+                                        <span>姓名：</span>
+                                        <input
+                                            type="text"
+                                            value={this.state.name}
+                                            onChange={(e) => { this.onChangeName(e) }}
+                                        />
+                                    </li>
+                                    <li>
+                                        <span>职位：</span>
+                                        <input
+                                            type="text"
+                                            value={this.state.job}
+                                            onChange={(e) => { this.onChangeJob(e) }}
+                                        />
+                                    </li>
+                                    <li>
+                                        <span>手机：</span>
+                                        <input
+                                            type="text"
+                                            value={this.state.phone}
+                                            onChange={(e) => { this.onChangePhone(e) }}
+                                            className={this.state.hasError1 ? "txtRed" : ""}
+                                        />
+                                    </li>
+                                    <li>
+                                        <span>邮箱：</span>
+                                        <input
+                                            type="text"
+                                            value={this.state.email}
+                                            onChange={(e) => { this.onChangeEmail(e) }}
+                                            className={this.state.hasError2 ? "txtRed" : ""}
+                                        />
+                                    </li>
+                                    <li>
+                                        <span>备注：</span>
+                                        <input
+                                            type="text"
+                                            value={this.state.remark}
+                                            onChange={(e) => { this.onChangeRemark(e) }}
                                         />
                                     </li>
                                 </ul>
