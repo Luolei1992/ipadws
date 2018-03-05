@@ -50,10 +50,10 @@ export default class survey extends React.Component{
                     <ul>
                         {
                             this.state.researchHistoryList.item_list.map((value)=>(
-                                <Link to={'/surveyHistory?id=' + value.gd_company_id}>
+                                <Link to={'/surveyHistory?id=' + value.id}>
                                     <li>
                                         <h3>{value.company_name}</h3>
-                                        <p>文件编号：{value.document_id} <span></span>调研日期：{(value.start_time+'').split(" ")[0]} <span></span>调研人：{value.master_name}</p>
+                                        <p>文件编号：{value.document_id} <span></span>调研日期：{(value.add_time+'').split(" ")[0]} <span></span>调研人：{value.master_name}</p>
                                         <p className="redText"><i>综合意见：</i>{value.suggest}</p>
                                     </li>
                                 </Link>

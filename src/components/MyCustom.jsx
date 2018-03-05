@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { Modal } from 'antd-mobile';
 import { GetLocationParam } from './templates'
+import validate from '../../../mhuake/mhkw/src/components/validate';
 
 export default class MyCustom extends React.Component {
     constructor(props) {
@@ -30,8 +31,9 @@ export default class MyCustom extends React.Component {
         })
     }
     addMission = () => {
+        console.log(validate.getCookie('project_id'))
         runPromise('add_mission', {
-            "gd_project_id": GetLocationParam('id') || this.props.state.baseFlagId,
+            "gd_project_id": GetLocationParam('id') || validate.getCookie('project_id'),
             "start_time": this.state.happenTime,
             "finish_time": this.state.finishTime,
             "content": this.state.content,
@@ -147,7 +149,7 @@ export default class MyCustom extends React.Component {
                         transparent
                         maskClosable={true}
                         onClose={this.onClose('modal')}
-                        style={{width:"300px"}}
+                        style={{width:"310px"}}
                         className="personalLinkWrap myCustomModal"
                         footer={[
                             { text: '取消', onPress: () => { console.log('cancle'); this.onClose('modal')(); } },

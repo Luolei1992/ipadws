@@ -1,19 +1,32 @@
 import { Link, hashHistory } from "react-router";
+import { Toast } from 'antd-mobile';
 
 const urls = {
     wordMsg: require('../images/wordMsg.png'),
-    addPic: require('../images/addPic.png'),
+    addPic: require('../images/addPic.png')
 }
 
 export const TableHead = (props) => (     
-    <div className="tableHead">
+    <div className="tableHead" style={{paddingTop:'20px'}}>
         <div className="leftLogoWord fn-left"><i className="iconfont icon-jiantou"></i>返回</div>
         <Link to='/'><img src={props.url} className="fn-right" /></Link>
     </div>
 )
 export const TableHeads = (props) => (    //公共头部  
-    <div className="tableHead">
+    <div className="tableHead" style={{ paddingTop: '20px' }}>
         <div className="leftLogoWord fn-left" onClick={()=>{hashHistory.goBack()}}><i className="iconfont icon-jiantou"></i>返回</div>
+        {
+            props.isHide ? "" : props.tag
+        }
+        <Link to='/'><img src={props.url} className="fn-right" /></Link>
+    </div>
+)
+export const TableHeada = (props) => (    //公共头部  
+    <div className="tableHead" style={{ paddingTop: '20px' }}>
+        <div className="leftLogoWord fn-left" onClick={() => {
+            hashHistory.push({
+                pathname: '/'
+            })  }}><i className="iconfont icon-jiantou"></i>返回</div>
         {
             props.isHide ? "" : props.tag
         }
@@ -376,7 +389,28 @@ export const readyDo = (a) => {
                     if(a) {
                         a(res.data.path);
                     }
-                    download(res.data.path);
+                    // download(res.data.path);
+                    api.download({
+                        url: res.data.path,
+                        savePath: 'fs://' + Date.now()+'.png',
+                        report: true,
+                        cache: true,
+                        allowResume: true
+                    }, function (ret, err) {
+                        if (ret.state == 1) {
+                            //下载成功
+                            api.saveMediaToAlbum({
+                                path: ret.savePath
+                            }, function (ret, err) {
+                                if (ret && ret.status) {
+                                    alert('下载成功');
+                                } else {
+                                    alert('下载失败');
+                                }
+                            });
+                        }
+                    });
+                    // Toast.info("文件保存成功", 2, null, false);
                     newCanvas.remove();
                 }
             }, false, "post");

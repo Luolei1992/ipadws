@@ -1,7 +1,7 @@
 import React from 'react';
 import { ImagePicker,Toast } from "antd-mobile";
 import { Link } from "react-router";
-import { TableHeads, Quality, init } from "./templates";
+import { TableHeada, Quality, init } from "./templates";
 
 const urls = {
     wordMsg: require('../images/wordMsg.png'),
@@ -155,11 +155,11 @@ export default class Visit extends React.Component {
         const { files } = this.state;
         return (
             <div id="capture" className="visitWrap visitRecordWrap" style={{ backgroundColor: "#eeeeee" }}>
-                <TableHeads
+                <TableHeada
                     url={urls.wordMsg}
                     isHide={false}
                     tag={<h3 className="fn-left">质 检</h3>}
-                ></TableHeads>
+                ></TableHeada>
                 <div className="mainWrap">
                     <div className="mainWrapLeft">
                         <p className="allQuality"><span>全部</span><i>{this.state.companyLists.total_count}</i></p>

@@ -7,6 +7,7 @@ import { DrawBoard } from './drawBoard';
 let canvas;
 let drawBoard;
 let interval;
+
 const urls = {
     wordMsg: require('../images/wordMsg.png'),
 }

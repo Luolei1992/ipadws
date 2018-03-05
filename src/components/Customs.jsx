@@ -113,6 +113,7 @@ export default class Custom extends React.Component {
         }
     }
     addMission = () => {
+        console.log(validate.getCookie('project_id'))        
         runPromise('add_mission', {
             "gd_project_id": validate.getCookie('project_id'),
             "start_time": this.state.happenTime,

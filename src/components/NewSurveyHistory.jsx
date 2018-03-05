@@ -26,6 +26,7 @@ export default class NewSurveyHistory extends React.Component {
             phone: "",
             email: "",
             remark: "",
+            baseId:"",
             researchResult:"",
             hasError1: false,
             hasError2: false,
@@ -45,7 +46,7 @@ export default class NewSurveyHistory extends React.Component {
             modal1:false,
             modal2:false,
             modal3:false,
-            modal4:false,
+            modal4:true,
             personLink: [],
             orderList:[],
             impress:[true,false,false,false],
@@ -63,12 +64,11 @@ export default class NewSurveyHistory extends React.Component {
                     id: res.message.id
                 })
             }else{
-                if (res.message == '公司id不能为空'){
-                    // Toast.info("请先选择公司", 2, null, false);
-                    alert("请先选择公司名称");
-                }
+                // if (res.message == '公司id不能为空'){
+                //     // Toast.info("请先选择公司", 2, null, false);
+                //     alert("请先选择公司名称");
+                // }
             }
-            
         },
         this.handleBackPicSrc=(res)=>{
             console.log(res);
@@ -92,7 +92,8 @@ export default class NewSurveyHistory extends React.Component {
             this.setState({
                 meetingTime:res.data.start_time.split(" ")[0],
                 meetingAddress: res.data.address,
-                companyAddress:res.data.url
+                companyAddress:res.data.url,
+                baseId:res.data.id
             })
         },
         this.saveProject=(res)=>{
@@ -122,19 +123,18 @@ export default class NewSurveyHistory extends React.Component {
         clearInterval(interval);
     }
     addResearch=()=>{
-        runPromise('add_project', {
-            "gd_company_id": this.state.id,
-            "suggest":this.state.suggest,  //缺少
-            "type":"",
+        runPromise('add_project_ex', {
+            "gd_company_id": this.state.baseId,
+            "suggest":this.state.suggest,  
+            "type":3,
             "score":this.state.score,
             "content":this.state.researchResult,
             "file_Path":"",
-            "project_id":this.state.id,
             "file_path_title":"",
-            "title": this.state.companyName,
             "appendix":this.state.ids.join("_"),
             "linkers":this.state.personLink,
             "plans":this.state.orderList,
+            "id":this.state.id
         }, this.handleResearchAdd, true, "post");
     }
     getCompanyDetails=(id)=>{
@@ -180,7 +180,6 @@ export default class NewSurveyHistory extends React.Component {
             [key]: false,
         });
     }
-    
     onChangePhone(e) {
         let val = e.currentTarget.value;
         this.setState({
@@ -233,11 +232,12 @@ export default class NewSurveyHistory extends React.Component {
    
     addPersonLink(){     //添加联系人
         let tmp = {
-            job: this.state.job,
+            job_name: this.state.job,
             name: this.state.name,
             phone: this.state.phone,
             email: this.state.email,
             remark: this.state.remark,
+            is_in_survey:""
         }
         if(this.state.name == ""){
             Toast.info('请输入姓名',.8);
@@ -262,10 +262,10 @@ export default class NewSurveyHistory extends React.Component {
     addOrderMsg(){       //下一任行动和计划
         ++numPlus;
         let lis = {
-            order: numPlus,
-            things:this.state.things,
-            duty:this.state.duty,
-            finishTime:this.state.finishTime
+            seq: numPlus,
+            content:this.state.things,
+            name:this.state.duty,
+            exp_time:this.state.finishTime
         }
         if (this.state.things == ""){
             Toast.info('请填写事项！', .8);
@@ -303,8 +303,10 @@ export default class NewSurveyHistory extends React.Component {
             // 下面逻辑处理
             ++uploadFiles;
             let a = document.getElementById("upload" + uploadFiles);
-            console.log(a);
             a.src=dataURL;
+            runPromise('upload_image_byw_upy2', {
+                "arr": dataURL
+            }, this.handleBackPicSrc, false, "post");
             // if(uploadFiles.length < 5) {
             //     this.setState({
             //         files: uploadFiles
@@ -327,7 +329,7 @@ export default class NewSurveyHistory extends React.Component {
                         <Link to='/survey?tab=5' style={{color:"#fff"}}><span>历史调研</span></Link>
                     </h3>}
                 ></TableHeads>
-                <button id="downloadPng">下载图片</button>
+                <button id="downloadPng" onClick={()=>{this.addResearch()}}>下载图片</button>
                 {/* <a id="downloadPng"></a><input id="filename" style={{ display: "none" }} /> */}
                 {/* <div id="canvasWrap" style={{ 
                     backgroundColor: "#f5f5f5",
@@ -398,7 +400,7 @@ export default class NewSurveyHistory extends React.Component {
                                                     onClick={(e) => { 
                                                         this.setState({ 
                                                             company: e.currentTarget.innerHTML,
-                                                            id:value.id
+                                                            baseId:value.id
                                                         }); 
                                                         this.onClose('modal4')();
                                                         this.getCompanyDetails(value.id);
@@ -639,6 +641,7 @@ export default class NewSurveyHistory extends React.Component {
                                                 <span>完成时间</span>
                                                 <input
                                                     type="text"
+                                                    placeholder="0000-00-00"
                                                     value={this.state.finishTime}
                                                     onChange={(e) => { this.onChangeFinish(e) }}
                                                 />
@@ -660,9 +663,9 @@ export default class NewSurveyHistory extends React.Component {
                                             this.state.orderList.map((value,idx) => { 
                                                 return <tr>
                                                     <td style={{borderLeft:"0 none"}}>{idx+1}</td>
-                                                    <td>{value.things}</td>
-                                                    <td>{value.duty}</td>
-                                                    <td>{value.finishTime}</td>
+                                                    <td>{value.content}</td>
+                                                    <td>{value.name}</td>
+                                                    <td>{value.exp_time}</td>
                                                 </tr>
                                             })
                                         }

@@ -59,7 +59,7 @@ export default class VisitList extends React.Component {
                         <p style={{ textAlign: "center" }}>
                             责任设计师: {this.state.backVisitDetail.master_designer_name} <span style={{ padding: "0 15px" }}></span>
                             {/* 时间: <span style={{ padding: "0 15px" }}></span> */}
-                            回访: {'共' + this.state.backVisitDetail.total_count + '次回访' + ' '} {this.state.backVisitDetail.low_score_total+'次不满意'}
+                            回访: {'共' + (this.state.backVisitDetail.total_count || "0") + '次回访' + ' '} {(this.state.backVisitDetail.low_score_total || "0")+'次不满意'}
                         </p>
                         <div className="visitLists">
                             <ul>

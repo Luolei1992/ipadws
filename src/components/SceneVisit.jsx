@@ -78,7 +78,7 @@ export default class SceneVisit extends React.Component {
         readyDo(this.alerts);
         canvas = document.getElementById("canvas");
         drawBoard = new DrawBoard(canvas);  // 初始化
-        setTimeout(() => {
+        setInterval(() => {
             runPromise('add_record', {
                 "gd_company_id": validate.getCookie('baseId'),
                 "title": this.state.title,
@@ -90,8 +90,8 @@ export default class SceneVisit extends React.Component {
                 "plans": this.state.orderList,
                 "surveys": this.state.surveys,
                 "company_name": this.state.currentCompany
-            }, this.handleSceneVisitGet, false, "post");
-        }, 2000);
+            }, this.handleSceneVisitGet, true, "post");
+        }, 30000);
     }
     alerts = (a) => {
         runPromise('sign_up_document', {

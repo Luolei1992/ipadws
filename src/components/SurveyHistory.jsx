@@ -22,6 +22,7 @@ export default class SurveyHistory extends React.Component {
         },
       
         this.handleProjectGet = (res) => {
+            console.log(res);
             if(res.success) {
                 this.setState({
                     companyDetail: res.data
@@ -46,13 +47,14 @@ export default class SurveyHistory extends React.Component {
                         url={urls.wordMsg} 
                         isHide={false} 
                         tag={<h3 className="fn-left">
-                            <Link to='/newSurveyHistory'><span style={{ color: "#fff" }}>新建调研</span></Link>
-                            <span style={{ borderBottom: "3px solid red" }}>历史调研</span>
+                            {/* <Link to='/newSurveyHistory'><span style={{ color: "#fff" }}>新建调研</span></Link>
+                            <span style={{ borderBottom: "3px solid red" }}>历史调研</span> */}
+                            调研详细
                         </h3>}
                     ></TableHeads>
                     {/* <button id="downloadPng">下载图片</button> */}
                     {/* <button id="download">下载PDF</button> */}
-                    <img src={this.state.companyDetail.signed_file_path} style={{width:"100%",marginTop:"-1rem"}} />
+                    <img src={this.state.companyDetail.signed_file_path} style={{width:"100%",marginTop:"-1.4rem"}} />
                 </div>
             </div>
         )

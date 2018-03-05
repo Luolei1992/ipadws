@@ -31,6 +31,7 @@ const ajaxURLList = {
     add_meeting: "gdApi/add_meeting", //添加会议记录
     get_record_info: "gdApi/get_record_info", //会议详细记录
     add_project: "gdApi/add_project", //添加调研
+    add_project_ex: "gdApi/add_project_ex", //添加调研
     upload_image_byw_upy2: "upload/upload_image_byw_upy2", //base64文件上传
     get_company_list: "gdApi/get_company_list", //获取公司列表
     get_company_info: "gdApi/get_company_info", //获取公司详细
