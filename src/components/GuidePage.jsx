@@ -55,7 +55,26 @@ export default class Guide extends React.Component {
                         </li>
                     </ul>
                 </div>
-                
+                <div className="pdfShowWrap">
+                    <div className="companyPdf" onClick={()=>{
+                        hashHistory.push({
+                            pathname: '/pdf',
+                            query: { src: "company" }
+                        })  
+                    }}></div>
+                    <div className="internetPdf pubTangle" onClick={()=>{
+                        hashHistory.push({
+                            pathname: '/pdf',
+                            query: { src: "internet" }
+                        })  
+                    }}></div>
+                    <div className="govermentPdf pubTangle" onClick={()=>{
+                        hashHistory.push({
+                            pathname: '/pdf',
+                            query: { src: "government" }
+                        })  
+                    }}></div>
+                </div>
             </div>
         )
     }

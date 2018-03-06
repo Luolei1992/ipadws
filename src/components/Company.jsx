@@ -146,8 +146,8 @@ export default class Company extends React.Component {
     // }
     render() {
         let tempDate = this.state.companyDetail;
-        let starttime = tempDate.start_time + '';
-        let endtime = tempDate.end_time + '';
+        let starttime = (tempDate.start_time + '').split(" ")[0];
+        let endtime = (tempDate.end_time + '').split(" ")[0];
         return (
             <div className="visitRecordWrap" id="fromHTMLtestdiv">
                 <TableHeads
@@ -161,7 +161,8 @@ export default class Company extends React.Component {
                 <div className="recordMain">
                     <h2 style={{ letterSpacing: "1px", marginTop: "0.8rem" }}>{tempDate.company_name}</h2>
                     <p style={{ textAlign: "center" }}>
-                        文件编号: {tempDate.document_id}  <span style={{ padding: "0 15px" }}></span>起止时间: {starttime.split(" ")[0]} 至 {(endtime.split(" ")[0])}<span style={{ padding: "0 15px" }}></span>
+                        文件编号: {tempDate.document_id}  <span style={{ padding: "0 15px" }}></span>
+                        起止时间: {starttime == 'undefined' ? "0000-00-00" : starttime} 至 {(endtime == 'undefined' ? "0000-00-00" : endtime)}<span style={{ padding: "0 15px" }}></span>
                     </p>
                     <div className="tableDetails">
                         <table className="topTable">

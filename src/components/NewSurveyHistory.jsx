@@ -731,7 +731,7 @@ export default class NewSurveyHistory extends React.Component {
                                                 </li>
                                             </ul>
                                         </div>
-                                        <div className="midDivTop" style={{marginTop:"10px"}}>
+                                        <div className="midDivTop">
                                             <span>您的宝贵建议: </span>&nbsp;&nbsp;
                                             {/* <textarea className="suggessMsg"></textarea> */}
                                             <textarea 

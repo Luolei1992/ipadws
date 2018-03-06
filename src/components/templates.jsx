@@ -21,6 +21,15 @@ export const TableHeads = (props) => (    //公共头部
         <Link to='/'><img src={props.url} className="fn-right" /></Link>
     </div>
 )
+export const TableHeadb = (props) => (    //公共头部  
+    <div className="tableHead" style={{ paddingTop: '20px',position:"fixed",width:"100%",top:"0",left:"0"}}>
+        <div className="leftLogoWord fn-left" onClick={()=>{props.backPdf()}}><i className="iconfont icon-jiantou"></i>返回</div>
+        {
+            props.isHide ? "" : props.tag
+        }
+        <Link to='/'><img src={props.url} className="fn-right" /></Link>
+    </div>
+)
 export const TableHeada = (props) => (    //公共头部  
     <div className="tableHead" style={{ paddingTop: '20px',position:"fixed",width:"100%",top:"0",left:"0"}}>
         <div className="leftLogoWord fn-left" onClick={() => {
@@ -575,15 +584,4 @@ export const init = (textarea) => {
     resize();
 }
 
-export const noLogin = (data) => {
-    if (data.message == '会话已失效，请重新登录') {
-        Toast.info(data.message, 2, null, false);
-        setTimeout(() => {
-            hashHistory.push({
-                pathname: '/'
-            })
-        }, 500);
-    }else{
-        Toast.info(data.message, 2, null, false);        
-    }
-}
+

@@ -25,6 +25,7 @@ import QualityList from './components/QualityList';
 import SurveyHistoryStatic from './components/SurveyHistoryStatic';
 import BaseState from './components/BaseState';
 import PersonalList from './components/PersonalList';
+import PdfView from './components/PdfView';
 import QualityStatic from './components/QualityStatic';
 import Test from './components/test';
 
@@ -52,6 +53,7 @@ ReactDOM.render(
             </Route>
             <Route path="/meeting" component={Meeting} />
             <Route path="/quality" component={Quality} />
+            <Route path="/pdf" component={PdfView} />
             <Route path="/meetingStatic" component={MeetingStatic} />
             <Route path="/survey" component={Survey} />            
             <Route path="/customs" component={Customs} />

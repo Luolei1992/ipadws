@@ -544,14 +544,15 @@
                         ul {
                             li {
                                 width: auto;
-                                padding-left: 0;
+                                padding-left: 0.01rem;
                                 margin-left: .585938rem;
+                                padding-bottom: 0.1rem;                                
                             }
                         }
                         .midDiv {
                             position: relative;
                             left: 50%;
-                            top: .08rem;
+                            top: 0.08rem;
                             margin-left: -5rem;
                             width: 10rem;
                             padding-bottom: 0.2rem;
@@ -698,7 +699,8 @@
                         overflow:hidden; 
                         li {
                             width: auto;
-                            padding-left: 0;
+                            padding-left: 0.01rem;
+                            padding-bottom: 0.02rem;
                             margin-left: .585938rem;
                             float: left;
                             box-sizing: border-box;
@@ -1204,6 +1206,29 @@
         .bgWrap {
             background-color: rgba(0, 0, 0, 0.5);
         }
+    }
+}
+.pdfShowWrap {
+    .companyPdf {
+        width: 6.8rem;
+        height: 4.4rem;
+        position: absolute;
+        left: 50%;
+        top: 0;
+        margin-left: -3.4rem;
+    }
+    .pubTangle {
+        width: 5.6rem;
+        height: 8.8rem;
+        position: absolute;
+        top: 50%;
+        margin-top: -4.4rem;
+    }
+    .pubTangle.govermentPdf {
+        right: 0;
+    }
+    .pubTangle.internetPdf {
+        left: 0;
     }
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
