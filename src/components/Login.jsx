@@ -28,7 +28,7 @@ export default class Login extends React.Component {
         this.handleSend=(res)=>{
             console.log(res);
             if(res.success) {
-                validate.setCookie('user_id', res.data.id);
+                // validate.setCookie('user_id', res.data.id);
                 let to = GetLocationParam('to');
                 let tab = GetLocationParam('tab');
                 hashHistory.push({
