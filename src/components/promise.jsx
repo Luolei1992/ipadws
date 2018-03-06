@@ -121,16 +121,33 @@ function sendAjax(url, param, method) {
             });
         } else {
             Ajax.post(url, qs.stringify(param)).then(req => {
-                resolve(req);
+                errLogin(req.data) && resolve(req);
             }).catch(error => {
                 //全局处理网络请求错误
                 console.log(error);
+                Toast.info("网络错误，请重试！", 2, null, false);
+                setTimeout(() => {
+                    Toast.hide();
+                }, 1000);
                 reject(error);
             });
         }
     });
 }
-
+function errLogin(data)  {
+    if (data.message == '会话已失效，请重新登录') {
+        Toast.info(data.message, .8, null, false);
+        validate.setCookie("user_id","");
+        setTimeout(() => {
+            hashHistory.push({
+                pathname: '/login'
+            })
+        }, 800);
+        return false;
+    } else {
+        return true;
+    }
+}
 /**
  * 获取cookie
  * 

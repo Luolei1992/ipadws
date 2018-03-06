@@ -1,6 +1,6 @@
 import React from "react";
 import { hashHistory } from "react-router";
-import { TableHeads, Customs } from './templates';
+import { TableHeads, Customs ,noLogin} from './templates';
 import { Modal, List ,Toast} from 'antd-mobile';
 
 const urls = {

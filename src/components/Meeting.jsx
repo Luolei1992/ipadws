@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal ,Toast} from 'antd-mobile';
+import { Modal, Toast } from 'antd-mobile';
 import { hashHistory } from "react-router";
 import { div2png, readyDo, TableHeads, init, GetLocationParam } from './templates';
 import { DrawBoard } from './drawBoard';
@@ -40,6 +40,14 @@ export default class Meeting extends React.Component {
             console.log(res);
             if(res.success) {
                 Toast.info("文件保存成功", 2, null, false);
+                setTimeout(() => {
+                    Toast.hide();
+                }, 1000);
+            }else{
+                setTimeout(() => {
+                    Toast.hide()
+                }, 1000);
+                Toast.info("文件保存失败", 2, null, false);
             }
         }
     }
@@ -150,12 +158,21 @@ export default class Meeting extends React.Component {
             }
         });
     }
+    loadingToast() {
+        Toast.loading('保存中...', 0, () => {
+            // alert(4)
+        },true);
+    }
     render(){
         return (
             <div className="visitRecordWrap" id="fromHTMLtestdiv">
                 <TableHeads url={urls.wordMsg} isHide={true}></TableHeads>
-                <button id="downloadPng">下载图片</button>
-                {/* <button id="download">下载PDF</button> */}
+                <button id="downloadPng" onClick={() => { 
+                        this.loadingToast();
+                        this.addMeeting(); 
+                        clearInterval(interval);
+                    }}
+                >下载图片</button>
                 <div className="recordMain">
                     <h2>会议纪要</h2>
                     <div className="tableDetails">

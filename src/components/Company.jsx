@@ -126,7 +126,7 @@ export default class Company extends React.Component {
         this.props.state = [true, false, false, false, false, false];
         runPromise('get_project_info', {
             "gd_project_id": GetLocationParam('id') || validate.getCookie('baseId')
-        }, this.handleProjectGet, false, "post");
+        }, this.handleProjectGet, true, "post");
     }
     // clearAll = function () {
     //     drawBoard.clear();

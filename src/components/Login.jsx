@@ -28,7 +28,7 @@ export default class Login extends React.Component {
         this.handleSend=(res)=>{
             console.log(res);
             if(res.success) {
-                // validate.setCookie('user_id', res.data.id);
+                validate.setCookie('user_id', res.data.id);
                 let to = GetLocationParam('to');
                 let tab = GetLocationParam('tab');
                 hashHistory.push({
@@ -36,6 +36,7 @@ export default class Login extends React.Component {
                     query: { tab:tab }
                 });
             }else{
+                
                 Toast.info(res.message, 2, null, false);
             }
         }
@@ -115,7 +116,10 @@ export default class Login extends React.Component {
                     >登 陆</Button>
                 </div>
                 {/* <i className="iconfont icon-leftarrow" onClick={() => { hashHistory.goBack();}}></i> */}
-                <div className="left" onClick={() => { hashHistory.goBack(); }}>
+                <div className="left" onClick={() => {
+                    hashHistory.push({
+                        pathname: '/',
+                    });}}>
                     <img src={urls.left} />
                 </div>
             </div>

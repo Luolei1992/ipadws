@@ -574,3 +574,16 @@ export const init = (textarea) => {
     text.select();
     resize();
 }
+
+export const noLogin = (data) => {
+    if (data.message == '会话已失效，请重新登录') {
+        Toast.info(data.message, 2, null, false);
+        setTimeout(() => {
+            hashHistory.push({
+                pathname: '/'
+            })
+        }, 500);
+    }else{
+        Toast.info(data.message, 2, null, false);        
+    }
+}

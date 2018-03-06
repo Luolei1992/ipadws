@@ -73,6 +73,7 @@
     height: 100%;
     width: 100%;
     background: #000;
+    top:0;
     .head {
         overflow: hidden;
         padding: .390625rem;
@@ -140,7 +141,7 @@
             height: 100%;
             z-index: 1;
             width: 30%;
-            padding-top: 1.3rem;
+            // padding-top: 1.3rem;
             box-sizing: border-box;
             background-color: #000;
             color: #fff;
@@ -181,7 +182,7 @@
         .mainWrapRight {
             width: 70%;
             height: 100%;
-            margin-top: 1rem;
+            // margin-top: 1rem;
             position: fixed;
             overflow: scroll;
             right: 0;
@@ -521,6 +522,7 @@
                             border-radius: 5px;
                             position: relative;
                             bottom: .195313rem;
+                            z-index: 100;
                         }
                     }
                     .date {
@@ -1193,6 +1195,16 @@
 #downloadPng {
     display:inline-block;
     padding: .078125rem .097656rem;
+}
+#mainWrap {
+    margin-top: 1.3rem;
+}
+.toast-container {
+    .toast-example {
+        .bgWrap {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+    }
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
     html:not([data-scale]) .am-list-body::before,

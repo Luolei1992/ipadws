@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal,Toast } from 'antd-mobile';
+import { Modal, Toast } from 'antd-mobile';
 import { div2png, readyDo, TableHeads, init, GetLocationParam } from './templates';
 import { DrawBoard } from './drawBoard';
 import { get } from 'https';
@@ -17,6 +17,7 @@ let personalLis1 = [];
 let personalLis2 = [];
 let name1 = [];
 let name2=[];
+let interval;
 const urls = {
     wordMsg: require('../images/wordMsg.png')
 }
@@ -78,7 +79,17 @@ export default class SceneVisit extends React.Component {
             }
         },
         this.saveProject = (res) => {
-            console.log(res);
+            if (res.success) {
+                Toast.info("文件保存成功", 2, null, false);
+                setTimeout(() => {
+                    Toast.hide();
+                }, 1000);
+            } else {
+                setTimeout(() => {
+                    Toast.hide()
+                }, 1000);
+                Toast.info("文件保存失败", 2, null, false);
+            }
         },
         this.toPersonalList = (res) =>{
             console.log(res)
@@ -90,27 +101,42 @@ export default class SceneVisit extends React.Component {
         }
     }
     componentDidMount() {
+        this.props.router.setRouteLeaveHook(
+            this.props.route,
+            this.routerWillLeave
+        )
         init("sceneResult");
         init("sceneNext");
         readyDo(this.alerts);
         canvas = document.getElementById("canvas");
         drawBoard = new DrawBoard(canvas);  // 初始化
-        setInterval(() => {
-            runPromise('add_record', {
-                "gd_company_id": validate.getCookie('baseId'),
-                "title": this.state.title,
-                "user_ids": this.state.user_ids,
-                "customer_ids": this.state.customer_ids,
-                "content": this.state.content,
-                "suggest": this.state.suggest,
-                "score": this.state.score,
-                "plans": this.state.orderList,
-                "surveys": this.state.surveys,
-                "company_name": this.state.currentCompany
-            }, this.handleSceneVisitGet, true, "post");
+        interval=setInterval(() => {
+            this.addRecordToback();
         }, 30000);
         this.getPersonLis();
         this.toPersonLis();
+    }
+    routerWillLeave(nextLocation) {
+        clearInterval(interval);
+    }
+    loadingToast() {
+        Toast.loading('保存中...', 0, () => {
+            // alert(4)
+        }, true);
+    }
+    addRecordToback=()=>{
+        runPromise('add_record', {
+            "gd_company_id": validate.getCookie('baseId'),
+            "title": this.state.title,
+            "user_ids": this.state.user_ids,
+            "customer_ids": this.state.customer_ids,
+            "content": this.state.content,
+            "suggest": this.state.suggest,
+            "score": this.state.score,
+            "plans": this.state.orderList,
+            "surveys": this.state.surveys,
+            "company_name": this.state.currentCompany
+        }, this.handleSceneVisitGet, true, "post");
     }
     getPersonLis=()=>{
         runPromise('get_staff_list', {},this.getPersonalList, false, "get");
@@ -303,7 +329,7 @@ export default class SceneVisit extends React.Component {
                     url={urls.wordMsg}
                     isHide={true}
                 ></TableHeads>
-                <button id="downloadPng">下载图片</button>
+                <button id="downloadPng" onClick={() => { this.loadingToast();this.addRecordToback();clearInterval(interval);}}>下载图片</button>
                 <div className="recordMain">
                     <h2>现场回访记录</h2>
                     <div className="tableDetails">

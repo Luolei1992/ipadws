@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link,hashHistory} from 'react-router';
-import { Modal ,Toast} from 'antd-mobile';
+import { Modal, Toast } from 'antd-mobile';
 import { readyDo, TableHeads,init } from './templates';
 import { DrawBoard } from './drawBoard';
 
@@ -30,12 +30,24 @@ export default class Quality extends React.Component {
             goThings:"",
             zlThings:"",
             ysResult:"",
-            id:""
+            id:"",
+            companyDetail:{
+
+            },
+            animating: false            
         },
         this.saveProject = (res) => {
             console.log(res);
-            if(res.success){
+            if (res.success) {
                 Toast.info("文件保存成功", 2, null, false);
+                setTimeout(() => {
+                    Toast.hide();
+                }, 1000);
+            } else {
+                setTimeout(() => {
+                    Toast.hide()
+                }, 1000);
+                Toast.info("文件保存失败", 2, null, false);
             }
         },
         this.addCheckDetail=(res)=>{
@@ -45,7 +57,24 @@ export default class Quality extends React.Component {
                     id: res.message.id
                 })
             }
-        }
+        },
+            this.handleProjectGet = (res) => {
+                console.log(res);
+                if (res.success) {
+                    this.setState({
+                        htName: res.data.length == 0 ? "" : res.data.other_name,
+                        htNum: res.data.length == 0 ? "" : res.data.contract_no,
+                        xmName: res.data.length == 0 ? "" : res.data.name,
+                        xmNum: res.data.length == 0 ? "" : res.data.document_id,
+                        xmMaster: res.data.length == 0 ? "" : res.data.master_name,
+                        cgName: res.data.length == 0 ? "" : res.data.purchase_name,
+                        ssCompany: res.data.length == 0 ? "" : res.data.implement_company_name,
+                        ssName: res.data.length == 0 ? "" : res.data.implement_user_name
+                    })
+                } else {
+                    Toast.info(res.message, 2, null, false);
+                }
+            }
     }
     componentDidMount(){
         this.props.router.setRouteLeaveHook(
@@ -59,6 +88,9 @@ export default class Quality extends React.Component {
         interval = setInterval(() => {
             this.addCheck();
         }, 30000);
+        runPromise('get_project_info', {
+            "gd_project_id": validate.getCookie('baseId')
+        }, this.handleProjectGet, true, "post");
     }
     routerWillLeave(nextLocation) {
         clearInterval(interval);
@@ -108,11 +140,16 @@ export default class Quality extends React.Component {
             }
         });
     }
+    loadingToast() {
+        Toast.loading('保存中...', 0, () => {
+            // alert(4)
+        }, true);
+    }
     render(){
         return (
             <div id="fromHTMLtestdiv" className="qualityFormWrap visitRecordWrap">
                 <TableHeads url={urls.wordMsg} isHide={false} tag={<h3>验收单</h3>}></TableHeads>
-                <button id="downloadPng">下载图片</button>
+                <button id="downloadPng" onClick={() => { this.loadingToast();this.addCheck();clearInterval(interval)}}>下载图片</button>
                 <div className="qualityWrap">
                     <div className="qualityWrapTop">
                         <h3>{decodeURIComponent(validate.getCookie('company_name'))}</h3>
@@ -123,45 +160,53 @@ export default class Quality extends React.Component {
                             <td>采购合同名称</td>
                             <td>
                                 <input type="text" className="qualityIpt" readOnly
-                                    onChange={(e)=>{this.setState({htName:e.currentTarget.value})}}
+                                    // onChange={(e)=>{this.setState({htName:e.currentTarget.value})}}
+                                    value={this.state.htName}
                                 />
                             </td>
                             <td>项目合同号</td>
                             <td><input type="text" className="qualityIpt" readOnly
-                                onChange={(e)=>{this.setState({htNum:e.currentTarget.value})}}                                
+                                // onChange={(e)=>{this.setState({htNum:e.currentTarget.value})}} 
+                                value={this.state.htNum}                               
                             /></td>
                         </tr>
                         <tr>
                             <td>项目合同名称</td>
                             <td><input type="text" className="qualityIpt" readOnly
-                                onChange={(e)=>{this.setState({xmName:e.currentTarget.value})}}
+                                // onChange={(e)=>{this.setState({xmName:e.currentTarget.value})}}
+                                value={this.state.xmName}
                             /></td>
                             <td>项目编号</td>
                             <td><input type="text" className="qualityIpt" readOnly
-                                onChange={(e)=>{this.setState({xmNum:e.currentTarget.value})}}
+                                // onChange={(e)=>{this.setState({xmNum:e.currentTarget.value})}}
+                                value={this.state.xmNum}
                             /></td>
                         </tr>
                         <tr>
                             <td>项目负责人</td>
                             <td><input type="text" className="qualityIpt" readOnly
-                                onChange={(e)=>{this.setState({xmMaster:e.currentTarget.value})}}
+                                // onChange={(e)=>{this.setState({xmMaster:e.currentTarget.value})}}
+                                value={this.state.xmMaster}
                             /></td>
                             <td>采购人员</td>
                             <td><input type="text" className="qualityIpt" readOnly
-                                onChange={(e)=>{this.setState({cgName:e.currentTarget.value})}}
+                                // onChange={(e)=>{this.setState({cgName:e.currentTarget.value})}}
+                                value={this.state.cgName}
                             /></td>
                         </tr>
                         <tr>
                             <td>实施单位</td>
                             <td><input type="text" className="qualityIpt" readOnly
-                                onChange={(e)=>{this.setState({ssCompany:e.currentTarget.value})}}
+                                // onChange={(e)=>{this.setState({ssCompany:e.currentTarget.value})}}
+                                value={this.state.ssCompany}
                             /></td>
                             <td>
                                 <p style={{ lineHeight: "30px" }}>实施/实施单位</p>
                                 <p style={{ lineHeight: "30px" }}>联系人</p>
                             </td>
                             <td><input type="text" className="qualityIpt" readOnly
-                                onChange={(e)=>{this.setState({ssName:e.currentTarget.value})}}
+                                // onChange={(e)=>{this.setState({ssName:e.currentTarget.value})}}
+                                value={this.state.ssName}
                             /></td>
                         </tr>
                         <tr>

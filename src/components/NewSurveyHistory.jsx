@@ -1,6 +1,6 @@
 import React from 'react';
 import { hashHistory,Link } from "react-router";
-import { Modal, ImagePicker,Toast } from 'antd-mobile';
+import { Modal, ImagePicker, Toast } from 'antd-mobile';
 import { div2png, readyDo, TableHeads, init, GetLocationParam } from './templates';
 import { DrawBoard } from './drawBoard';
 
@@ -96,8 +96,18 @@ export default class NewSurveyHistory extends React.Component {
                 baseId:res.data.id
             })
         },
-        this.saveProject=(res)=>{
-            console.log(res);
+        this.saveProject = (res) => {
+            if (res.success) {
+                Toast.info("文件保存成功", 2, null, false);
+                setTimeout(() => {
+                    Toast.hide();
+                }, 1000);
+            } else {
+                setTimeout(() => {
+                    Toast.hide()
+                }, 1000);
+                Toast.info("文件保存失败", 2, null, false);
+            }
         }
     }
 
@@ -318,6 +328,11 @@ export default class NewSurveyHistory extends React.Component {
             // }
         };
     }
+    loadingToast() {
+        Toast.loading('保存中...', 0, () => {
+            // alert(4)
+        }, true);
+    }
     render(){
         return (
             <div id="fromHTMLtestdiv" className="visitRecordWrap">
@@ -329,7 +344,7 @@ export default class NewSurveyHistory extends React.Component {
                         <Link to='/survey?tab=5' style={{color:"#fff"}}><span>历史调研</span></Link>
                     </h3>}
                 ></TableHeads>
-                <button id="downloadPng" onClick={()=>{this.addResearch()}}>下载图片</button>
+                <button id="downloadPng" onClick={() => { this.loadingToast();this.addResearch();clearInterval(interval)}}>下载图片</button>
                 {/* <a id="downloadPng"></a><input id="filename" style={{ display: "none" }} /> */}
                 {/* <div id="canvasWrap" style={{ 
                     backgroundColor: "#f5f5f5",
@@ -737,8 +752,8 @@ export default class NewSurveyHistory extends React.Component {
                                         </div>
                                         <div className="dataType">
                                             <div className="bt-warn fn-right" style={{ position: "relative", zIndex: "1000" }}>
-                                                {/* <button type="button" onClick={this.clearAll}>重签</button> */}
-                                                <button type="button" onClick={(e)=>{this.save(e)}}>重签</button>
+                                                <button type="button" onClick={this.clearAll}>重签</button>
+                                                {/* <button type="button" onClick={(e)=>{this.save(e)}}>重签</button> */}
                                             </div>
                                             <div className="date" >
                                                 <span>日期：</span>
