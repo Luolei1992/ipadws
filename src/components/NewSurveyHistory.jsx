@@ -15,6 +15,7 @@ let fileNum = 0;
 let uploadFiles=0;
 let arrIds = [];
 let interval;
+let timeout = [];
 export default class NewSurveyHistory extends React.Component {
     constructor (props) {
         super(props);
@@ -27,6 +28,7 @@ export default class NewSurveyHistory extends React.Component {
             email: "",
             remark: "",
             baseId:"",
+            radio:"否",
             researchResult:"",
             hasError1: false,
             hasError2: false,
@@ -128,6 +130,17 @@ export default class NewSurveyHistory extends React.Component {
             offset:"0",
             limit:"20"
         },this.handleCompanyListGet,true,"post");
+        let head = document.getElementsByClassName("tableHead")[0];
+        let mainWrap = document.getElementById("mainWrap");
+        head.style.position = "static";
+        mainWrap.style.marginTop = '0';
+    }
+    touchBlur() {
+        var iptList = document.getElementsByTagName("input");
+        var txtList = document.getElementsByTagName("textarea");
+        for (var a = 0; a < iptList.length; a++) {
+            iptList[a].blur();
+        }
     }
     routerWillLeave(nextLocation) {
         clearInterval(interval);
@@ -184,11 +197,42 @@ export default class NewSurveyHistory extends React.Component {
         this.setState({
             [key]: true,
         });
+        timeout.push(
+            setTimeout(() => {
+                // let iptList = document.getElementsByTagName("input");
+                // for (var a = 0; a < iptList.length; a++) {
+                //     iptList[a].blur();
+                // }
+                let propmtTouchBox = document.querySelector(".am-modal-wrap");
+                propmtTouchBox.addEventListener("touchmove", this.touchBlur, false);
+            }, 500)
+        );
     }
     onClose = key => () => {
         this.setState({
             [key]: false,
         });
+        let propmtTouchBox = document.querySelector(".am-modal-wrap .am-modal");
+        propmtTouchBox.removeEventListener("touchmove", this.touchBlur, false);
+        for(let i = 0;i<timeout.length;i++){
+            clearTimeout(timeout[i]);
+        }
+    }
+    changeStyle = ()=>{
+        let head = document.getElementsByClassName("tableHead")[0];
+        let mainWrap = document.getElementById("mainWrap");
+        head.style.position="static";
+        mainWrap.style.marginTop='0';
+    }
+    touchBlur=()=>{
+        let iptList = document.getElementsByTagName("input");
+        let txtList = document.getElementsByTagName("textarea");
+        for (let a = 0; a < iptList.length; a++) {
+            iptList[a].blur();
+        }
+        for (let b = 0; b < txtList.length; b++) {
+            txtList[b].blur();
+        }
     }
     onChangePhone(e) {
         let val = e.currentTarget.value;
@@ -247,7 +291,7 @@ export default class NewSurveyHistory extends React.Component {
             phone: this.state.phone,
             email: this.state.email,
             remark: this.state.remark,
-            is_in_survey:""
+            is_in_survey:this.state.radio
         }
         if(this.state.name == ""){
             Toast.info('请输入姓名',.8);
@@ -266,6 +310,7 @@ export default class NewSurveyHistory extends React.Component {
                 phone: "",
                 email: "",
                 remark: "",
+                radio:"否"
             })
         };
     }
@@ -335,7 +380,7 @@ export default class NewSurveyHistory extends React.Component {
     }
     render(){
         return (
-            <div id="fromHTMLtestdiv" className="visitRecordWrap">
+            <div id="fromHTMLtestdiv" className="visitRecordWrap" onTouchMove={()=>{this.touchBlur();}}>
                 <TableHeads 
                     url={urls.wordMsg} 
                     isHide={false} 
@@ -344,9 +389,10 @@ export default class NewSurveyHistory extends React.Component {
                         <Link to='/survey?tab=5' style={{color:"#fff"}}><span>历史调研</span></Link>
                     </h3>}
                 ></TableHeads>
-                <button id="downloadPng" onClick={() => { this.loadingToast();this.addResearch();clearInterval(interval)}}>下载图片</button>
-                {/* <a id="downloadPng"></a><input id="filename" style={{ display: "none" }} /> */}
-                {/* <div id="canvasWrap" style={{ 
+                <div style={{overflow:"scroll"}}>
+                    <button id="downloadPng" onClick={() => { this.loadingToast(); this.addResearch(); clearInterval(interval) }}>下载图片</button>
+                    {/* <a id="downloadPng"></a><input id="filename" style={{ display: "none" }} /> */}
+                    {/* <div id="canvasWrap" style={{ 
                     backgroundColor: "#f5f5f5",
                     zIndex:"1000", 
                     position: "fixed", 
@@ -354,204 +400,222 @@ export default class NewSurveyHistory extends React.Component {
                     width: "100%", 
                     height: "100%" 
                 }}><img src='' id="canvasPic"/></div> */}
-                {/* <button id="download">下载PDF</button> */}
-                
-                <div className="recordMain">
-                    {/* <h2 style={{letterSpacing:"1px",marginTop:"0.8rem"}}> */}
+                    {/* <button id="download">下载PDF</button> */}
+
+                    <div className="recordMain">
+                        {/* <h2 style={{letterSpacing:"1px",marginTop:"0.8rem"}}> */}
                         {/* 上海泰宇信息技术有限公司 */}
                         {/* <input type="text" style={{ border: "0 none", borderBottom: "1px solid #ccc" }} autoFocus/> */}
-                    {/* </h2> */}
-                    {/* <p style={{textAlign:"center"}}> */}
+                        {/* </h2> */}
+                        {/* <p style={{textAlign:"center"}}> */}
                         {/* 文件编号: 54648566565441 */}
                         {/* <span style={{ padding: "0 15px" }}></span> */}
                         {/* 起止时间: <input type="text"/>
                         <span style={{ padding: "0 15px" }}></span> */}
-                    {/* </p> */}
-                    <div className="tableDetails">
-                        <table className="topTable">
-                            <tr>
-                                <td colSpan="4" className="darkbg">客户信息</td>
-                            </tr>
-                            <tr>
-                                <th className="darkbg">公司名称</th>
-                                <td className="lightbg">
-                                    {/* <input 
+                        {/* </p> */}
+                        <div className="tableDetails">
+                            <table className="topTable">
+                                <tr>
+                                    <td colSpan="4" className="darkbg">客户信息</td>
+                                </tr>
+                                <tr>
+                                    <th className="darkbg">公司名称</th>
+                                    <td className="lightbg">
+                                        {/* <input 
                                         type="text" 
                                         className="surveyIpt" 
                                         readOnly
                                         value={this.state.companyName} 
                                         onChange={(e) => { this.setState({ companyName:e.currentTarget.value})}} 
                                     /> */}
-                                    {this.state.company}
-                                    <i onClick={this.showModal('modal4')} className="iconfont icon-jia" style={{float:"right",fontSize:"28px",marginTop:"2px"}}></i>
-                                </td>
-                                <th className="darkbg">成立时间</th>
-                                <td className="lightbg">
-                                    <input 
-                                    type="text" 
-                                    className="surveyIpt" 
-                                    readOnly
-                                    value={this.state.meetingTime}
-                                    onChange={(e) => { this.setState({ meetingTime: e.currentTarget.value }) }}                                     
-                                /></td>
-                            </tr>
-                            <Modal
-                                visible={this.state.modal4}
-                                transparent
-                                maskClosable={true}
-                                onClose={this.onClose('modal4')}
-                                className="personalLinkWrap"
-                            >
-                                <div className="personalLink" style={{color:"#333"}}>
-                                    <h4 style={{fontSize:"22px",marginBottom:"8px"}}>选择公司名称</h4>
-                                    <ul>
-                                        {
-                                            this.state.companyList.item_list.map((value)=>(
-                                                <li style={{
-                                                        borderBottom:"1px solid #ccc",
-                                                        height:"0.6rem",
-                                                        lineHeight:"0.6rem"
+                                        {this.state.company}
+                                        <i onClick={this.showModal('modal4')} className="iconfont icon-jia" style={{ float: "right", fontSize: "28px", marginTop: "2px" }}></i>
+                                    </td>
+                                    <th className="darkbg">成立时间</th>
+                                    <td className="lightbg">
+                                        <input
+                                            type="text"
+                                            className="surveyIpt"
+                                            readOnly
+                                            value={this.state.meetingTime}
+                                            onChange={(e) => { this.setState({ meetingTime: e.currentTarget.value }) }}
+                                        /></td>
+                                </tr>
+                                <Modal
+                                    visible={this.state.modal4}
+                                    transparent={true}
+                                    maskClosable={true}
+                                    onClose={this.onClose('modal4')}
+                                    className="personalLinkWrap"
+                                >
+                                    <div className="personalLink" style={{ color: "#333" }}>
+                                        <h4 style={{ fontSize: "22px", marginBottom: "8px" }}>选择公司名称</h4>
+                                        <ul>
+                                            {
+                                                this.state.companyList.item_list.map((value) => (
+                                                    <li style={{
+                                                        borderBottom: "1px solid #ccc",
+                                                        height: "0.6rem",
+                                                        lineHeight: "0.6rem"
                                                     }}
-                                                    onClick={(e) => { 
-                                                        this.setState({ 
+                                                    onClick={(e) => {
+                                                        this.setState({
                                                             company: e.currentTarget.innerHTML,
-                                                            baseId:value.id
-                                                        }); 
+                                                            baseId: value.id
+                                                        });
                                                         this.onClose('modal4')();
                                                         this.getCompanyDetails(value.id);
                                                     }}
-                                                >{value.company_name}</li>
-                                            ))
-                                        }
-                                    </ul>
-                                </div>
-                            </Modal>
-                            <tr>
-                                <th className="darkbg">公司地址</th>
-                                <td className="lightbg">
-                                    <input 
-                                    type="text" 
-                                    className="surveyIpt" 
-                                    value={this.state.meetingAddress} 
-                                    readOnly
-                                    onChange={(e) => { this.setState({ meetingAddress: e.currentTarget.value }) }}
-                                /></td>
-                                <th className="darkbg">公司网址</th>
-                                <td className="lightbg">
-                                    <input 
-                                    type="text" 
-                                    className="surveyIpt" 
-                                    readOnly
-                                    value={this.state.companyAddress} 
-                                    onChange={(e) => { this.setState({ companyAddress: e.currentTarget.value }) }}                                      
-                                /></td>
-                            </tr>
-                        </table>
-                        <table className="sceneTable">
-                            <tr>
-                                <td colSpan="4" 
-                                    className="darkbg newPersonalMsg"
-                                >联系人<span onClick={this.showModal('modal1')}>新增  <i className="iconfont icon-jia"></i></span></td>
-                            </tr>
-                            <Modal
-                                visible={this.state.modal1}
-                                transparent
-                                maskClosable={true}
-                                onClose={this.onClose('modal1')}
-                                className="personalLinkWrap"
-                                footer={[
-                                    { text: '取消', onPress: () => { console.log('cancle'); this.onClose('modal1')() } },
-                                    { text: '确定', onPress: () => { this.addPersonLink(); } }
-                                ]}
-                            >
-                                <div className="personalLink">
-                                    <div className="personalLinkList">
-                                        <ul>
-                                            <li>
-                                                <span>姓名：</span>
-                                                <input
-                                                    type="text"
-                                                    value={this.state.name}
-                                                    onChange={(e) => { this.onChangeName(e) }}
-                                                />
-                                            </li>
-                                            <li>
-                                                <span>职位：</span>
-                                                <input
-                                                    type="text"
-                                                    value={this.state.job}
-                                                    onChange={(e) => { this.onChangeJob(e) }}
-                                                />
-                                            </li>
-                                            <li>
-                                                <span>手机：</span>
-                                                <input
-                                                    type="text"
-                                                    value={this.state.phone}
-                                                    onChange={(e) => { this.onChangePhone(e) }}
-                                                    className={this.state.hasError1 ? "txtRed" : ""}
-                                                />
-                                            </li>
-                                            <li>
-                                                <span>邮箱：</span>
-                                                <input
-                                                    type="text"
-                                                    value={this.state.email}
-                                                    onChange={(e) => { this.onChangeEmail(e) }}
-                                                    className={this.state.hasError2 ? "txtRed" : ""}
-                                                />
-                                            </li>
-                                            <li>
-                                                <span>备注：</span>
-                                                <input
-                                                    type="text"
-                                                    value={this.state.remark}
-                                                    onChange={(e) => { this.onChangeRemark(e) }}
-                                                />
-                                            </li>
+                                                    >{value.company_name}</li>
+                                                ))
+                                            }
                                         </ul>
                                     </div>
-                                </div>
-                            </Modal>
-                            <tr>
-                                <td colSpan="4">
-                                    <table className="personalMsg">
-                                        <tr style={{borderBottom:"1px solid #ccc"}}>
-                                            <td>姓名</td>
-                                            <td>职位</td>
-                                            <td>手机号</td>
-                                            <td>邮箱</td>
-                                            <td>备注</td>
-                                        </tr>
-                                        
-                                        {
-                                            this.state.personLink.map((value) => { 
-                                                return <tr style={{ borderBottom:"1px solid #CBCBCB"}}>
-                                                    <td style={{width:"10%"}}>{value.name}</td>
-                                                    <td style={{ width: "10%"}}>{value.job}</td>
-                                                    <td style={{ width: "20%"}}>{value.phone}</td>
-                                                    <td style={{ width: "20%"}}>{value.email}</td>
-                                                    <td style={{ width: "40%"}}>{value.remark}</td>
-                                                </tr>
-                                            })
-                                        }
-                                        
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colSpan="4" className="darkbg">合同内容</td>
-                            </tr>
-                            <tr >
-                                <td colSpan="4">
-                                    <div style={{overflow:"hidden"}}>
-                                        <textarea className="allBox textareaPub" id="allBox"
-                                            onChange={(e) => { this.setState({ researchResult: e.currentTarget.value }) }}     
-                                        ></textarea>
+                                </Modal>
+                                <tr>
+                                    <th className="darkbg">公司地址</th>
+                                    <td className="lightbg">
+                                        <input
+                                            type="text"
+                                            className="surveyIpt"
+                                            value={this.state.meetingAddress}
+                                            readOnly
+                                            onChange={(e) => { this.setState({ meetingAddress: e.currentTarget.value }) }}
+                                        /></td>
+                                    <th className="darkbg">公司网址</th>
+                                    <td className="lightbg">
+                                        <input
+                                            type="text"
+                                            className="surveyIpt"
+                                            readOnly
+                                            value={this.state.companyAddress}
+                                            onChange={(e) => { this.setState({ companyAddress: e.currentTarget.value }) }}
+                                        /></td>
+                                </tr>
+                            </table>
+                            <table className="sceneTable">
+                                <tr>
+                                    <td colSpan="4"
+                                        className="darkbg newPersonalMsg"
+                                    >联系人<span onClick={this.showModal('modal1')}>新增  <i className="iconfont icon-jia"></i></span></td>
+                                </tr>
+                                <Modal
+                                    visible={this.state.modal1}
+                                    // maskClosable={true}
+                                    transparent={true}
+                                    onClose={this.onClose('modal1')}
+                                    className="personalLinkWrap "
+                                    footer={[
+                                        { text: '取消', onPress: () => { console.log('cancle'); this.onClose('modal1')() } },
+                                        { text: '确定', onPress: () => { this.addPersonLink(); } }
+                                    ]}
+                                >
+                                    <div className="personalLink">
+                                        <div className="personalLinkList">
+                                            <ul>
+                                                <li>
+                                                    <span>姓名：</span>
+                                                    <input
+                                                        type="text"
+                                                        value={this.state.name}
+                                                        onChange={(e) => { this.onChangeName(e) }}
+                                                    />
+                                                </li>
+                                                <li>
+                                                    <span>职位：</span>
+                                                    <input
+                                                        type="text"
+                                                        value={this.state.job}
+                                                        onChange={(e) => { this.onChangeJob(e) }}
+                                                    />
+                                                </li>
+                                                <li>
+                                                    <span>手机：</span>
+                                                    <input
+                                                        type="text"
+                                                        value={this.state.phone}
+                                                        onChange={(e) => { this.onChangePhone(e) }}
+                                                        className={this.state.hasError1 ? "txtRed" : ""}
+                                                    />
+                                                </li>
+                                                <li>
+                                                    <span>邮箱：</span>
+                                                    <input
+                                                        type="text"
+                                                        value={this.state.email}
+                                                        onChange={(e) => { this.onChangeEmail(e) }}
+                                                        className={this.state.hasError2 ? "txtRed" : ""}
+                                                    />
+                                                </li>
+                                                <li>
+                                                    <span>备注：</span>
+                                                    <input
+                                                        type="text"
+                                                        value={this.state.remark}
+                                                        onChange={(e) => { this.onChangeRemark(e) }}
+                                                    />
+                                                </li>
+                                                <li style={{}}>
+                                                    <span style={{ float: "left", marginLeft: "5px" }}>参与调研：</span>
+                                                    <input
+                                                        type="radio"
+                                                        name="radio"
+                                                        style={{ width: "16px", height: "16px", position: "relative", top: "2px" }}
+                                                        onChange={(e) => { this.setState({ radio: '否' }) }}
+                                                    /> 否
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                <input
+                                                        type="radio"
+                                                        name="radio"
+                                                        style={{ width: "16px", height: "16px", position: "relative", top: "2px" }}
+                                                        onChange={(e) => { this.setState({ radio: '是' }) }}
+                                                    /> 是
+                                            </li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <div className="surveyUpload">
-                                        <div className="staticUpload" style={{position:"relative"}}>
-                                            {/* <ImagePicker
+                                </Modal>
+                                <tr>
+                                    <td colSpan="4">
+                                        <table className="personalMsg">
+                                            <tr style={{ borderBottom: "1px solid #ccc" }}>
+                                                <td style={{ width: "10%" }}>姓名</td>
+                                                <td style={{ width: "10%" }}>职位</td>
+                                                <td style={{ width: "25%" }}>手机号</td>
+                                                <td style={{ width: "25%" }}>邮箱</td>
+                                                <td style={{ width: "20" }}>备注</td>
+                                                <td style={{ width: "10" }}>参与调研</td>
+                                            </tr>
+
+                                            {
+                                                this.state.personLink.map((value) => {
+                                                    return <tr style={{ borderBottom: "1px solid #CBCBCB" }}>
+                                                        <td>{value.name}</td>
+                                                        <td>{value.job_name}</td>
+                                                        <td>{value.phone}</td>
+                                                        <td>{value.email}</td>
+                                                        <td>{value.remark}</td>
+                                                        <td>{value.is_in_survey}</td>
+                                                    </tr>
+                                                })
+                                            }
+
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colSpan="4" className="darkbg">合同内容</td>
+                                </tr>
+                                <tr >
+                                    <td colSpan="4">
+                                        <div style={{ overflow: "hidden" }}>
+                                            <textarea className="allBox textareaPub" id="allBox"
+                                                onChange={(e) => { this.setState({ researchResult: e.currentTarget.value }) }}
+                                            ></textarea>
+                                        </div>
+                                        <div className="surveyUpload">
+                                            <div className="staticUpload" style={{ position: "relative" }}>
+                                                {/* <ImagePicker
                                                 files={files}
                                                 onChange={this.onChangeFile}
                                                 multiple={false}
@@ -559,224 +623,226 @@ export default class NewSurveyHistory extends React.Component {
                                                 selectable={files.length < 6}
                                                 accept="image/gif,image/jpeg,image/jpg,image/png"
                                             /> */}
-                                            <div 
-                                                style={{
-                                                    height:"2rem",
-                                                    width:"2rem",
-                                                    position:"absolute",
-                                                    bottom:"-14px",
-                                                    zIndex:"2",
-                                                    display: this.state.isShow                                                                                                        
-                                                }}
-                                            ><img src={urls.upload} style={{width:"100%"}} /></div>
-                                            <input 
-                                                onChange={(e) => { this.onChangeFiles(e) }} 
-                                                type="file" 
-                                                style={{ 
-                                                    float: "left", 
-                                                    width: "2rem", 
-                                                    height: "2rem",
-                                                    position:"relative",
-                                                    zIndex:"3",
-                                                    opacity:"0",
-                                                    display:this.state.isShow
-                                                }}
-                                            /> 
-                                            
-                                            <img src="" id="upload1" style={{ width: "2rem", height: "2rem", float: "left", margin: "3px 5px" }} />
-                                            <img src="" id="upload2" style={{ width: "2rem", height: "2rem", float: "left", margin: "3px 5px" }} />
-                                            <img src="" id="upload3" style={{ width: "2rem", height: "2rem", float: "left", margin: "3px 5px" }} />
-                                            <img src="" id="upload4" style={{ width: "2rem", height: "2rem", float: "left", margin: "3px 5px" }} />
-                                        </div>
-                                        <Modal
-                                            visible={this.state.modal3}
-                                            transparent
-                                            maskClosable={true}
-                                            onClose={this.onClose('modal3')}
-                                            className="personalLinkWrap"
+                                                <div
+                                                    style={{
+                                                        height: "2rem",
+                                                        width: "2rem",
+                                                        position: "absolute",
+                                                        bottom: "-14px",
+                                                        zIndex: "2",
+                                                        display: this.state.isShow
+                                                    }}
+                                                ><img src={urls.upload} style={{ width: "100%" }} /></div>
+                                                <input
+                                                    onChange={(e) => { this.onChangeFiles(e) }}
+                                                    type="file"
+                                                    style={{
+                                                        float: "left",
+                                                        width: "2rem",
+                                                        height: "2rem",
+                                                        position: "relative",
+                                                        zIndex: "3",
+                                                        opacity: "0",
+                                                        display: this.state.isShow
+                                                    }}
+                                                />
+
+                                                <img src="" id="upload1" style={{ width: "2rem", height: "2rem", float: "left", margin: "3px 5px" }} />
+                                                <img src="" id="upload2" style={{ width: "2rem", height: "2rem", float: "left", margin: "3px 5px" }} />
+                                                <img src="" id="upload3" style={{ width: "2rem", height: "2rem", float: "left", margin: "3px 5px" }} />
+                                                <img src="" id="upload4" style={{ width: "2rem", height: "2rem", float: "left", margin: "3px 5px" }} />
+                                            </div>
+                                            <Modal
+                                                visible={this.state.modal3}
+                                                transparent={true}
+                                                maskClosable={true}
+                                                onClose={this.onClose('modal3')}
+                                                className="personalLinkWrap"
                                             // footer={[
                                             //     { text: '取消', onPress: () => { this.onClose('modal3')() } },
                                             //     { text: '确定', onPress: () => { this.addPersonLink(); } }
                                             // ]}
-                                        >
-                                            <div>
-                                                <img src='' />
-                                            </div>
-                                        </Modal>
-                                        <ul className="fileNameList">
-                                            {/* <li>haha</li>
+                                            >
+                                                <div>
+                                                    <img src='' />
+                                                </div>
+                                            </Modal>
+                                            <ul className="fileNameList">
+                                                {/* <li>haha</li>
                                             <li>haha</li> */}
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colSpan="4" className="darkbg newPersonalMsg">
-                                    下一步计划和行动<span onClick={this.showModal('modal2')}>新增 <i className="iconfont icon-jia"></i></span>
-                                </td>
-                            </tr>
-                            <Modal
-                                visible={this.state.modal2}
-                                transparent
-                                maskClosable={true}
-                                onClose={this.onClose('modal2')}
-                                className="personalLinkWrap"
-                                footer={[
-                                    { text: '取消', onPress: () => { this.onClose('modal2')() } },
-                                    { text: '确定', onPress: () => { this.addOrderMsg(); } }
-                                ]}
-                            >
-                                <div className="personalLink addDutyList">
-                                    <div className="personalLinkList">
-                                        <ul>
-                                            <li style={{display:"none"}}>
-                                                <span>序 号</span>
-                                                <input
-                                                    type="text"
-                                                    value={this.state.order}
-                                                />
-                                            </li>
-                                            <li>
-                                                <span>事 项</span>
-                                                <input
-                                                    type="text"
-                                                    value={this.state.things}
-                                                    onChange={(e) => { this.onChangeThings(e) }}
-                                                />
-                                            </li>
-                                            <li>
-                                                <span>责任人</span>
-                                                <input
-                                                    type="text"
-                                                    value={this.state.duty}
-                                                    onChange={(e) => { this.onChangeDuty(e) }}
-                                                />
-                                            </li>
-                                            <li>
-                                                <span>完成时间</span>
-                                                <input
-                                                    type="text"
-                                                    placeholder="0000-00-00"
-                                                    value={this.state.finishTime}
-                                                    onChange={(e) => { this.onChangeFinish(e) }}
-                                                />
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </Modal>
-                            <tr>
-                                <td colSpan="4">
-                                    <table className="plan">
-                                        <tr>
-                                            <td style={{borderTop:"0 none",borderLeft:"0 none"}}>序号</td>
-                                            <td style={{borderTop:"0 none"}}>事项</td>
-                                            <td style={{borderTop:"0 none"}}>责任人</td>
-                                            <td style={{borderTop:"0 none",borderRight:"0 none"}}>完成时间</td>
-                                        </tr>
-                                        {
-                                            this.state.orderList.map((value,idx) => { 
-                                                return <tr>
-                                                    <td style={{borderLeft:"0 none"}}>{idx+1}</td>
-                                                    <td>{value.content}</td>
-                                                    <td>{value.name}</td>
-                                                    <td>{value.exp_time}</td>
-                                                </tr>
-                                            })
-                                        }
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colSpan="4" className="signatureTxt" style={{ height: "auto" }}>
-                                    <div className="suggess" style={{height:"auto",paddingTop:"0"}}>
-                                        <div className="midDiv">
-                                            <span style={{ lineHeight: "46px" }}>总体印象: </span>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colSpan="4" className="darkbg newPersonalMsg">
+                                        下一步计划和行动<span onClick={this.showModal('modal2')}>新增 <i className="iconfont icon-jia"></i></span>
+                                    </td>
+                                </tr>
+                                <Modal
+                                    visible={this.state.modal2}
+                                    transparent={true}
+                                    maskClosable={true}
+                                    onClose={this.onClose('modal2')}
+                                    className="personalLinkWrap"
+                                    footer={[
+                                        { text: '取消', onPress: () => { this.onClose('modal2')() } },
+                                        { text: '确定', onPress: () => { this.addOrderMsg(); } }
+                                    ]}
+                                >
+                                    <div className="personalLink addDutyList">
+                                        <div className="personalLinkList">
                                             <ul>
-                                                <li>
-                                                    <input 
-                                                        type="checkbox" 
-                                                        id="gloab" 
-                                                        onClick={(e) => { this.changeCheckState(e,0);}} 
-                                                        checked={this.state.impress[0]}
+                                                <li style={{ display: "none" }}>
+                                                    <span>序 号</span>
+                                                    <input
+                                                        type="text"
+                                                        value={this.state.order}
                                                     />
-                                                    <label htmlFor="gloab"> 很满意</label>
                                                 </li>
                                                 <li>
-                                                    <input 
-                                                        type="checkbox" 
-                                                        id="just" 
-                                                        onClick={(e) => { this.changeCheckState(e, 1); }}
-                                                        checked={this.state.impress[1]}
+                                                    <span>事 项</span>
+                                                    <input
+                                                        type="text"
+                                                        value={this.state.things}
+                                                        onChange={(e) => { this.onChangeThings(e) }}
                                                     />
-                                                    <label htmlFor="just"> 一般</label>
                                                 </li>
                                                 <li>
-                                                    <input 
-                                                        type="checkbox" 
-                                                        id="dont" 
-                                                        onClick={(e) => { this.changeCheckState(e, 2); }}
-                                                        checked={this.state.impress[2]}
+                                                    <span>责任人</span>
+                                                    <input
+                                                        type="text"
+                                                        value={this.state.duty}
+                                                        onChange={(e) => { this.onChangeDuty(e) }}
                                                     />
-                                                    <label htmlFor="dont"> 不满意</label>
                                                 </li>
                                                 <li>
-                                                    <input 
-                                                        type="checkbox" 
-                                                        id="bad" 
-                                                        onClick={(e) => { this.changeCheckState(e, 3); }}
-                                                        checked={this.state.impress[3]}
+                                                    <span>完成时间</span>
+                                                    <input
+                                                        type="text"
+                                                        placeholder="0000-00-00"
+                                                        value={this.state.finishTime}
+                                                        onChange={(e) => { this.onChangeFinish(e) }}
                                                     />
-                                                    <label htmlFor="bad"> 很不满意</label>
                                                 </li>
                                             </ul>
                                         </div>
-                                        <div className="midDivTop">
-                                            <span>您的宝贵建议: </span>&nbsp;&nbsp;
-                                            {/* <textarea className="suggessMsg"></textarea> */}
-                                            <textarea 
-                                                className="allBox textareaPub" 
-                                                id="suggest" 
-                                                style={{float:"left",width:"80%",padding:"2px 10px"}}
-                                                onChange={(e) => { this.setState({ suggest: e.currentTarget.value }) }} 
-                                            ></textarea>
-                                        </div>
                                     </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colSpan="4" className="signatureTxt" style={{borderTop:"0 none"}}>
-                                    <div className="suggess">
-                                        <div className="signature sure" style={{ position: "relative", zIndex: "100" }}>
-                                            <span style={{ backgroundColor: "#fff" }}>项目负责人(签字): </span>
-                                        </div>
-                                        <div className="dataType">
-                                            <div className="bt-warn fn-right" style={{ position: "relative", zIndex: "1000" }}>
-                                                <button type="button" onClick={this.clearAll}>重签</button>
-                                                {/* <button type="button" onClick={(e)=>{this.save(e)}}>重签</button> */}
-                                            </div>
-                                            <div className="date" >
-                                                <span>日期：</span>
+                                </Modal>
+                                <tr>
+                                    <td colSpan="4">
+                                        <table className="plan">
+                                            <tr>
+                                                <td style={{ borderTop: "0 none", borderLeft: "0 none" }}>序号</td>
+                                                <td style={{ borderTop: "0 none" }}>事项</td>
+                                                <td style={{ borderTop: "0 none" }}>责任人</td>
+                                                <td style={{ borderTop: "0 none", borderRight: "0 none" }}>完成时间</td>
+                                            </tr>
+                                            {
+                                                this.state.orderList.map((value, idx) => {
+                                                    return <tr>
+                                                        <td style={{ borderLeft: "0 none" }}>{idx + 1}</td>
+                                                        <td>{value.content}</td>
+                                                        <td>{value.name}</td>
+                                                        <td>{value.exp_time}</td>
+                                                    </tr>
+                                                })
+                                            }
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colSpan="4" className="signatureTxt" style={{ height: "auto" }}>
+                                        <div className="suggess" style={{ height: "auto", paddingTop: "0" }}>
+                                            <div className="midDiv">
+                                                <span style={{ lineHeight: "46px" }}>总体印象: </span>
                                                 <ul>
                                                     <li>
-                                                        {/* <span>年</span> */}
+                                                        <input
+                                                            type="checkbox"
+                                                            id="gloab"
+                                                            onClick={(e) => { this.changeCheckState(e, 0); }}
+                                                            checked={this.state.impress[0]}
+                                                        />
+                                                        <label htmlFor="gloab"> 很满意</label>
                                                     </li>
                                                     <li>
-                                                        {/* <span>月</span> */}
+                                                        <input
+                                                            type="checkbox"
+                                                            id="just"
+                                                            onClick={(e) => { this.changeCheckState(e, 1); }}
+                                                            checked={this.state.impress[1]}
+                                                        />
+                                                        <label htmlFor="just"> 一般</label>
                                                     </li>
                                                     <li>
-                                                        {/* <span>日</span> */}
+                                                        <input
+                                                            type="checkbox"
+                                                            id="dont"
+                                                            onClick={(e) => { this.changeCheckState(e, 2); }}
+                                                            checked={this.state.impress[2]}
+                                                        />
+                                                        <label htmlFor="dont"> 不满意</label>
+                                                    </li>
+                                                    <li>
+                                                        <input
+                                                            type="checkbox"
+                                                            id="bad"
+                                                            onClick={(e) => { this.changeCheckState(e, 3); }}
+                                                            checked={this.state.impress[3]}
+                                                        />
+                                                        <label htmlFor="bad"> 很不满意</label>
                                                     </li>
                                                 </ul>
                                             </div>
+                                            <div className="midDivTop">
+                                                <span>您的宝贵建议: </span>&nbsp;&nbsp;
+                                            {/* <textarea className="suggessMsg"></textarea> */}
+                                                <textarea
+                                                    className="allBox textareaPub"
+                                                    id="suggest"
+                                                    style={{ float: "left", width: "80%", padding: "2px 10px" }}
+                                                    onChange={(e) => { this.setState({ suggest: e.currentTarget.value }) }}
+                                                ></textarea>
+                                            </div>
                                         </div>
-                                        <canvas id="canvas" width="1536" height="300"></canvas>                                            
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colSpan="4" className="signatureTxt" style={{ borderTop: "0 none" }}>
+                                        <div className="suggess">
+                                            <div className="signature sure" style={{ position: "relative", zIndex: "100" }}>
+                                                <span style={{ backgroundColor: "#fff" }}>项目负责人(签字): </span>
+                                            </div>
+                                            <div className="dataType">
+                                                <div className="bt-warn fn-right" style={{ position: "relative", zIndex: "1000" }}>
+                                                    <button type="button" onClick={this.clearAll}>重签</button>
+                                                    {/* <button type="button" onClick={(e)=>{this.save(e)}}>重签</button> */}
+                                                </div>
+                                                <div className="date" >
+                                                    <span>日期：</span>
+                                                    <ul>
+                                                        <li>
+                                                            {/* <span>年</span> */}
+                                                        </li>
+                                                        <li>
+                                                            {/* <span>月</span> */}
+                                                        </li>
+                                                        <li>
+                                                            {/* <span>日</span> */}
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <canvas id="canvas" width="1536" height="300"></canvas>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
+                
             </div>
         )
     }

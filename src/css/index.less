@@ -135,7 +135,7 @@
     .mainWrap {
         overflow: hidden;
         .mainWrapLeft {
-            position: fixed;
+            position: absolute;
             overflow: scroll;
             left: 0;
             height: 100%;
@@ -262,7 +262,8 @@
                 width: 100%;   
                 // overflow: hidden;
                 padding: 0 0.25rem 1rem 0.25rem;      
-                box-sizing: border-box;       
+                box-sizing: border-box;  
+                margin-bottom: 10px;     
                 li.fullWidth {
                     background-color: #fff;
                     padding: .25rem 0;   
@@ -308,7 +309,6 @@
                             box-sizing: border-box;                            
                             h4 {
                                 font-size: 16px;
-                                color: red;
                                 line-height: 30px;
                             }
                         }
@@ -1200,6 +1200,7 @@
 }
 #mainWrap {
     margin-top: 1.3rem;
+    -webkit-overflow-scrolling: touch;
 }
 .toast-container {
     .toast-example {
@@ -1240,3 +1241,39 @@
         border : 0 none !important;
     }
 }
+
+.am-modal-mask {
+    display: none !important;
+}
+.am-modal-wrap .am-modal {
+    border: 1px solid #ccc !important;
+    border-radius: 7px;
+    .am-modal-content {
+        // background-color: #f5f5f5;
+        box-shadow: 0 0 20px #000;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -18,6 +18,7 @@ let personalLis2 = [];
 let name1 = [];
 let name2=[];
 let interval;
+let timeout = [];
 const urls = {
     wordMsg: require('../images/wordMsg.png')
 }
@@ -115,9 +116,23 @@ export default class SceneVisit extends React.Component {
         }, 30000);
         this.getPersonLis();
         this.toPersonLis();
+        let head = document.getElementsByClassName("tableHead")[0];
+        let mainWrap = document.getElementById("mainWrap");
+        head.style.position = "static";
+        mainWrap.style.marginTop = '0';
     }
     routerWillLeave(nextLocation) {
         clearInterval(interval);
+    }
+    touchBlur = () => {
+        let iptList = document.getElementsByTagName("input");
+        let txtList = document.getElementsByTagName("textarea");
+        for (let a = 0; a < iptList.length; a++) {
+            iptList[a].blur();
+        }
+        for (let b = 0; b < txtList.length; b++) {
+            txtList[b].blur();
+        }
     }
     loadingToast() {
         Toast.loading('保存中...', 0, () => {
@@ -164,11 +179,22 @@ export default class SceneVisit extends React.Component {
         this.setState({
             [key]: true,
         });
+        timeout.push(
+            setTimeout(() => {
+                let propmtTouchBox = document.querySelector(".am-modal-wrap");
+                propmtTouchBox.addEventListener("touchmove", this.touchBlur, false);
+            }, 500)
+        );
     }
     onClose = key => () => {
         this.setState({
             [key]: false,
         });
+        let propmtTouchBox = document.querySelector(".am-modal-wrap .am-modal");
+        propmtTouchBox.removeEventListener("touchmove", this.touchBlur, false);
+        for (let i = 0; i < timeout.length; i++) {
+            clearTimeout(timeout[i]);
+        }
     }
     save = function () {
         drawBoard.save('only-draw', function (url) {
@@ -324,7 +350,7 @@ export default class SceneVisit extends React.Component {
     }
     render() {
         return (
-            <div className="visitRecordWrap" id="fromHTMLtestdiv">
+            <div className="visitRecordWrap" id="fromHTMLtestdiv" onTouchMove={() => { this.touchBlur(); }}>
                 <TableHeads
                     url={urls.wordMsg}
                     isHide={true}

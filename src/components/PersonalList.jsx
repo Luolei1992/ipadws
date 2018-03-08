@@ -22,8 +22,8 @@ export default class PersonalList extends React.Component {
         }
     };
     componentDidMount() {
-        runPromise('get_company_user_list', {
-            gd_company_id: GetLocationParam('id') || validate.getCookie('baseId')
+        runPromise('get_project_linker_list', {
+            gd_project_id: validate.getCookie('project_id')
         }, this.handleCompanyUserGet, true, "post");
     }
     render() {
@@ -44,10 +44,10 @@ export default class PersonalList extends React.Component {
                             {
                                 this.state.personalList.map((value)=>(
                                     <tr>
-                                        <td>{value.name}</td>
+                                        <td>{value.real_name}</td>
                                         <td>{value.mobile}</td>
                                         <td>{value.email}</td>
-                                        <td>{value.remark}</td>
+                                        <td>{value.job_name}</td>
                                     </tr>
                                 ))
                             }

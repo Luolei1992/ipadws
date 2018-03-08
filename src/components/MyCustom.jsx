@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router';
-import { Modal } from 'antd-mobile';
+import { Link, hashHistory } from 'react-router';
+import { Modal ,Toast} from 'antd-mobile';
 import { GetLocationParam } from './templates'
 
 export default class MyCustom extends React.Component {
@@ -20,19 +20,29 @@ export default class MyCustom extends React.Component {
             name: "",
             phone: "",
             email: "",
-            remark: ""
+            remark: "",
+            hasError1: false,
+            hasError2: false,
         },
         this.handleAddMission=(res)=>{
             console.log(res);
             location.reload();
         },
+        this.handleCompanyUserGet = (res) => {
+            console.log(res);
+            if (res.success) {
+                this.setState({
+                    personalList: res.data
+                })
+            }
+        },
         this.handleAddPersonalMsg=(res)=>{
             console.log(res);
             if(res.success){
                 Toast.info("添加成功", 2, null, false);
-                this.getProjectLis(this.state.type);   //更新项目数据
                 this.setState({name:"",job:"",phone:"",email:"",remark:""}); 
-                this.onClose('modal')(); 
+                this.onClose('modal1')();
+                location.reload();
             }else{
                 Toast.info(res.message, 2, null, false);
             }
@@ -59,8 +69,8 @@ export default class MyCustom extends React.Component {
     addPersonalMsg=()=>{
         if(this.state.name == ''){
             Toast.info('请填写名字', 2, null, false);
-        }else if(this.state.phone == ''){
-            Toast.info('请填写手机号', 2, null, false);
+        } else if (this.state.phone == '' || this.state.hasError1){
+            Toast.info('请填写正确的手机号', 2, null, false);
         }else{
             runPromise('add_project_linker_ex', {
                 "gd_project_id":validate.getCookie('project_id'),
@@ -72,16 +82,31 @@ export default class MyCustom extends React.Component {
             }, this.handleAddPersonalMsg, true, "post");
         }
     }
-    showModal = key => (e, id) => {
+    showModal = key => (e,modal) => {
         e.preventDefault(); // 修复 Android 上点击穿透
+        this.onClose(modal)();
         this.setState({
             [key]: true,
+            slideUp:false
         });
-        console.log(id);    //得到对应id的元素
     }
     onClose = key => () => {
         this.setState({
             [key]: false,
+        });
+    }
+    onChangeEmail(e) {
+        let val = e.currentTarget.value;
+        this.setState({
+            hasError2: validate.CheckEmail(val).hasError,
+            email: val
+        });
+    }
+    onChangePhone(e) {
+        let val = e.currentTarget.value;
+        this.setState({
+            hasError1: validate.CheckPhone(val).hasError,
+            phone: val
         });
     }
     handleClickLi(index) {
@@ -96,12 +121,7 @@ export default class MyCustom extends React.Component {
             slideUp:!this.state.slideUp
         })
     }
-    showModal = key => (e, id) => {
-        e.preventDefault(); // 修复 Android 上点击穿透
-        this.setState({
-            [key]: true,
-        });
-    }
+    
     onChangeHappenTime =(e)=>{
         this.setState({
             happenTime: e.currentTarget.value
@@ -169,8 +189,8 @@ export default class MyCustom extends React.Component {
                     <span onClick={this.addNewList} >新增</span>
                     <div className="addNewList" style={{display:this.state.slideUp?"block":"none"}}>
                         <ul>
-                            <li onClick={this.showModal('modal')}>任务</li>
-                            <li onClick={this.showModal('modal1')}>联系人</li>
+                            <li onClick={(e)=>{ this.showModal('modal')(e,'modal1')}}>任务</li>
+                            <li onClick={(e)=>{this.showModal('modal1')(e,'modal')}}>联系人</li>
                             <Link to="/scene"><li>回访</li></Link>
                             <Link to="/meeting"><li>纪要</li></Link>
                             <Link to="/quality"><li>验收</li></Link>
@@ -244,7 +264,7 @@ export default class MyCustom extends React.Component {
                         { text: '取消', onPress: () => { this.onClose('modal1')(); } },
                         { text: '确定', onPress: () => { 
                             this.addPersonalMsg();
-                        } }
+                        }}
                     ]}
                     // wrapProps={{ onTouchStart: this.onWrapTouchStart }}
                     >
@@ -264,7 +284,7 @@ export default class MyCustom extends React.Component {
                                         <input
                                             type="text"
                                             value={this.state.name}
-                                            onChange={(e) => { this.onChangeName(e) }}
+                                            onChange={(e) => { this.setState({name:e.currentTarget.value}) }}
                                         />
                                     </li>
                                     <li>
@@ -272,7 +292,7 @@ export default class MyCustom extends React.Component {
                                         <input
                                             type="text"
                                             value={this.state.job}
-                                            onChange={(e) => { this.onChangeJob(e) }}
+                                            onChange={(e) => { this.setState({ job: e.currentTarget.value }) }}
                                         />
                                     </li>
                                     <li>
@@ -298,7 +318,7 @@ export default class MyCustom extends React.Component {
                                         <input
                                             type="text"
                                             value={this.state.remark}
-                                            onChange={(e) => { this.onChangeRemark(e) }}
+                                            onChange={(e) => { this.setState({ remark: e.currentTarget.value }) }}
                                         />
                                     </li>
                                 </ul>

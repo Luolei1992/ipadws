@@ -43,7 +43,8 @@ export default class Custom extends React.Component {
             content: "",
             finishTime: "",
             give: "",
-            id:""
+            id:"",
+            e:""
         },
         this.handleProjectGet = (res) => {
             console.log(res);
@@ -59,7 +60,7 @@ export default class Custom extends React.Component {
                 Toast.info("添加成功", 2, null, false);
                 this.getProjectLis(this.state.type);   //更新项目数据
                 this.setState({name:"",job:"",phone:"",email:"",remark:""}); 
-                this.onClose('modal1')(); 
+                this.onClose('modal')(); 
             }else{
                 Toast.info(res.message, 2, null, false);
             }
@@ -75,13 +76,13 @@ export default class Custom extends React.Component {
                 Toast.info(res.message, 2, null, false);
             }
         },
-        this.handleDel=(res)=>{
-            console.log(res);
-            // if(res.success){
-            //     Toast.info("删除成功", 2, null, false);
-            // }else{
-            //     Toast.info(res.message, 2, null, false);
-            // }
+        this.handleDel=(res,e)=>{
+            if(res.success){
+                Toast.info("删除成功", 2, null, false);
+                e.target.parentNode.remove();
+            }else{
+                Toast.info(res.message, 2, null, false);
+            }
         }
     }
     componentDidMount() {
@@ -91,7 +92,7 @@ export default class Custom extends React.Component {
         runPromise('get_project_list', {
             "type": "0",
             "offset": 0,
-            "limit": 10,
+            "limit": 100,
             "sort": type,
             "choose": 0
         }, this.handleProjectGet, true, "post");
@@ -99,8 +100,8 @@ export default class Custom extends React.Component {
     addPersonalMsg=()=>{
         if(this.state.name == ''){
             Toast.info('请填写名字', 2, null, false);
-        }else if(this.state.phone == ''){
-            Toast.info('请填写手机号', 2, null, false);
+        } else if (this.state.phone == '' || this.state.hasError1){
+            Toast.info('请填写正确的手机号', 2, null, false);
         }else{
             runPromise('add_project_linker_ex', {
                 "gd_project_id":validate.getCookie('project_id'),
@@ -141,25 +142,14 @@ export default class Custom extends React.Component {
             show2: !this.state.show2
         })
     }
-    delPerson(e,id,project_id) {      //删除联系人
+    delPerson=(e,id,project_id)=> {      //删除联系人
+        e.persist();
         runPromise('del_project_linker',{
             gd_project_id:project_id,
             user_id:id
-        }, (res)=>{
-            if(res.success){
-                runPromise('get_project_list', {
-                    "type": "0",
-                    "offset": 0,
-                    "limit": 20,
-                    "sort": currentType,
-                    "choose": 0
-                }, ()=>{location.reload();}, true, "post");
-                Toast.info("删除成功", 2, null, false);
-            }else{
-                Toast.info(res.message, 2, null, false);
-            }
-        }, true, "post")
+        }, this.handleDel, true, "post",e)
     }
+    
     showModal = key => (e, id) => {
         e.preventDefault(); // 修复 Android 上点击穿透
         this.setState({

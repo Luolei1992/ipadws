@@ -7,6 +7,10 @@ export default class App extends React.Component {
             baseFlagId:""
         };
     }
+    componentDidMount(){
+ 
+    }
+    
     setBaseId=(id)=>{
         this.setState({
             baseFlagId:id

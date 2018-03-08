@@ -34,7 +34,8 @@ export default class Visit extends React.Component {
             companyLists:{
                 item_list:[]
             },
-            personalDetail:{}
+            personalDetail:{},
+            id:""
         },
         this.handleCompanyListGet = (res) => {
             console.log(res);
@@ -97,7 +98,8 @@ export default class Visit extends React.Component {
             gd_company_id:this.state.tempCompanyId,
             score:this.state.score,
             content:this.state.fujia,
-            appendix:this.state.ids.join("_")
+            appendix:this.state.ids.join("_"),
+            id:this.state.id
         },this.handleAddVisit,true,"post")
     }
     onChange = (files, type, index) => {
@@ -132,10 +134,11 @@ export default class Visit extends React.Component {
             })
         }
     }
-    changeAlert = (idx) => {
+    changeAlert = (idx,visitId) => {
         this.setState({
             alertShow: !this.state.alertShow,
-            tempCompanyId:idx
+            tempCompanyId:idx,
+            id:visitId
         })
     }
     closeAlert = () => {
@@ -167,7 +170,7 @@ export default class Visit extends React.Component {
                             {
                                 this.state.companyLists.item_list.map((value,idx)=>(
                                     <li>
-                                        <a href={"#visit?" + idx + "F"} name={"visit?" + idx + "F"}>
+                                        <a href={"#visit?" + value.id + "F"} name={"visit?" + value.id + "F"}>
                                             <p style={{color:"#fff"}}><span>{value.company_name}</span><i>{value.visit_back_count}</i></p>
                                         </a>
                                     </li>
@@ -177,8 +180,8 @@ export default class Visit extends React.Component {
                     </div>
                     <div className="mainWrapRight">
                         <p className="which">
-                            <input type="checkbox" checked={this.state.order[0]} onClick={()=>{this.orderVisitBack(0,-1,-1,0)}} /> 不满意处理<span></span>
-                            <input type="checkbox" checked={this.state.order[1]} onClick={()=>{this.orderVisitBack(-1,5,-1,1)}}/> 到期<span></span>
+                            <input type="checkbox" checked={this.state.order[0]} onClick={()=>{this.orderVisitBack(2,-1,-1,0)}} /> 不满意处理<span></span>
+                            <input type="checkbox" checked={this.state.order[1]} onClick={()=>{this.orderVisitBack(-1,0,-1,1)}}/> 到期<span></span>
                             <input type="checkbox" checked={this.state.order[2]} onClick={() => { this.orderVisitBack(-1, -1, 2, 2) }} /> 已离职
                         </p>
                         <Quality

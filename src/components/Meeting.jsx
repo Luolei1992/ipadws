@@ -8,6 +8,7 @@ let canvas;
 let drawBoard;
 let numPlus = 0;
 let interval;
+let timeout=[];
 const urls = {
     wordMsg: require('../images/wordMsg.png'),
 }
@@ -63,6 +64,10 @@ export default class Meeting extends React.Component {
         interval=setInterval(() => {
             this.addMeeting();
         }, 30000);
+        let head = document.getElementsByClassName("tableHead")[0];
+        let mainWrap = document.getElementById("mainWrap");
+        head.style.position = "static";
+        mainWrap.style.marginTop = '0';
     }
     routerWillLeave(nextLocation) {
         clearInterval(interval);
@@ -95,11 +100,22 @@ export default class Meeting extends React.Component {
         this.setState({
             [key]: true,
         });
+        timeout.push(
+            setTimeout(() => {
+                let propmtTouchBox = document.querySelector(".am-modal-wrap");
+                propmtTouchBox.addEventListener("touchmove", this.touchBlur, false);
+            }, 500)
+        );
     }
     onClose = key => () => {
         this.setState({
             [key]: false,
         });
+        let propmtTouchBox = document.querySelector(".am-modal-wrap .am-modal");
+        propmtTouchBox.removeEventListener("touchmove", this.touchBlur, false);
+        for (let i = 0; i < timeout.length; i++) {
+            clearTimeout(timeout[i]);
+        }
     }
     addOrderMsg() {       //下一任行动和计划
         ++numPlus;
@@ -163,9 +179,19 @@ export default class Meeting extends React.Component {
             // alert(4)
         },true);
     }
+    touchBlur = () => {
+        let iptList = document.getElementsByTagName("input");
+        let txtList = document.getElementsByTagName("textarea");
+        for (let a = 0; a < iptList.length; a++) {
+            iptList[a].blur();
+        }
+        for (let b = 0; b < txtList.length; b++) {
+            txtList[b].blur();
+        }
+    }
     render(){
         return (
-            <div className="visitRecordWrap" id="fromHTMLtestdiv">
+            <div className="visitRecordWrap" id="fromHTMLtestdiv" onTouchMove={() => { this.touchBlur(); }}>
                 <TableHeads url={urls.wordMsg} isHide={true}></TableHeads>
                 <button id="downloadPng" onClick={() => { 
                         this.loadingToast();

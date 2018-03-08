@@ -143,7 +143,7 @@ export const Customs = (props) =>(         //我的客户信息展示
                                 </li>
                                 <li>
                                     <p className="top" onClick={() => { props.setBaseStateFun(value.gd_company_id,value.company_name,value.id) }}>
-                                        <Link to={"/visitLists?tab=2&id="+value.gd_company_id}>{value.visit_back_count}</Link>
+                                        <Link to={"/visitLists?tab=2&id="+value.gd_company_id}>{value.record_count}</Link>
                                     </p>
                                     <p className="btm"onClick={() => { props.setBaseStateFun(value.gd_company_id,value.company_name,value.id)}}><Link to="/scene">回访</Link></p>
                                 </li>
@@ -165,10 +165,10 @@ export const Customs = (props) =>(         //我的客户信息展示
                     <div className="line"></div>
                     <div className="person">
                         <p>相关人员 : {
-                            value.user_list.map((val)=>{
+                            value.user_list.map((val,idx)=>{
                                 return (<span>{val.nick_name}<i 
-                                    className="iconfont icon-shanchu" 
-                                    onClick={(e) => { props.delPerson(e,val.user_id,value.id) }}>
+                                    className="iconfont icon-shanchu"
+                                    onClick={(e) => { props.delPerson(e,val.user_id,value.id); }}>
                                 </i></span>)
                             })
                         }
@@ -193,7 +193,7 @@ export const Quality = (props) => (
         {
             props.visitLis.map((value,idx)=>{ 
                 return(
-                <li className="fullWidth" id={"visit?" + idx + "F"}>
+                    <li className="fullWidth" id={"visit?" + value.gd_company_id + "F"}>
                     <div className="top">
                         <ul className="fn-left">
                             <li><i></i></li>
@@ -205,28 +205,39 @@ export const Quality = (props) => (
                     </div>
                     <div className="btm">
                         <div className="btmLeft">
-                            <h4>{value.score==2?"满意":value.score==1?"一般":"不满意"}</h4>
+                            {
+                                value.score == 2 ? <h4 style={{ color: "red" }}>不满意</h4> : value.score == 5 ? <h4 style={{ color: "red" }}>已离职</h4>:<h4>满意</h4>
+                            }
                             <p>{value.content}</p>
                         </div>
                         <div className="btmCenter">
                         {
-                                value.time_least > 0 ? <div>
-                                    <span className="dataNum" style={{ color: "red" }}>{value.time_least}</span>
+                            value.time_least <= 0 ? <div className="explain"><p className="end" style={{ color: "red", fontSize: "18px" }}>逾期{Math.abs(value.time_least)}天</p></div>:
+                                value.time_least > 7? <div>
+                                    <span className="dataNum">{value.time_least}</span>
                                     <div className="explain">
-                                        <p className="end" style={{ color: "red" }}>天到期</p>
+                                        <p className="end" >天到期</p>
                                         <p className="prey" style={{ color: "#ADADAD" }}>{(value.out_time + '').split(" ")[0].split("-").slice(1).join("-")}</p>
                                     </div>
-                                </div> : <div className="explain"><p className="end" style={{ color: "red",fontSize:"18px" }}>逾期{Math.abs(value.time_least)}天</p></div>
+                                </div> : <div>
+                                        <span className="dataNum" style={{ color: "red" }}>{value.time_least}</span>
+                                        <div className="explain">
+                                            <p className="end" style={{ color: "red" }}>天到期</p>
+                                            <p className="prey" style={{ color: "#ADADAD" }}>{(value.out_time + '').split(" ")[0].split("-").slice(1).join("-")}</p>
+                                        </div>
+                                    </div>
                         }
-                            
                         </div>
                         <div className="btmRight">
                             {
                                 value.time_least > 7 ? 
-                                    <button style={{ backgroundColor:"#E6E6E6",color:"#333"}} onClick={() => { props.changeAlert(value.gd_company_id) }}>回访结果</button> :
+                                    <button style={{ 
+                                        backgroundColor:"#E6E6E6",
+                                        color:"#333"
+                                    }} onClick={() => { props.changeAlert(value.gd_company_id,value.id) }}>回访结果</button> :
                                     value.time_least>0 && value.time_least<7 ?
-                                    <button style={{ backgroundColor:"#0DA0F4"}} onClick={() => { props.changeAlert(value.gd_company_id) }}>回访结果</button>:
-                                    <button onClick={() => { props.changeAlert(value.gd_company_id) }}>回访结果</button>
+                                    <button style={{ backgroundColor:"#0DA0F4"}} onClick={() => { props.changeAlert(value.gd_company_id,value.id) }}>回访结果</button>:
+                                    <button onClick={() => { props.changeAlert(value.gd_company_id,value.id) }}>回访结果</button>
                             }
                         </div>
                     </div>
@@ -412,9 +423,9 @@ export const readyDo = (a) => {
                                 path: ret.savePath
                             }, function (ret, err) {
                                 if (ret && ret.status) {
-                                    alert('下载成功');
+                                    // alert('下载成功');
                                 } else {
-                                    alert('下载失败');
+                                    // alert('下载失败');
                                 }
                             });
                         }
@@ -579,8 +590,8 @@ export const init = (textarea) => {
     observe(text, 'paste', delayedResize);
     observe(text, 'drop', delayedResize);
     observe(text, 'keydown', delayedResize);
-    text.focus();
-    text.select();
+    // text.focus();
+    // text.select();
     resize();
 }
 

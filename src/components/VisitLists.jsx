@@ -55,7 +55,7 @@ export default class VisitList extends React.Component {
                 <form className="visitRecordWrap">
                     <TableHeads url={urls.wordMsg} isHide={false} tag={<h3>走访记录</h3>}></TableHeads>
                     <div className="recordMain">
-                        <h2 style={{ letterSpacing: "1px", marginTop: "0.8rem" }}>上海泰宇公司回访记录</h2>
+                        <h2 style={{ letterSpacing: "1px", marginTop: "0.8rem" }}>{validate.getCookie('company_name')}</h2>
                         <p style={{ textAlign: "center" }}>
                             责任设计师: {this.state.backVisitDetail.master_designer_name} <span style={{ padding: "0 15px" }}></span>
                             {/* 时间: <span style={{ padding: "0 15px" }}></span> */}
