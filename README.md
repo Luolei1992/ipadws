@@ -1,7 +1,7 @@
 # antd-mobile with webpack
 
 basic proj demo with webpack@2 and tree-shaking
-
+:smile:
 ### Install & Start
 
 ```shell

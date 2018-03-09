@@ -122,6 +122,8 @@ export default class SceneVisit extends React.Component {
         mainWrap.style.marginTop = '0';
     }
     routerWillLeave(nextLocation) {
+        let mainWrap = document.getElementById("mainWrap");
+        mainWrap.style.marginTop = '1.3rem';
         clearInterval(interval);
     }
     touchBlur = () => {

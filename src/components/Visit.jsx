@@ -154,6 +154,14 @@ export default class Visit extends React.Component {
             score:idx==0?1:idx==1?2:5
         })
     }
+    clickChangeBg=(e)=>{  //#4e4c4c
+        let tar = e.currentTarget;
+        let mainWrapLeftList = document.querySelectorAll(".bgCompany");
+        for (let i = 0; i < mainWrapLeftList.length;i++) {
+            mainWrapLeftList[i].style.backgroundColor="#000";
+        }
+        tar.style.backgroundColor = "#4e4c4c";
+    }
     render() {
         const { files } = this.state;
         return (
@@ -169,7 +177,7 @@ export default class Visit extends React.Component {
                         <ul>
                             {
                                 this.state.companyLists.item_list.map((value,idx)=>(
-                                    <li>
+                                    <li className="bgCompany" onClick={(e)=>{this.clickChangeBg(e)}}>
                                         <a href={"#visit?" + value.id + "F"} name={"visit?" + value.id + "F"}>
                                             <p style={{color:"#fff"}}><span>{value.company_name}</span><i>{value.visit_back_count}</i></p>
                                         </a>

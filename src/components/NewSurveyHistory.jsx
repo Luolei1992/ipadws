@@ -143,6 +143,8 @@ export default class NewSurveyHistory extends React.Component {
         }
     }
     routerWillLeave(nextLocation) {
+        let mainWrap = document.getElementById("mainWrap");
+        mainWrap.style.marginTop = '1.3rem';
         clearInterval(interval);
     }
     addResearch=()=>{

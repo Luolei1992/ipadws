@@ -139,25 +139,25 @@ export const Customs = (props) =>(         //我的客户信息展示
                                     <p className="top" onClick={() => { props.setBaseStateFun(value.gd_company_id,value.company_name,value.id) }}>
                                         <Link to={"/visitRecord?tab=1&id="+value.gd_company_id}>{value.mission_count}</Link>
                                     </p>
-                                    <p className="btm" onClick={(e) => { props.addJobs(e, value.id); props.setBaseStateFun(value.gd_company_id,value.company_name,value.id)}}>任务</p>
+                                    <p className="btm" style={{dispaly:"inline-block",padding:"4px 0"}} onClick={(e) => { props.addJobs(e, value.id); props.setBaseStateFun(value.gd_company_id,value.company_name,value.id)}}>任务</p>
                                 </li>
                                 <li>
                                     <p className="top" onClick={() => { props.setBaseStateFun(value.gd_company_id,value.company_name,value.id) }}>
                                         <Link to={"/visitLists?tab=2&id="+value.gd_company_id}>{value.record_count}</Link>
                                     </p>
-                                    <p className="btm"onClick={() => { props.setBaseStateFun(value.gd_company_id,value.company_name,value.id)}}><Link to="/scene">回访</Link></p>
+                                    <p className="btm" style={{dispaly:"inline-block",padding:"4px 0"}} onClick={() => { props.setBaseStateFun(value.gd_company_id,value.company_name,value.id)}}><Link to="/scene">回访</Link></p>
                                 </li>
                                 <li>
                                     <p className="top" onClick={() => { props.setBaseStateFun(value.gd_company_id,value.company_name,value.id) }}>
                                         <Link to={"/meetingList?tab=3&id="+value.gd_company_id}>{value.meeting_count}</Link>
                                     </p>
-                                    <p className="btm"onClick={() => { props.setBaseStateFun(value.gd_company_id,value.company_name,value.id)}}><Link to="/meeting">纪要</Link></p>
+                                    <p className="btm" style={{dispaly:"inline-block",padding:"4px 0"}} onClick={() => { props.setBaseStateFun(value.gd_company_id,value.company_name,value.id)}}><Link to="/meeting">纪要</Link></p>
                                 </li>
                                 <li>
                                     <p className="top" onClick={() => { props.setBaseStateFun(value.gd_company_id,value.company_name,value.id) }}>
                                         <Link to={"/qualityList?tab=6&id="+value.gd_company_id}>{value.check_count}</Link>
                                     </p>
-                                    <p className="btm"onClick={() => { props.setBaseStateFun(value.gd_company_id,value.company_name,value.id)}}><Link to="/quality">验收</Link></p>
+                                    <p className="btm" style={{dispaly:"inline-block",padding:"4px 0"}} onClick={() => { props.setBaseStateFun(value.gd_company_id,value.company_name,value.id)}}><Link to="/quality">验收</Link></p>
                                 </li>
                             </ul>
                         </div>
@@ -165,17 +165,19 @@ export const Customs = (props) =>(         //我的客户信息展示
                     <div className="line"></div>
                     <div className="person">
                         <p>相关人员 : {
+                            value.user_list.length > 0?
                             value.user_list.map((val,idx)=>{
                                 return (<span>{val.nick_name}<i 
                                     className="iconfont icon-shanchu"
                                     onClick={(e) => { props.delPerson(e,val.user_id,value.id); }}>
                                 </i></span>)
-                            })
+                            }) :"暂无"
                         }
                             {/* <a style={{ marginLeft: "0.5rem" }} 
                             href="javascript:;" 
                             onClick={()=>{props.getCustomList(val.gd_company_id)}}>全部</a> */}
                             <a href="javascript:;" 
+                                style={{ color:"#1067ef"}}
                                 onClick={(e) => { 
                                     props.showModal(e, value.user_id); 
                                     props.setBaseStateFun(value.gd_company_id,value.company_name,value.id)
