@@ -95,16 +95,16 @@ export default class Quality extends React.Component {
     routerWillLeave(nextLocation) {
         clearInterval(interval);
     }
-    touchBlur = () => {
-        let iptList = document.getElementsByTagName("input");
-        let txtList = document.getElementsByTagName("textarea");
-        for (let a = 0; a < iptList.length; a++) {
-            iptList[a].blur();
-        }
-        for (let b = 0; b < txtList.length; b++) {
-            txtList[b].blur();
-        }
-    }
+    // touchBlur = () => {
+    //     let iptList = document.getElementsByTagName("input");
+    //     let txtList = document.getElementsByTagName("textarea");
+    //     for (let a = 0; a < iptList.length; a++) {
+    //         iptList[a].blur();
+    //     }
+    //     for (let b = 0; b < txtList.length; b++) {
+    //         txtList[b].blur();
+    //     }
+    // }
     addCheck=()=>{
         runPromise('add_check', {
             gd_project_id:validate.getCookie('project_id'),
@@ -157,7 +157,8 @@ export default class Quality extends React.Component {
     }
     render(){
         return (
-            <div id="fromHTMLtestdiv" className="qualityFormWrap visitRecordWrap" onTouchMove={() => { this.touchBlur(); }}>
+            // <div id="fromHTMLtestdiv" className="qualityFormWrap visitRecordWrap" onTouchMove={() => { this.touchBlur(); }}>
+            <div id="fromHTMLtestdiv" className="qualityFormWrap visitRecordWrap">
                 <TableHeads url={urls.wordMsg} isHide={false} tag={<h3>验收单</h3>}></TableHeads>
                 <button id="downloadPng" onClick={() => { this.loadingToast();this.addCheck();clearInterval(interval)}}>下载图片</button>
                 <div className="qualityWrap">

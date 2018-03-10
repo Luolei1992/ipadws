@@ -14,6 +14,7 @@ let Ajax = axios.create({
 
 const ajaxURLList = {
     login:"hkapi/login",         //登陆
+    logout:"hkw_newapi/logout",         //退出登陆
     get_project_list: "gdApi/get_project_list",      //获取项目列表
     get_project_info:"gdApi/get_project_info",         //获取项目详细信息
     get_meeting_info:"gdApi/get_meeting_info",         //获取会议详细信息

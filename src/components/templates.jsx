@@ -32,7 +32,7 @@ export const TableHeadb = (props) => (    //公共头部
 )
 export const TableHeada = (props) => (    //公共头部  
     <div className="tableHead" style={{ paddingTop: '20px',position:"fixed",width:"100%",top:"0",left:"0"}}>
-        <div className="leftLogoWord fn-left" onClick={() => {
+        <div className="leftLogoWord fn-left"  onClick={() => {
             hashHistory.push({
                 pathname: '/'
             })  }}><i className="iconfont icon-jiantou"></i>返回</div>

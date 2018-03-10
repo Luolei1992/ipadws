@@ -116,14 +116,14 @@ export default class SceneVisit extends React.Component {
         }, 30000);
         this.getPersonLis();
         this.toPersonLis();
-        let head = document.getElementsByClassName("tableHead")[0];
-        let mainWrap = document.getElementById("mainWrap");
-        head.style.position = "static";
-        mainWrap.style.marginTop = '0';
+        // let head = document.getElementsByClassName("tableHead")[0];
+        // let mainWrap = document.getElementById("mainWrap");
+        // head.style.position = "static";
+        // mainWrap.style.marginTop = '0';
     }
     routerWillLeave(nextLocation) {
-        let mainWrap = document.getElementById("mainWrap");
-        mainWrap.style.marginTop = '1.3rem';
+        // let mainWrap = document.getElementById("mainWrap");
+        // mainWrap.style.marginTop = '1.3rem';
         clearInterval(interval);
     }
     touchBlur = () => {
@@ -181,22 +181,22 @@ export default class SceneVisit extends React.Component {
         this.setState({
             [key]: true,
         });
-        timeout.push(
-            setTimeout(() => {
-                let propmtTouchBox = document.querySelector(".am-modal-wrap");
-                propmtTouchBox.addEventListener("touchmove", this.touchBlur, false);
-            }, 500)
-        );
+        // timeout.push(
+        //     setTimeout(() => {
+        //         let propmtTouchBox = document.querySelector(".am-modal-wrap");
+        //         propmtTouchBox.addEventListener("touchmove", this.touchBlur, false);
+        //     }, 500)
+        // );
     }
     onClose = key => () => {
         this.setState({
             [key]: false,
         });
-        let propmtTouchBox = document.querySelector(".am-modal-wrap .am-modal");
-        propmtTouchBox.removeEventListener("touchmove", this.touchBlur, false);
-        for (let i = 0; i < timeout.length; i++) {
-            clearTimeout(timeout[i]);
-        }
+        // let propmtTouchBox = document.querySelector(".am-modal-wrap .am-modal");
+        // propmtTouchBox.removeEventListener("touchmove", this.touchBlur, false);
+        // for (let i = 0; i < timeout.length; i++) {
+        //     clearTimeout(timeout[i]);
+        // }
     }
     save = function () {
         drawBoard.save('only-draw', function (url) {

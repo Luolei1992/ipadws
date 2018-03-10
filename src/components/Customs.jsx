@@ -1,6 +1,7 @@
 import React from "react";
+import QueueAnim from 'rc-queue-anim';
 import { hashHistory } from "react-router";
-import { TableHeads, Customs ,noLogin} from './templates';
+import { TableHeada, Customs ,noLogin} from './templates';
 import { Modal, List ,Toast} from 'antd-mobile';
 
 const urls = {
@@ -8,16 +9,6 @@ const urls = {
     custom: require('../images/custom.png')
 }
 let currentType="add_time";
-// function closest(el, selector) {
-//     const matchesSelector = el.matches || el.webkitMatchesSelector || el.mozMatchesSelector || el.msMatchesSelector;
-//     while (el) {
-//         if (matchesSelector.call(el, selector)) {
-//             return el;
-//         }
-//         el = el.parentElement;
-//     }
-//     return null;
-// }
 
 export default class Custom extends React.Component {
     constructor(props) {
@@ -25,6 +16,7 @@ export default class Custom extends React.Component {
         this.state = {
             show: false,
             show2: false,
+            animate:true,
             modal: false,
             modal1: false,
             type:"add_time",
@@ -87,12 +79,13 @@ export default class Custom extends React.Component {
     }
     componentDidMount() {
         this.getProjectLis("add_time");
+        // document.getElementById("mainWrap").style.marginTop
     }
     getProjectLis=(type)=>{
         runPromise('get_project_list', {
-            "type": "0",
+            "type": "-3",
             "offset": 0,
-            "limit": 100,
+            "limit": 5,
             "sort": type,
             "choose": 0
         }, this.handleProjectGet, true, "post");
@@ -162,68 +155,23 @@ export default class Custom extends React.Component {
             [key]: false,
         });
     }
-    onChangePhone(e) {
-        let val = e.currentTarget.value;
-        this.setState({
-            hasError1: validate.CheckPhone(val).hasError,
-            phone: val
-        });
-    }
-    onChangeEmail(e) {
-        let val = e.currentTarget.value;
-        this.setState({
-            hasError2: validate.CheckEmail(val).hasError,
-            email: val
-        });
-    }
-    onChangeCompany(e) {
-        this.setState({
-            company: e.currentTarget.value
-        });
-    }
-    onChangeJob(e) {
-        this.setState({
-            job: e.currentTarget.value
-        });
-    }
-    onChangeName(e) {
-        this.setState({
-            name: e.currentTarget.value
-        });
-    }
-    onChangeRemark(e) {
-        this.setState({
-            remark: e.currentTarget.value
-        });
-    }
-    onChangeHappenTime = (e) => {
-        this.setState({
-            happenTime: e.currentTarget.value
-        })
-    }
-    onChangeContent = (e) => {
-        this.setState({
-            content: e.currentTarget.value
-        })
-    }
-    onChangeFinishTime = (e) => {
-        this.setState({
-            finishTime: e.currentTarget.value
-        })
-    }
-    onChangeGive = (e) => {
-        this.setState({
-            give: e.currentTarget.value
-        })
-    }
     render() {
         return (
-            <div className="customsLists visitRecordWrap">
-                <TableHeads url={urls.wordMsg} isHide={true}></TableHeads>
-                <div className="customsHead ">
-                    <h3 className="center">
-                        我的客户
-                    </h3>
+            <QueueAnim className="demo-content"
+                key="demo"
+                type={['right', 'left']}
+                ease={['easeOutQuart', 'easeInOutQuart']}
+                onEnd={(e) => { document.getElementsByClassName("customsLists")[0].style.transform = "none" }}
+                >
+                {this.state.animate ? [
+            <div className="customsLists visitRecordWrap" key="1" style={{border:"0 none"}}>
+                <TableHeada
+                    url={urls.wordMsg}
+                    isHide={false}
+                    tag={<h3 className="fn-left">我的客户</h3>}
+                ></TableHeada>
+                <div style={{height:"1.3rem",position:"relative",width:"100%"}}></div>
+                <div className="customsHead" style={{marginTop:"10px"}}>
                     <div className="right pub">
                         <div className="selectWrap">
                             <span>排序：</span>
@@ -289,7 +237,7 @@ export default class Custom extends React.Component {
                                     <input
                                         type="text"
                                         value={this.state.name}
-                                        onChange={(e) => { this.onChangeName(e) }}
+                                        onChange={(e) => {this.setState({name: e.currentTarget.value}); }}
                                     />
                                 </li>
                                 <li>
@@ -297,7 +245,7 @@ export default class Custom extends React.Component {
                                     <input
                                         type="text"
                                         value={this.state.job}
-                                        onChange={(e) => { this.onChangeJob(e) }}
+                                        onChange={(e) => {this.setState({job: e.currentTarget.value}); }}
                                     />
                                 </li>
                                 <li>
@@ -305,7 +253,12 @@ export default class Custom extends React.Component {
                                     <input
                                         type="text"
                                         value={this.state.phone}
-                                        onChange={(e) => { this.onChangePhone(e) }}
+                                        onChange={(e) => {
+                                            this.setState({
+                                                hasError1: validate.CheckPhone(e.currentTarget.value).hasError,
+                                                phone: e.currentTarget.value
+                                            });
+                                        }}
                                         className={this.state.hasError1 ? "txtRed" : ""}
                                     />
                                 </li>
@@ -314,7 +267,12 @@ export default class Custom extends React.Component {
                                     <input
                                         type="text"
                                         value={this.state.email}
-                                        onChange={(e) => { this.onChangeEmail(e) }}
+                                        onChange={(e) => {
+                                            this.setState({
+                                                hasError2: validate.CheckEmail(e.currentTarget.value).hasError,
+                                                email: e.currentTarget.value
+                                            }) 
+                                        }}
                                         className={this.state.hasError2 ? "txtRed" : ""}
                                     />
                                 </li>
@@ -323,7 +281,7 @@ export default class Custom extends React.Component {
                                     <input
                                         type="text"
                                         value={this.state.remark}
-                                        onChange={(e) => { this.onChangeRemark(e) }}
+                                        onChange={(e) => { this.setState({ remark: e.currentTarget.value }); }}
                                     />
                                 </li>
                             </ul>
@@ -361,7 +319,7 @@ export default class Custom extends React.Component {
                                         type="text"
                                         value={this.state.happenTime}
                                         placeholder="0000-00-00"
-                                        onChange={(e) => { this.onChangeHappenTime(e) }}
+                                        onChange={(e) => {this.setState({happenTime: e.currentTarget.value}) }}
                                         style={{ paddingLeft: "5px" }}
                                     />
                                 </li>
@@ -371,7 +329,7 @@ export default class Custom extends React.Component {
                                     <input
                                         type="text"
                                         value={this.state.content}
-                                        onChange={(e) => { this.onChangeContent(e) }}
+                                        onChange={(e) => {this.setState({content: e.currentTarget.value}) }}
                                         style={{ paddingLeft: "5px" }}
                                     />
                                 </li>
@@ -381,7 +339,7 @@ export default class Custom extends React.Component {
                                         type="text"
                                         value={this.state.finishTime}
                                         placeholder="0000-00-00"
-                                        onChange={(e) => { this.onChangeFinishTime(e) }}
+                                        onChange={(e) => {this.setState({finishTime: e.currentTarget.value}) }}
                                         style={{ paddingLeft: "5px" }}
                                     />
                                 </li>
@@ -390,7 +348,7 @@ export default class Custom extends React.Component {
                                     <input
                                         type="text"
                                         value={this.state.give}
-                                        onChange={(e) => { this.onChangeGive(e) }}
+                                        onChange={(e) => {this.setState({give: e.currentTarget.value}) }}
                                         style={{ paddingLeft: "5px" }}
                                     />
                                 </li>
@@ -399,6 +357,8 @@ export default class Custom extends React.Component {
                     </div>
                 </Modal>
             </div>
+                ]:null}
+            </QueueAnim>
         )
     }
 }

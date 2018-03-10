@@ -30,7 +30,7 @@ export default class Meeting extends React.Component {
             id:""
         },
         this.handleMeetingAdd=(res)=>{
-            console.log(res , 55);
+            console.log(res);
             if(res.success){
                 this.setState({
                     id: res.message.id
@@ -64,14 +64,14 @@ export default class Meeting extends React.Component {
         interval=setInterval(() => {
             this.addMeeting();
         }, 30000);
-        let head = document.getElementsByClassName("tableHead")[0];
-        let mainWrap = document.getElementById("mainWrap");
-        head.style.position = "static";
-        mainWrap.style.marginTop = '0';
+        // let head = document.getElementsByClassName("tableHead")[0];
+        // let mainWrap = document.getElementById("mainWrap");
+        // head.style.position = "static";
+        // mainWrap.style.marginTop = '0';
     }
     routerWillLeave(nextLocation) {
-        let mainWrap = document.getElementById("mainWrap");
-        mainWrap.style.marginTop = '1.3rem';
+        // let mainWrap = document.getElementById("mainWrap");
+        // mainWrap.style.marginTop = '1.3rem';
         clearInterval(interval);
     }
     addMeeting = () => {
@@ -193,7 +193,8 @@ export default class Meeting extends React.Component {
     }
     render(){
         return (
-            <div className="visitRecordWrap" id="fromHTMLtestdiv" onTouchMove={() => { this.touchBlur(); }}>
+            // <div className="visitRecordWrap" id="fromHTMLtestdiv" onTouchMove={() => { this.touchBlur(); }}>
+            <div className="visitRecordWrap" id="fromHTMLtestdiv">
                 <TableHeads url={urls.wordMsg} isHide={true}></TableHeads>
                 <button id="downloadPng" onClick={() => { 
                         this.loadingToast();

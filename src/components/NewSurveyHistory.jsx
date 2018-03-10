@@ -130,21 +130,21 @@ export default class NewSurveyHistory extends React.Component {
             offset:"0",
             limit:"20"
         },this.handleCompanyListGet,true,"post");
-        let head = document.getElementsByClassName("tableHead")[0];
-        let mainWrap = document.getElementById("mainWrap");
-        head.style.position = "static";
-        mainWrap.style.marginTop = '0';
+        // let head = document.getElementsByClassName("tableHead")[0];
+        // let mainWrap = document.getElementById("mainWrap");
+        // head.style.position = "static";
+        // mainWrap.style.marginTop = '0';
     }
     touchBlur() {
-        var iptList = document.getElementsByTagName("input");
-        var txtList = document.getElementsByTagName("textarea");
-        for (var a = 0; a < iptList.length; a++) {
-            iptList[a].blur();
-        }
+        // var iptList = document.getElementsByTagName("input");
+        // var txtList = document.getElementsByTagName("textarea");
+        // for (var a = 0; a < iptList.length; a++) {
+        //     iptList[a].blur();
+        // }
     }
     routerWillLeave(nextLocation) {
-        let mainWrap = document.getElementById("mainWrap");
-        mainWrap.style.marginTop = '1.3rem';
+        // let mainWrap = document.getElementById("mainWrap");
+        // mainWrap.style.marginTop = '1.3rem';
         clearInterval(interval);
     }
     addResearch=()=>{
@@ -199,32 +199,32 @@ export default class NewSurveyHistory extends React.Component {
         this.setState({
             [key]: true,
         });
-        timeout.push(
-            setTimeout(() => {
-                // let iptList = document.getElementsByTagName("input");
-                // for (var a = 0; a < iptList.length; a++) {
-                //     iptList[a].blur();
-                // }
-                let propmtTouchBox = document.querySelector(".am-modal-wrap");
-                propmtTouchBox.addEventListener("touchmove", this.touchBlur, false);
-            }, 500)
-        );
+        // timeout.push(
+        //     setTimeout(() => {
+        //         // let iptList = document.getElementsByTagName("input");
+        //         // for (var a = 0; a < iptList.length; a++) {
+        //         //     iptList[a].blur();
+        //         // }
+        //         let propmtTouchBox = document.querySelector(".am-modal-wrap");
+        //         propmtTouchBox.addEventListener("touchmove", this.touchBlur, false);
+        //     }, 500)
+        // );
     }
     onClose = key => () => {
         this.setState({
             [key]: false,
         });
-        let propmtTouchBox = document.querySelector(".am-modal-wrap .am-modal");
-        propmtTouchBox.removeEventListener("touchmove", this.touchBlur, false);
-        for(let i = 0;i<timeout.length;i++){
-            clearTimeout(timeout[i]);
-        }
+        // let propmtTouchBox = document.querySelector(".am-modal-wrap .am-modal");
+        // propmtTouchBox.removeEventListener("touchmove", this.touchBlur, false);
+        // for(let i = 0;i<timeout.length;i++){
+        //     clearTimeout(timeout[i]);
+        // }
     }
     changeStyle = ()=>{
-        let head = document.getElementsByClassName("tableHead")[0];
-        let mainWrap = document.getElementById("mainWrap");
-        head.style.position="static";
-        mainWrap.style.marginTop='0';
+        // let head = document.getElementsByClassName("tableHead")[0];
+        // let mainWrap = document.getElementById("mainWrap");
+        // head.style.position="static";
+        // mainWrap.style.marginTop='0';
     }
     touchBlur=()=>{
         let iptList = document.getElementsByTagName("input");
@@ -382,7 +382,8 @@ export default class NewSurveyHistory extends React.Component {
     }
     render(){
         return (
-            <div id="fromHTMLtestdiv" className="visitRecordWrap" onTouchMove={()=>{this.touchBlur();}}>
+            // <div id="fromHTMLtestdiv" className="visitRecordWrap" onTouchMove={()=>{this.touchBlur();}}>
+            <div id="fromHTMLtestdiv" className="visitRecordWrap">
                 <TableHeads 
                     url={urls.wordMsg} 
                     isHide={false} 

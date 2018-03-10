@@ -1,6 +1,6 @@
 import React from "react";
 import {Link,hashHistory} from "react-router"
-
+import { Toast } from 'antd-mobile';
 const urls = {
     logo: require('../images/logo.png'),
     right: require('../images/right.png'),
@@ -15,6 +15,16 @@ export default class Guide extends React.Component {
         super(props);
         this.state = {
             
+        },
+        this.handleSceneVisitGet =(res)=> {
+            validate.setCookie('user_id', "");
+            if(res.success){
+                hashHistory.push({
+                    pathname: '/login'
+                })
+            }else{
+                Toast.info(res.message, 2, null, false);
+            }
         }
     }
     beforeLogin=(page,tab)=>{
@@ -28,12 +38,17 @@ export default class Guide extends React.Component {
                 query: { to: page,tab:tab }
             })
     }
+    logout = () => {
+        runPromise('logout', {
+            
+        }, this.handleSceneVisitGet, true, "post");
+    }
     render() {
         return (
             <div className="guideWrap" style={{ background:"url("+urls.guideBg+") no-repeat center center / 100% 100%"}}>
-                <div className="head">
+                {/* <div className="head">
                     <img src={urls.logo} />
-                </div>
+                </div> */}
                 <a><img className="midCenter" src={urls.play} onClick={()=>{this.beforeLogin('customs','0')}}/></a>
                 <div className="main">
                     <h2><span>同心</span>共进&nbsp;&nbsp;<span>感恩</span>汇聚</h2>
@@ -75,6 +90,17 @@ export default class Guide extends React.Component {
                         })  
                     }}></div>
                 </div>
+                <div className="iconfont icon-084tuichu"
+                    onClick={() => { this.logout()}}
+                    style={{
+                        fontSize:"20px",
+                        position:"absolute",
+                        left:"0",
+                        bottom:"0",
+                        padding:"20px",
+                        color:"rgba(255,255,255,0.5)",
+                    }}
+                ></div>
             </div>
         )
     }
