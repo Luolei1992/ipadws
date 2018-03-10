@@ -1,7 +1,7 @@
 import React from 'react';
 import { hashHistory, Link } from "react-router";
 import { Toast } from 'antd-mobile';
-import { TableHeads, Customs } from './templates';
+import { TableHeadServey, Customs } from './templates';
 
 const urls = {
     wordMsg: require('../images/wordMsg.png'),
@@ -38,15 +38,16 @@ export default class survey extends React.Component{
     render(){
         return (
             <div className="surveyWrap visitRecordWrap">
-                <TableHeads 
+                <TableHeadServey 
                     url={urls.wordMsg} 
                     isHide={false}
                     tag={<h3 className="fn-left">
                         <Link to='/newSurveyHistory'><span style={{color:"#fff"}}>新建调研</span></Link>
                         <span style={{ borderBottom: "3px solid red" }}>历史调研</span>
                     </h3>}
-                ></TableHeads>
-                <div className="surveyList">
+                ></TableHeadServey>
+                <div style={{ height: "1.3rem", position: "relative", width: "100%" }}></div>                
+                <div className="surveyList animatePageY">
                     <ul>
                         {
                             this.state.researchHistoryList.item_list.map((value)=>(

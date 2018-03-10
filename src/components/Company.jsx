@@ -159,7 +159,7 @@ export default class Company extends React.Component {
                 {/* <a id="downloadPng"></a>    <input id="filename" style={{ display: "none" }} /> */}
                 {/* <button id="download">下载PDF</button> */}
                 <div className="recordMain">
-                    <h2 style={{ letterSpacing: "1px", marginTop: "0.8rem" }}>{tempDate.company_name}</h2>
+                    <h2 style={{ letterSpacing: "1px", marginTop: "0.8rem" }}>{validate.getCookie("company_name")}</h2>
                     <p style={{ textAlign: "center" }}>
                         文件编号: {tempDate.document_id}  <span style={{ padding: "0 15px" }}></span>
                         起止时间: {starttime == 'undefined' ? "0000-00-00" : starttime} 至 {(endtime == 'undefined' ? "0000-00-00" : endtime)}<span style={{ padding: "0 15px" }}></span>

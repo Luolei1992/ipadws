@@ -43,7 +43,7 @@ export default class Custom extends React.Component {
             return dataBlob;
         };
         this.state = {
-            dataSource: dataSource.cloneWithRows({}),
+            dataSource: dataSource.cloneWithRows(JSON.parse(localStorage.getItem("customs")) ? JSON.parse(localStorage.getItem("customs")) : {} ),
             isLoading: true,
             height: document.documentElement.clientHeight,
             hasMore: true, //是否有更多的数据
@@ -81,6 +81,7 @@ export default class Custom extends React.Component {
                 if (pageIndex == 0) {
                     this.rData = {};
                     this.rData = { ...this.rData, ...this.genData(pageIndex++, realDataLength, res.data.item_list) };
+                    localStorage.setItem("customs", JSON.stringify(realData))
                 } else {
                     this.rData = { ...this.rData, ...this.genData(pageIndex++, realDataLength, res.data.item_list) };
                 }
@@ -241,14 +242,9 @@ export default class Custom extends React.Component {
             )
         }
         return (
-            <QueueAnim className="demo-content"
-                key="demo"
-                type={['right', 'left']}
-                ease={['easeOutQuart', 'easeInOutQuart']}
-                onEnd={(e) => { document.getElementsByClassName("customsLists")[0].style.transform = "none" }}
-                >
-                {this.state.animate ? [
-            <div className="customsLists visitRecordWrap" key="1" style={{border:"0 none"}}>
+            // <QueueAnim className="demo-content" type={['right', 'right']}>
+            //     {this.state.animate ? [
+            <div className="customsLists visitRecordWrap animatePage" key="1" style={{border:"0 none"}}>
                 <TableHeada
                     url={urls.wordMsg}
                     isHide={false}
@@ -394,7 +390,8 @@ export default class Custom extends React.Component {
                     renderBodyComponent={() => <MyBody />}
                     renderRow={row}
                     style={{
-                        height: this.state.height,
+                        // height: this.state.height,
+                        height: "661px",
                         overflow: 'auto'
                     }}
                     onEndReached={this.onEndReached}
@@ -459,8 +456,8 @@ export default class Custom extends React.Component {
                     </div>
                 </Modal>
             </div>
-                ]:null}
-            </QueueAnim>
+            //     ]:null}
+            // </QueueAnim>
         )
     }
 }

@@ -14,7 +14,22 @@ export const TableHead = (props) => (
 )
 export const TableHeads = (props) => (    //公共头部  
     <div className="tableHead" style={{ paddingTop: '20px',position:"fixed",width:"100%",top:"0",left:"0"}}>
-        <div className="leftLogoWord fn-left" onClick={()=>{hashHistory.goBack()}}><i className="iconfont icon-jiantou"></i>返回</div>
+        <div className="leftLogoWord fn-left" onClick={() => {
+            hashHistory.push({
+                pathname: '/customs'
+            })}}><i className="iconfont icon-jiantou"></i>返回</div>
+        {
+            props.isHide ? "" : props.tag
+        }
+        <Link to='/'><img src={props.url} className="fn-right" /></Link>
+    </div>
+)
+export const TableHeadServey = (props) => (    //公共头部  
+    <div className="tableHead" style={{ paddingTop: '20px',position:"fixed",width:"100%",top:"0",left:"0"}}>
+        <div className="leftLogoWord fn-left" onClick={() => {
+            hashHistory.push({
+                pathname: '/'
+            })}}><i className="iconfont icon-jiantou"></i>返回</div>
         {
             props.isHide ? "" : props.tag
         }

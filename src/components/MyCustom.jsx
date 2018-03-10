@@ -145,7 +145,8 @@ export default class MyCustom extends React.Component {
     render() {
         const { mode } = this.state;
         return (
-            <div className="myCustomWrap">
+            <div className="myCustomWrap animatePage">
+                <div style={{ height: "1.3rem", position: "relative", width: "100%" }}></div>
                 {this.props.children && React.cloneElement(
                     this.props.children, { state: this.state, props: this.props, setState: this.setState.bind(this) })}
                 <div className="tableBottom">

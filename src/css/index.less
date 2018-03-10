@@ -1043,7 +1043,7 @@
     .leftLogoWord {
         font-size: 18px;
         color: #fff;
-        margin: .24rem 0 0 .488281rem;
+        padding: .24rem .1rem 0 .488281rem;
         letter-spacing: 2px;
     }
 }
@@ -1266,8 +1266,36 @@
 .customsLists.visitRecordWrap{
     padding-bottom: 0px!important;
 }
-
-
+.demo-content {
+    background-color: #000;
+}
+//自定义动画
+.animatePage {
+    animation: myfirst 0.8s;
+}
+@keyframes myfirst {
+    from {
+        transform: translateX(150px);
+        opacity: 0.5;
+    }
+    to {
+        transform: translateX(0px);
+        opacity: 1;
+    }
+}
+.animatePageY {
+    animation: myfirst 0.6s;
+}
+@keyframes myfirst{
+    from {
+        transform: translateY(150px);
+        opacity: 0.5;
+    }
+    to {
+        transform: translateY(0px);
+        opacity: 1;
+    }
+}
 
 
 

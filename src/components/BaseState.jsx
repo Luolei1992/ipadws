@@ -18,7 +18,7 @@ export default class App extends React.Component {
     }
     render() {
         return (
-            <div className="gloableState">
+            <div className="gloableState" style={{backgroundColor:"#000"}}>
                 {this.props.children && React.cloneElement(
                     this.props.children, { state: this.state, props: this.props, setState: this.setState.bind(this), setBaseId :this.setBaseId}
                 )}

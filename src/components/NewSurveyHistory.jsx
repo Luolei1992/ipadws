@@ -1,7 +1,7 @@
 import React from 'react';
 import { hashHistory,Link } from "react-router";
 import { Modal, ImagePicker, Toast } from 'antd-mobile';
-import { div2png, readyDo, TableHeads, init, GetLocationParam } from './templates';
+import { div2png, readyDo, TableHeadServey, init, GetLocationParam } from './templates';
 import { DrawBoard } from './drawBoard';
 
 const urls = {
@@ -347,15 +347,15 @@ export default class NewSurveyHistory extends React.Component {
         return (
             // <div id="fromHTMLtestdiv" className="visitRecordWrap" onTouchMove={()=>{this.touchBlur();}}>
             <div id="fromHTMLtestdiv" className="visitRecordWrap">
-                <TableHeads 
+                <TableHeadServey 
                     url={urls.wordMsg} 
                     isHide={false} 
                     tag={<h3 className="fn-left">
                         <span style={{ borderBottom:"3px solid red"}}>新建调研</span>
                         <Link to='/survey?tab=5' style={{color:"#fff"}}><span>历史调研</span></Link>
                     </h3>}
-                ></TableHeads>
-                <div style={{overflow:"scroll"}}>
+                ></TableHeadServey>
+                <div style={{ overflow: "scroll" }} className="animatePageY">
                     <div className="recordMain">
                         <h2 style={{ letterSpacing: "1px", marginTop: "0.8rem" }}>{this.state.company}</h2>
                         {/* <h2 style={{letterSpacing:"1px",marginTop:"0.8rem"}}> */}

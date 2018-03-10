@@ -45,10 +45,14 @@ export default class Guide extends React.Component {
     }
     render() {
         return (
-            <div className="guideWrap" style={{ background:"url("+urls.guideBg+") no-repeat center center / 100% 100%"}}>
+            // <div className="guideWrap" style={{ background:"url("+urls.guideBg+") no-repeat center center / 100% 100%"}}>
+            <div className="guideWrap">
                 {/* <div className="head">
                     <img src={urls.logo} />
                 </div> */}
+                <div style={{position:"absolute",width:"100%",height:"100%",zIndex:"0"}}>
+                    <img src={urls.guideBg} style={{width:"100%"}} />
+                </div>
                 <a><img className="midCenter" src={urls.play} onClick={()=>{this.beforeLogin('customs','0')}}/></a>
                 <div className="main">
                     <h2><span>同心</span>共进&nbsp;&nbsp;<span>感恩</span>汇聚</h2>
