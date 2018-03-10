@@ -48,7 +48,7 @@ export default class NewSurveyHistory extends React.Component {
             modal1:false,
             modal2:false,
             modal3:false,
-            modal4:true,
+            modal4:false,
             personLink: [],
             orderList:[],
             impress:[true,false,false,false],
@@ -57,7 +57,12 @@ export default class NewSurveyHistory extends React.Component {
             score:3,
             companyList:{
                 item_list:[]
-            }
+            },
+            company_name:"",
+            company_address:"",
+            company_url:"",
+            company_start_time:"",
+            company_referee_name:"",
         },
         this.handleResearchAdd=(res)=>{
             console.log(res);
@@ -83,21 +88,7 @@ export default class NewSurveyHistory extends React.Component {
         this.handleSrc=(res)=>{
             console.log(res);
         },
-        this.handleCompanyListGet=(res)=>{
-            console.log(res);
-            this.setState({
-                companyList:res.data
-            })
-        },
-        this.handleDetailsGet=(res)=>{
-            console.log(res);
-            this.setState({
-                meetingTime:res.data.start_time.split(" ")[0],
-                meetingAddress: res.data.address,
-                companyAddress:res.data.url,
-                baseId:res.data.id
-            })
-        },
+        
         this.saveProject = (res) => {
             if (res.success) {
                 Toast.info("文件保存成功", 2, null, false);
@@ -123,34 +114,22 @@ export default class NewSurveyHistory extends React.Component {
         readyDo(this.alerts);
         canvas = document.getElementById("canvas");
         drawBoard = new DrawBoard(canvas);  // 初始化
-        interval=setInterval(() => {
-            this.addResearch();
-        }, 30000);
-        runPromise('get_company_list',{
-            offset:"0",
-            limit:"20"
-        },this.handleCompanyListGet,true,"post");
-        // let head = document.getElementsByClassName("tableHead")[0];
-        // let mainWrap = document.getElementById("mainWrap");
-        // head.style.position = "static";
-        // mainWrap.style.marginTop = '0';
-    }
-    touchBlur() {
-        // var iptList = document.getElementsByTagName("input");
-        // var txtList = document.getElementsByTagName("textarea");
-        // for (var a = 0; a < iptList.length; a++) {
-        //     iptList[a].blur();
-        // }
+        let head = document.getElementsByClassName("tableHead")[0];
+        let mainWrap = document.getElementById("mainWrap");
+        head.style.position = "static";
+        mainWrap.style.marginTop = '0';
     }
     routerWillLeave(nextLocation) {
         // let mainWrap = document.getElementById("mainWrap");
         // mainWrap.style.marginTop = '1.3rem';
+        let head = document.getElementsByClassName("tableHead")[0];
+        head.style.position = "fixed";
         clearInterval(interval);
     }
     addResearch=()=>{
         runPromise('add_project_ex', {
-            "gd_company_id": this.state.baseId,
-            "suggest":this.state.suggest,  
+            "gd_company_id": this.state.baseId, //公司id
+            "suggestion":this.state.suggest,  
             "type":3,
             "score":this.state.score,
             "content":this.state.researchResult,
@@ -159,18 +138,40 @@ export default class NewSurveyHistory extends React.Component {
             "appendix":this.state.ids.join("_"),
             "linkers":this.state.personLink,
             "plans":this.state.orderList,
-            "id":this.state.id
+            "id":this.state.id,  //项目id
+            "company_name":this.state.company_name,
+            "company_address": this.state.company_address,
+            "company_url": this.state.company_url,
+            "company_start_time": this.state.company_start_time,
+            "company_referee_name": this.state.company_referee_name
         }, this.handleResearchAdd, true, "post");
     }
-    getCompanyDetails=(id)=>{
-        runPromise('get_company_info', {
-            "gd_company_id":id
-        }, this.handleDetailsGet, true, "post");
+    handleDetailsGet = (res) => {
+        if(this.state.company_name == "") {
+            Toast.info("请输入公司名称", 2, null, false);
+        } else if (this.state.company_address == "") {
+            Toast.info("请输入公司地址", 2, null, false);
+        }else if(this.state.company_url == ""){
+            Toast.info("请输入公司网址", 2, null, false);
+        }else if(this.state.company_start_time == ""){
+            Toast.info("请输入公司成立时间", 2, null, false);
+        }else{
+            this.setState({
+                meetingTime: this.state.company_start_time,
+                meetingAddress: this.state.company_address,
+                companyAddress: this.state.company_url,
+                company: this.state.company_name
+            });
+            interval = setInterval(() => {
+                this.addResearch();
+            }, 30000);
+            this.onClose('modal4')();
+        };
     }
-    clearAll = function () {
+    clearAll = () => {
         drawBoard.clear();
     }
-    cancelLast = function () {
+    cancelLast = ()=> {
         drawBoard.cancel();
     }
     alerts = (a) =>{
@@ -192,13 +193,20 @@ export default class NewSurveyHistory extends React.Component {
                 }, this.handleSrc, false, "post");
             }
         });
-        // console.log(e.currentTarget.scrollTop);
     }
     showModal = key => (e, id) => {
         e.preventDefault(); // 修复 Android 上点击穿透
         this.setState({
             [key]: true,
         });
+        setTimeout(() => {
+            let iptList = document.querySelectorAll("input");
+            for (var a = 0; a < iptList.length; a++) {
+                iptList[a].addEventListener("click", () => {
+                    document.querySelector(".am-modal-wrap").style.marginTop = "-100px";
+                }, false);
+            }
+        }, 500);
         // timeout.push(
         //     setTimeout(() => {
         //         // let iptList = document.getElementsByTagName("input");
@@ -226,66 +234,21 @@ export default class NewSurveyHistory extends React.Component {
         // head.style.position="static";
         // mainWrap.style.marginTop='0';
     }
-    touchBlur=()=>{
-        let iptList = document.getElementsByTagName("input");
-        let txtList = document.getElementsByTagName("textarea");
-        for (let a = 0; a < iptList.length; a++) {
-            iptList[a].blur();
-        }
-        for (let b = 0; b < txtList.length; b++) {
-            txtList[b].blur();
-        }
-    }
-    onChangePhone(e) {
-        let val = e.currentTarget.value;
-        this.setState({
-            hasError1: validate.CheckPhone(val).hasError,
-            phone: val
-        });
-    }
-    onChangeEmail(e) {
-        let val = e.currentTarget.value;
-        this.setState({
-            hasError2: validate.CheckEmail(val).hasError,
-            email: val
-        });
-    }
-    onChangeJob(e) {
-        this.setState({
-            job: e.currentTarget.value
-        });
-    }
-    onChangeName(e) {
-        this.setState({
-            name: e.currentTarget.value
-        });
-    }
-    onChangeRemark(e) {
-        this.setState({
-            remark: e.currentTarget.value
-        });
-    }
+    // touchBlur=()=>{
+    //     let iptList = document.getElementsByTagName("input");
+    //     let txtList = document.getElementsByTagName("textarea");
+    //     for (let a = 0; a < iptList.length; a++) {
+    //         iptList[a].blur();
+    //     }
+    //     for (let b = 0; b < txtList.length; b++) {
+    //         txtList[b].blur();
+    //     }
+    // }
     onChangeOrder(e) {
         this.setState({
             order: e.currentTarget.value
         });
     }
-    onChangeThings(e) {
-        this.setState({
-            things: e.currentTarget.value
-        });
-    }
-    onChangeDuty(e) {
-        this.setState({
-            duty: e.currentTarget.value
-        });
-    }
-    onChangeFinish(e) {
-        this.setState({
-            finishTime: e.currentTarget.value
-        });
-    }
-   
     addPersonLink(){     //添加联系人
         let tmp = {
             job_name: this.state.job,
@@ -393,19 +356,8 @@ export default class NewSurveyHistory extends React.Component {
                     </h3>}
                 ></TableHeads>
                 <div style={{overflow:"scroll"}}>
-                    <button id="downloadPng" onClick={() => { this.loadingToast(); this.addResearch(); clearInterval(interval) }}>下载图片</button>
-                    {/* <a id="downloadPng"></a><input id="filename" style={{ display: "none" }} /> */}
-                    {/* <div id="canvasWrap" style={{ 
-                    backgroundColor: "#f5f5f5",
-                    zIndex:"1000", 
-                    position: "fixed", 
-                    display: "none", 
-                    width: "100%", 
-                    height: "100%" 
-                }}><img src='' id="canvasPic"/></div> */}
-                    {/* <button id="download">下载PDF</button> */}
-
                     <div className="recordMain">
+                        <h2 style={{ letterSpacing: "1px", marginTop: "0.8rem" }}>{this.state.company}</h2>
                         {/* <h2 style={{letterSpacing:"1px",marginTop:"0.8rem"}}> */}
                         {/* 上海泰宇信息技术有限公司 */}
                         {/* <input type="text" style={{ border: "0 none", borderBottom: "1px solid #ccc" }} autoFocus/> */}
@@ -432,7 +384,10 @@ export default class NewSurveyHistory extends React.Component {
                                         onChange={(e) => { this.setState({ companyName:e.currentTarget.value})}} 
                                     /> */}
                                         {this.state.company}
-                                        <i onClick={this.showModal('modal4')} className="iconfont icon-jia" style={{ float: "right", fontSize: "28px", marginTop: "2px" }}></i>
+                                        <i onClick={this.showModal('modal4')} 
+                                            className="iconfont icon-jia" 
+                                            style={{ float: "right", fontSize: "28px", marginTop: "2px" 
+                                        }}></i>
                                     </td>
                                     <th className="darkbg">成立时间</th>
                                     <td className="lightbg">
@@ -449,30 +404,64 @@ export default class NewSurveyHistory extends React.Component {
                                     transparent={true}
                                     maskClosable={true}
                                     onClose={this.onClose('modal4')}
-                                    className="personalLinkWrap"
+                                    className="personalLinkWrap newSurveyCompany"
+                                    footer={[
+                                        { text: '取消', onPress: () => { this.onClose('modal4')() } },
+                                        { text: '确定', onPress: () => { this.handleDetailsGet() }}
+                                    ]}
                                 >
-                                    <div className="personalLink" style={{ color: "#333" }}>
-                                        <h4 style={{ fontSize: "22px", marginBottom: "8px" }}>选择公司名称</h4>
-                                        <ul>
-                                            {
-                                                this.state.companyList.item_list.map((value) => (
-                                                    <li style={{
-                                                        borderBottom: "1px solid #ccc",
-                                                        height: "0.6rem",
-                                                        lineHeight: "0.6rem"
-                                                    }}
-                                                    onClick={(e) => {
-                                                        this.setState({
-                                                            company: e.currentTarget.innerHTML,
-                                                            baseId: value.id
-                                                        });
-                                                        this.onClose('modal4')();
-                                                        this.getCompanyDetails(value.id);
-                                                    }}
-                                                    >{value.company_name}</li>
-                                                ))
-                                            }
-                                        </ul>
+                                    <div className="personalLink">
+                                        <div className="personalLinkList">
+                                            <ul>
+                                                <li>
+                                                    <span>公司名称：</span>
+                                                    <input
+                                                        type="text"
+                                                        value={this.state.company_name}
+                                                        onChange={(e) => { this.setState({ company_name:e.currentTarget.value}) }}
+                                                    />
+                                                </li>
+                                                <li>
+                                                    <span>公司地址：</span>
+                                                    <input
+                                                        type="text"
+                                                        value={this.state.company_address}
+                                                        onChange={(e) => { this.setState({ company_address:e.currentTarget.value}) }}
+                                                    />
+                                                </li>
+                                                <li>
+                                                    <span>公司网址：</span>
+                                                    <input
+                                                        type="text"
+                                                        value={this.state.company_url}
+                                                        onChange={(e) => { this.setState({ company_url:e.currentTarget.value}) }}
+                                                    />
+                                                </li>
+                                                <li>
+                                                    <span>成立时间：</span>
+                                                    <input
+                                                        type="text"
+                                                        value={this.state.company_start_time}
+                                                        placeholder="0000-00-00"
+                                                        // onFocus={(e)=>{
+                                                        //     document.querySelector(".am-modal-wrap").scrollIntoView(true);
+                                                            
+                                                        //     // document.querySelector(".am-modal-wrap").style.position="absolute"
+                                                        // }}                                                     
+                                                        onChange={(e) => { this.setState({ company_start_time:e.currentTarget.value}) }}
+                                                    />
+                                                </li>
+                                                <li>
+                                                    <span>推荐人：</span>
+                                                    <input
+                                                        type="text"
+                                                        value={this.state.company_referee_name}
+                                                        onChange={(e) => { this.setState({ company_referee_name:e.currentTarget.value}) }}
+                                                    />
+                                                </li>
+                                                
+                                            </ul>
+                                        </div>
                                     </div>
                                 </Modal>
                                 <tr>
@@ -500,7 +489,7 @@ export default class NewSurveyHistory extends React.Component {
                                 <tr>
                                     <td colSpan="4"
                                         className="darkbg newPersonalMsg"
-                                    >联系人<span onClick={this.showModal('modal1')}>新增  <i className="iconfont icon-jia"></i></span></td>
+                                    >联系人<span onClick={this.showModal('modal1')}>新增 <i className="iconfont icon-jia"></i></span></td>
                                 </tr>
                                 <Modal
                                     visible={this.state.modal1}
@@ -521,7 +510,11 @@ export default class NewSurveyHistory extends React.Component {
                                                     <input
                                                         type="text"
                                                         value={this.state.name}
-                                                        onChange={(e) => { this.onChangeName(e) }}
+                                                        onChange={(e) => {
+                                                            this.setState({
+                                                                name: e.currentTarget.value
+                                                            });
+                                                        }}
                                                     />
                                                 </li>
                                                 <li>
@@ -529,7 +522,11 @@ export default class NewSurveyHistory extends React.Component {
                                                     <input
                                                         type="text"
                                                         value={this.state.job}
-                                                        onChange={(e) => { this.onChangeJob(e) }}
+                                                        onChange={(e) => {
+                                                            this.setState({
+                                                                job: e.currentTarget.value
+                                                            });
+                                                         }}
                                                     />
                                                 </li>
                                                 <li>
@@ -537,7 +534,12 @@ export default class NewSurveyHistory extends React.Component {
                                                     <input
                                                         type="text"
                                                         value={this.state.phone}
-                                                        onChange={(e) => { this.onChangePhone(e) }}
+                                                        onChange={(e) => {
+                                                            this.setState({
+                                                                hasError1: validate.CheckPhone(e.currentTarget.value).hasError,
+                                                                phone: e.currentTarget.value
+                                                            });
+                                                         }}
                                                         className={this.state.hasError1 ? "txtRed" : ""}
                                                     />
                                                 </li>
@@ -546,7 +548,12 @@ export default class NewSurveyHistory extends React.Component {
                                                     <input
                                                         type="text"
                                                         value={this.state.email}
-                                                        onChange={(e) => { this.onChangeEmail(e) }}
+                                                        onChange={(e) => {
+                                                            this.setState({
+                                                                hasError2: validate.CheckEmail(e.currentTarget.value).hasError,
+                                                                email: e.currentTarget.value
+                                                            });
+                                                         }}
                                                         className={this.state.hasError2 ? "txtRed" : ""}
                                                     />
                                                 </li>
@@ -555,7 +562,11 @@ export default class NewSurveyHistory extends React.Component {
                                                     <input
                                                         type="text"
                                                         value={this.state.remark}
-                                                        onChange={(e) => { this.onChangeRemark(e) }}
+                                                        onChange={(e) => {
+                                                            this.setState({
+                                                                remark: e.currentTarget.value
+                                                            });
+                                                         }}
                                                     />
                                                 </li>
                                                 <li style={{}}>
@@ -708,7 +719,11 @@ export default class NewSurveyHistory extends React.Component {
                                                     <input
                                                         type="text"
                                                         value={this.state.things}
-                                                        onChange={(e) => { this.onChangeThings(e) }}
+                                                        onChange={(e) => {
+                                                            this.setState({
+                                                                things: e.currentTarget.value
+                                                            })
+                                                         }}
                                                     />
                                                 </li>
                                                 <li>
@@ -716,7 +731,11 @@ export default class NewSurveyHistory extends React.Component {
                                                     <input
                                                         type="text"
                                                         value={this.state.duty}
-                                                        onChange={(e) => { this.onChangeDuty(e) }}
+                                                        onChange={(e) => {
+                                                            this.setState({
+                                                                duty: e.currentTarget.value
+                                                            });
+                                                         }}
                                                     />
                                                 </li>
                                                 <li>
@@ -725,7 +744,11 @@ export default class NewSurveyHistory extends React.Component {
                                                         type="text"
                                                         placeholder="0000-00-00"
                                                         value={this.state.finishTime}
-                                                        onChange={(e) => { this.onChangeFinish(e) }}
+                                                        onChange={(e) => {
+                                                            this.setState({
+                                                                finishTime: e.currentTarget.value
+                                                            });
+                                                         }}
                                                     />
                                                 </li>
                                             </ul>
@@ -845,7 +868,7 @@ export default class NewSurveyHistory extends React.Component {
                         </div>
                     </div>
                 </div>
-                
+                <button id="downloadPng" onClick={() => { this.loadingToast(); this.addResearch(); clearInterval(interval) }}>下载图片</button>                    
             </div>
         )
     }
