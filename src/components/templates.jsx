@@ -315,7 +315,90 @@ export const Customs2 = (props) => {
                 </p>
             </div>
         </li>
-)}
+    )
+}
+
+export const Quality2 = (props) => {
+    let value = props.visitLis;
+    let idx = props.visitLis.id;
+    return (
+        <li key={props.rowID} className="fullWidth" id={"visit?" + value.gd_company_id + "F"}>
+            <div className="top">
+                <ul className="fn-left">
+                    <li><i></i></li>
+                    <li>{value.user_name}</li>
+                    <li style={{ color: "#ADADAD", margin: "0 5px" }}>{value.company_name}</li>
+                    <li style={{ color: "#ADADAD" }}>{value.job_name}</li>
+                </ul>
+                <span className="slideDown iconfont icon-tubiao-" onClick={() => props.show(idx)}></span>
+            </div>
+            <div className="btm">
+                <div className="btmLeft">
+                    {
+                        value.score == 2 ? <h4 style={{ color: "red" }}>不满意</h4> : value.score == 5 ? <h4 style={{ color: "red" }}>已离职</h4> : <h4>满意</h4>
+                    }
+                    <p>{value.content}</p>
+                </div>
+                <div className="btmCenter">
+                    {
+                        value.time_least <= 0 ? <div className="explain"><p className="end" style={{ color: "red", fontSize: "18px" }}>逾期{Math.abs(value.time_least)}天</p></div> :
+                            value.time_least > 7 ? <div>
+                                <span className="dataNum">{value.time_least}</span>
+                                <div className="explain">
+                                    <p className="end" >天到期</p>
+                                    <p className="prey" style={{ color: "#ADADAD" }}>{(value.out_time + '').split(" ")[0].split("-").slice(1).join("-")}</p>
+                                </div>
+                            </div> : <div>
+                                    <span className="dataNum" style={{ color: "red" }}>{value.time_least}</span>
+                                    <div className="explain">
+                                        <p className="end" style={{ color: "red" }}>天到期</p>
+                                        <p className="prey" style={{ color: "#ADADAD" }}>{(value.out_time + '').split(" ")[0].split("-").slice(1).join("-")}</p>
+                                    </div>
+                                </div>
+                    }
+                </div>
+                <div className="btmRight">
+                    {
+                        value.time_least > 7 ?
+                            <button style={{
+                                backgroundColor: "#E6E6E6",
+                                color: "#333"
+                            }} onClick={() => { props.changeAlert(value.gd_company_id, value.id) }}>回访结果</button> :
+                            value.time_least > 0 && value.time_least < 7 ?
+                                <button style={{ backgroundColor: "#0DA0F4" }} onClick={() => { props.changeAlert(value.gd_company_id, value.id) }}>回访结果</button> :
+                                <button onClick={() => { props.changeAlert(value.gd_company_id, value.id) }}>回访结果</button>
+                    }
+                </div>
+            </div>
+            <div className="attach" style={{ display: props.isShow == idx ? "block" : "none" }}>
+                <div className="attachTop">
+                    手机：{value.customer_mobile}<span></span>邮箱：{value.customer_email}
+                    <p>{value.remark}</p>
+                </div>
+                <div className="attachList">
+                    <ul className="attachListUl">
+                        <li>
+                            <div style={{ overflow: "hidden" }}>
+                                <span className="attachListLeft"><i className="iconfont icon-sanjiao1"></i>{value.score == 2 ? "满意" : value.score == 1 ? "一般" : "不满意"} <i className="date">{(value.add_time + '').split(" ")[0].split("-").slice(1).join("-")}</i></span>
+                                <span className="attachListRight">{(value.add_time + '').split(" ")[0].split("-")[1]}月</span>
+                            </div>
+                            <p>附加信息</p>
+                            <ul>
+                                {
+                                    value.appendixs && value.appendixs.map((value) => (
+                                        <li style={{ width: "3.5rem", height: "2.8rem" }}>
+                                            <img src={value.path} style={{ width: "100%" }} />
+                                        </li>
+                                    ))
+                                }
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </li>
+    )
+}
 
 export const Quality = (props) => (
     <ul className="details">
