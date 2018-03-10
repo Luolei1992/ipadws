@@ -190,6 +190,133 @@ export const Customs = (props) =>(         //我的客户信息展示
     </ul>
 )
 
+//我的客户信息展示
+export const Customs2 = (props) => {
+    let value = props.dataList;
+    return(         
+        <li key={props.rowID}>
+            <div className="liWrap">
+                <div className="left fn-left">
+                    <img src={value.path} style={{ width: "100%" }} />
+                </div>
+                <div className="mid fn-left">
+                    <h3>
+                        <Link to={'/company?tab=0&id=' + value.gd_company_id} onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}>
+                            {value.company_name}<span>{value.type == 1 ? "包年项目" : value.type == 2 ? "一次性项目" : "调研"}</span>
+                        </Link>
+                    </h3>
+                    <table>
+                        <tr>
+                            <td style={{ width: "60px", position: "relative" }}>
+                                <span style={{
+                                    float: "left",
+                                    position: "absolute",
+                                    left: "0",
+                                    top: "0",
+                                    lineHeight: "18px"
+                                }}>服务内容:</span>
+                            </td>
+                            <td style={{ lineHeight: "18px" }}>
+                                <p>{value.content ? value.content : "无"}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colSpan="2">
+                                <table>
+                                    <tr>
+                                        <td style={{ width: "35px", position: "relative", height: "18px" }}>
+                                            <span style={{
+                                                float: "left",
+                                                position: "absolute",
+                                                left: "0",
+                                                top: "0",
+                                                lineHeight: "18px"
+                                            }}>备注:</span>
+                                        </td>
+                                        <td style={{
+                                            lineHeight: "18px"
+                                        }}><p>{value.remark}</p></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colSpan="2">
+                                <table>
+                                    <tr>
+                                        <td style={{ width: "35px", position: "relative" }}>
+                                            <span style={{
+                                                float: "left",
+                                                position: "absolute",
+                                                left: "0",
+                                                top: "0",
+                                                lineHeight: "18px"
+                                            }}>条件:</span>
+                                        </td>
+                                        <td style={{ lineHeight: "18px" }}><p>{value.condition}</p></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div className="right fn-right">
+                    <p className="more" onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}>
+                        <Link to={"/company?tab=0&id=" + value.gd_company_id}><i>...</i></Link>
+                    </p>
+                    <ul>
+                        <li>
+                            <p className="top" onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}>
+                                <Link to={"/visitRecord?tab=1&id=" + value.gd_company_id}>{value.mission_count}</Link>
+                            </p>
+                            <p className="btm" style={{ dispaly: "inline-block", padding: "4px 0" }} onClick={(e) => { props.addJobs(e, value.id); props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}>任务</p>
+                        </li>
+                        <li>
+                            <p className="top" onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}>
+                                <Link to={"/visitLists?tab=2&id=" + value.gd_company_id}>{value.record_count}</Link>
+                            </p>
+                            <p className="btm" style={{ dispaly: "inline-block", padding: "4px 0" }} onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}><Link to="/scene">回访</Link></p>
+                        </li>
+                        <li>
+                            <p className="top" onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}>
+                                <Link to={"/meetingList?tab=3&id=" + value.gd_company_id}>{value.meeting_count}</Link>
+                            </p>
+                            <p className="btm" style={{ dispaly: "inline-block", padding: "4px 0" }} onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}><Link to="/meeting">纪要</Link></p>
+                        </li>
+                        <li>
+                            <p className="top" onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}>
+                                <Link to={"/qualityList?tab=6&id=" + value.gd_company_id}>{value.check_count}</Link>
+                            </p>
+                            <p className="btm" style={{ dispaly: "inline-block", padding: "4px 0" }} onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}><Link to="/quality">验收</Link></p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div className="line"></div>
+            <div className="person">
+                <p>相关人员 : {
+                    value.user_list.length > 0 ?
+                        value.user_list.map((val, idx) => {
+                            return (<span>{val.nick_name}<i
+                                className="iconfont icon-shanchu"
+                                onClick={(e) => { props.delPerson(e, val.user_id, value.id); }}>
+                            </i></span>)
+                        }) : "暂无"
+                }
+                    {/* <a style={{ marginLeft: "0.5rem" }} 
+                        href="javascript:;" 
+                        onClick={()=>{props.getCustomList(val.gd_company_id)}}>全部</a> */}
+                    <a href="javascript:;"
+                        style={{ color: "#1067ef" }}
+                        onClick={(e) => {
+                            props.showModal(e, value.user_id);
+                            props.setBaseStateFun(value.gd_company_id, value.company_name, value.id)
+                        }}>新增</a>
+                </p>
+            </div>
+        </li>
+)}
+
 export const Quality = (props) => (
     <ul className="details">
         {

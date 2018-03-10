@@ -782,6 +782,7 @@
                         position: absolute;
                         background-color: #000;
                         padding-top: 0.1rem;
+                        z-index: 1;
                         li {
                             padding: .12rem .3rem .12rem .1rem;
                         }
@@ -806,7 +807,7 @@
     .mainCustomList {
         padding: 0 .78125rem;
         .customDetails {
-            &>li {
+            .list-view-section-body>li {
                 padding: .585938rem .488281rem 0 .488281rem;
                 background-color: #fff;
                 margin-bottom: .08rem;
@@ -1254,7 +1255,9 @@
         box-shadow: 0 0 20px #000;
     }
 }
-
+.customsLists.visitRecordWrap{
+    padding-bottom: 0px!important;
+}
 
 
 
