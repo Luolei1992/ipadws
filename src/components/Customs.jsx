@@ -131,7 +131,7 @@ export default class Custom extends React.Component {
         if (this.state.isLoading && !this.state.hasMore) {
             return;
         };
-        // console.log('加载下一页的数据');
+        
         this.setState({ isLoading: true });
         this.getProjectLis(this.state.type, pageIndex * NUM_ROWS);
     }

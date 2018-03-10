@@ -1,17 +1,48 @@
 import React from 'react';
-import { ImagePicker,Toast } from "antd-mobile";
+import ReactDOM from 'react-dom';
+import { ImagePicker, Toast, ListView } from "antd-mobile";
 import { Link } from "react-router";
-import { TableHeada, Quality, init } from "./templates";
+import { TableHeada, Quality, init, Quality2 } from "./templates";
 
 const urls = {
     wordMsg: require('../images/wordMsg.png'),
     addPic: require('../images/addPic.png'),
 }
 let arrIds = [];
+
+function MyBody(props) {
+    return (
+        <ul className="details">
+            {props.children}
+        </ul>
+    );
+}
+
+let realData = [];
+let index = realData.length - 1;
+let realDataLength = realData.length;
+let NUM_ROWS = 10;
+let pageIndex = 0;
+
 export default class Visit extends React.Component {
     constructor(props) {
         super(props);
+
+        const dataSource = new ListView.DataSource({
+            rowHasChanged: (row1, row2) => row1 !== row2,
+        });
+        this.genData = (pIndex = 0, NUM_ROWS, data) => {
+            const dataBlob = {};
+            for (let i = 0; i < NUM_ROWS; i++) {
+                const ii = (pIndex * NUM_ROWS) + i;
+                dataBlob[`${ii}`] = data[i];
+            }
+            return dataBlob;
+        };
         this.state = {
+            dataSource: dataSource.cloneWithRows(sessionStorage.getItem("visitLists") ? JSON.parse(sessionStorage.getItem("visitLists")) : {}),
+            isLoading: true,
+            height: document.documentElement.clientHeight,
             selectedTab: 'redTab',
             hidden: false,
             fullScreen: false,
@@ -26,29 +57,48 @@ export default class Visit extends React.Component {
             tempCompanyId:"",
             alertShow: false,
             isShow:-1,
-            order:[false,false,false],
+            // order: [false, false, false],
             agree:[true,false,false],
             visitLists:{
-                item_list:[]
+                item_list: []
             },
             companyLists:{
-                item_list:[]
+                item_list: sessionStorage.getItem("companyLists") ? JSON.parse(sessionStorage.getItem("companyLists")) : []
             },
             personalDetail:{},
-            id:""
+            id:"",
+            gd_company_id: 0,
+            classify: 0, //质检分类。0为全部，1为不满意，2为到期，3为已离职
         },
         this.handleCompanyListGet = (res) => {
-            console.log(res);
+            // console.log(res);
             this.setState({
                 companyLists:res.data
             })
+            sessionStorage.setItem("companyLists", JSON.stringify(res.data.item_list));
         },
         this.handleVisitGet = (res) => {
             console.log(res);
             if(res.success){
+                realData = res.data.item_list;
+                index = realData.length - 1;
+                realDataLength = res.data.item_list.length;
+                NUM_ROWS = realDataLength;
+                if (pageIndex == 0) {
+                    this.rData = {};
+                    this.rData = { ...this.rData, ...this.genData(pageIndex++, realDataLength, res.data.item_list) };
+                    sessionStorage.setItem("visitLists", JSON.stringify(realData));
+                } else {
+                    this.rData = { ...this.rData, ...this.genData(pageIndex++, realDataLength, res.data.item_list) };
+                }
                 this.setState({
-                    visitLists:res.data
+                    dataSource: this.state.dataSource.cloneWithRows(this.rData),
+                    hasMore: res.data.total_pages > pageIndex ? true : false,
+                    isLoading: false,
+                    visitLists: res.data
                 });
+            } else {
+                Toast.info(res.message, 2);
             }
         },
         this.handleAddVisit = (res) =>{
@@ -63,35 +113,66 @@ export default class Visit extends React.Component {
             }
         }
     }
+    onEndReached = (event) => {
+        // load new data   数据加载完成
+        // hasMore: from backend data, indicates whether it is the last page, here is false
+        if (this.state.isLoading && !this.state.hasMore) {
+            return;
+        };
+        this.setState({ isLoading: true });
+        this.orderVisitBack(0, pageIndex * NUM_ROWS, 0);
+    }
     componentDidMount() {
         init('plusMsg');
         runPromise('get_company_list', {   //获取公司列表
             offset: "0",
             limit: "200"
         }, this.handleCompanyListGet, true, "post");
-        runPromise('get_visit_back_list', {   //获取回访列表
-            gd_company_id: "0",
-            offset: "0",
-            limit: "20",
-            score: "-1",
-            timeOut: "-1",
-            work_status: "-1"
-        }, this.handleVisitGet, true, "post");
+        // runPromise('get_visit_back_list', {   //获取回访列表
+        //     gd_company_id: "0",
+        //     offset: "0",
+        //     limit: "20",
+        //     score: "-1",
+        //     timeOut: "-1",
+        //     work_status: "-1"
+        // }, this.handleVisitGet, true, "post");
+        // Set the appropriate height
+        setTimeout(() => this.setState({
+            // height: this.state.height - ReactDOM.findDOMNode(this.refs.lv).offsetTop,
+            height: this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop - 5,
+        }), 100);
+        this.orderVisitBack();
     }
-    orderVisitBack(score,timeOut,status,idx){
-        let arr = [false,false,false];
-        arr[idx] = true;
-        this.setState({
-            order:arr
-        })
+    //获取回访列表
+    getvisitBackList = () => {
+
+    }
+    orderVisitBack(classify = 0, offset = 0, gd_company_id = 0){
+        if (offset == 0) {
+            pageIndex = 0;
+        }
+        this.setState({ classify, gd_company_id });
+        let paramArray = [
+            [-1, -1, -1],
+            [2, -1, -1],
+            [-1, 0, -1],
+            [-1, -1, 2]
+        ];
+        let [score, timeOut, status] = paramArray[parseInt(classify)];
         runPromise('get_visit_back_list', {   //获取回访列表
-            gd_company_id: "0",
-            offset: "0",
-            limit: "20",
+            gd_company_id: gd_company_id,
+            offset: offset,
+            limit: "10",
             score: score,
             timeOut: timeOut,
             work_status: status
         }, this.handleVisitGet, true, "post");
+    }
+    componentDidUpdate() {
+        let li = document.querySelector(".details li.fullWidth");
+        if (li && pageIndex == 0) {
+            li.scrollIntoView(true);
+        }
     }
     addVisitBack=()=>{
         runPromise('add_visit_back',{
@@ -155,16 +236,28 @@ export default class Visit extends React.Component {
         })
     }
     clickChangeBg=(e,id)=>{  //#4e4c4c
-        let tar = e.currentTarget;
-        let mainWrapLeftList = document.querySelectorAll(".bgCompany");
-        for (let i = 0; i < mainWrapLeftList.length;i++) {
-            mainWrapLeftList[i].style.backgroundColor="#000";
-        }
-        tar.style.backgroundColor = "#4e4c4c";
+        // let tar = e.currentTarget;
+        // let mainWrapLeftList = document.querySelectorAll(".bgCompany");
+        // for (let i = 0; i < mainWrapLeftList.length;i++) {
+        //     mainWrapLeftList[i].style.backgroundColor="#000";
+        // }
+        // tar.style.backgroundColor = "#4e4c4c";
         //调用接口获取对应公司人员的数据
+        this.orderVisitBack(0, 0, id);
     }
     render() {
         const { files } = this.state;
+        const row = (rowData, sectionID, rowID) => {
+            return (
+                <Quality2
+                    rowID={rowID}
+                    visitLis={rowData}
+                    isShow={this.state.isShow}
+                    show={this.show}
+                    changeAlert={this.changeAlert}
+                />
+            )
+        }
         return (
             <div id="capture" className="visitWrap visitRecordWrap" style={{ backgroundColor: "#eeeeee" }}>
                 <TableHeada
@@ -174,11 +267,19 @@ export default class Visit extends React.Component {
                 ></TableHeada>
                 <div className="mainWrap">
                     <div className="mainWrapLeft">
-                        <p className="allQuality"><span>全部</span><i>{this.state.companyLists.total_count}</i></p>
+                        <p 
+                            className="allQuality"
+                            onClick={(e) => { this.clickChangeBg(e, 0) }}
+                            onTouchStart={(e) => { e.target.style.backgroundColor = "#590e0e" }}
+                            onTouchEnd={(e) => { e.target.style.backgroundColor ="#A90707" }}
+                        ><span>全部</span><i>{this.state.companyLists.total_count}</i></p>
                         <ul>
                             {
                                 this.state.companyLists.item_list.map((value,idx)=>(
-                                    <li className="bgCompany" onClick={(e)=>{this.clickChangeBg(e,value.id)}}>
+                                    <li 
+                                        className="bgCompany"
+                                        style={{ "background-color": this.state.gd_company_id == value.id ? "#4e4c4c" : "#000"}}
+                                        onClick={(e)=>{this.clickChangeBg(e,value.id)}}>
                                         <a>
                                             <p style={{color:"#fff"}}><span>{value.company_name}</span><i>{value.visit_back_count}</i></p>
                                         </a>
@@ -189,16 +290,34 @@ export default class Visit extends React.Component {
                     </div>
                     <div className="mainWrapRight">
                         <p className="which">
-                            <input type="checkbox" checked={this.state.order[0]} onClick={()=>{this.orderVisitBack(2,-1,-1,0)}} /> 不满意处理<span></span>
-                            <input type="checkbox" checked={this.state.order[1]} onClick={()=>{this.orderVisitBack(-1,0,-1,1)}}/> 到期<span></span>
-                            <input type="checkbox" checked={this.state.order[2]} onClick={() => { this.orderVisitBack(-1, -1, 2, 2) }} /> 已离职
+                            <input type="checkbox" checked={this.state.classify == 1 ? true : false } onClick={()=>{this.orderVisitBack(1)}} /> 不满意处理<span></span>
+                            <input type="checkbox" checked={this.state.classify == 2 ? true : false } onClick={()=>{this.orderVisitBack(2)}}/> 到期<span></span>
+                            <input type="checkbox" checked={this.state.classify == 3 ? true : false } onClick={() => { this.orderVisitBack(3) }} /> 已离职
                         </p>
-                        <Quality
+                        {/* <Quality
                             visitLis={this.state.visitLists.item_list}
                             isShow={this.state.isShow}
                             show={this.show}
                             changeAlert={this.changeAlert}>
-                        </Quality>
+                        </Quality> */}
+                        <ListView
+                            ref={el => this.lv = el}
+                            dataSource={this.state.dataSource}
+                            // renderHeader={() => <span>Pull to refresh</span>}
+                            //     renderFooter={() => (<div style={{ padding: "20px", textAlign: 'center', display: this.state.isLoading ? 'block' : 'none' }}>
+                            // {this.state.isLoading ? '加载中...' : null}
+                            renderFooter={() => (<div style={{ padding: "20px", textAlign: 'center' }}>
+                                {this.state.isLoading ? '加载中...' : '加载完成'}
+                            </div>)}
+                            renderBodyComponent={() => <MyBody />}
+                            renderRow={row}
+                            style={{
+                                height: this.state.height,
+                                overflow: 'auto'
+                            }}
+                            onEndReached={this.onEndReached}
+                            pageSize={5}
+                        />
                         <div className="alertModalBg" style={{ display: this.state.alertShow ? "block" : "none" }}></div>
                         <div className="alertModal" style={{ display: this.state.alertShow ? "block" : "none" }}>
                             <i className="icon-icon_chahao iconfont" onClick={this.closeAlert}></i>
