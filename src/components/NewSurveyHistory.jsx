@@ -868,7 +868,7 @@ export default class NewSurveyHistory extends React.Component {
                         </div>
                     </div>
                 </div>
-                <button id="downloadPng" onClick={() => { this.loadingToast(); this.addResearch(); clearInterval(interval) }}>下载图片</button>                    
+                <button id="downloadPng" onClick={() => { this.loadingToast(); this.addResearch(); clearInterval(interval) }}>保存文件</button>         
             </div>
         )
     }

@@ -1,8 +1,9 @@
 import React from "react";
+import ReactDOM from 'react-dom';
 import QueueAnim from 'rc-queue-anim';
 import { hashHistory } from "react-router";
-import { TableHeada, Customs ,noLogin} from './templates';
-import { Modal, List ,Toast} from 'antd-mobile';
+import { TableHeada, Customs, noLogin, Customs2} from './templates';
+import { Modal, List, Toast, ListView} from 'antd-mobile';
 
 const urls = {
     wordMsg: require('../images/wordMsg.png'),
@@ -10,10 +11,42 @@ const urls = {
 }
 let currentType="add_time";
 
+function MyBody(props) {
+    return (
+        <div className="mainCustomList">
+            <ul className="customDetails">
+                {props.children}
+            </ul>
+        </div>
+    );
+}
+
+let realData = [];
+let index = realData.length - 1;
+let realDataLength = realData.length;
+let NUM_ROWS = 5;
+let pageIndex = 0;
+
 export default class Custom extends React.Component {
     constructor(props) {
         super(props);
+
+        const dataSource = new ListView.DataSource({
+            rowHasChanged: (row1, row2) => row1 !== row2,
+        });
+        this.genData = (pIndex = 0, NUM_ROWS, data) => {
+            const dataBlob = {};
+            for (let i = 0; i < NUM_ROWS; i++) {
+                const ii = (pIndex * NUM_ROWS) + i;
+                dataBlob[`${ii}`] = data[i];
+            }
+            return dataBlob;
+        };
         this.state = {
+            dataSource: dataSource.cloneWithRows({}),
+            isLoading: true,
+            height: document.documentElement.clientHeight,
+            hasMore: true, //是否有更多的数据
             show: false,
             show2: false,
             animate:true,
@@ -39,9 +72,23 @@ export default class Custom extends React.Component {
             e:""
         },
         this.handleProjectGet = (res) => {
-            console.log(res);
+            // console.log(res);
             if(res.success) {
+                realData = res.data.item_list;
+                index = realData.length - 1;
+                realDataLength = res.data.item_list.length;
+                NUM_ROWS = realDataLength;
+                if (pageIndex == 0) {
+                    this.rData = {};
+                    this.rData = { ...this.rData, ...this.genData(pageIndex++, realDataLength, res.data.item_list) };
+                } else {
+                    this.rData = { ...this.rData, ...this.genData(pageIndex++, realDataLength, res.data.item_list) };
+                }
+                // this.rData = { ...this.rData, ...this.genData(pageIndex++, realDataLength, res.data.item_list) };
                 this.setState({
+                    dataSource: this.state.dataSource.cloneWithRows(this.rData),
+                    hasMore: res.data.total_pages > pageIndex ? true : false,
+                    isLoading: false,
                     data:res.data.item_list
                 })
             }
@@ -77,14 +124,38 @@ export default class Custom extends React.Component {
             }
         }
     }
+    onEndReached = (event) => {
+        // load new data   数据加载完成
+        // hasMore: from backend data, indicates whether it is the last page, here is false
+        if (this.state.isLoading && !this.state.hasMore) {
+            return;
+        };
+        // console.log('加载下一页的数据');
+        this.setState({ isLoading: true });
+        this.getProjectLis(this.state.type, pageIndex * NUM_ROWS);
+    }
     componentDidMount() {
+        // Set the appropriate height
+        setTimeout(() => this.setState({
+            // height: this.state.height - ReactDOM.findDOMNode(this.refs.lv).offsetTop,
+            height: this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop,
+        }), 100);
         this.getProjectLis("add_time");
         // document.getElementById("mainWrap").style.marginTop
     }
-    getProjectLis=(type)=>{
+    componentDidUpdate(){
+        let li = document.querySelector(".list-view-section-body>li");
+        if (li && pageIndex == 0) {
+            li.scrollIntoView(true);
+        }
+    }
+    getProjectLis = (type, offset = 0)=>{
+        if (offset == 0) {
+            pageIndex = 0;
+        }
         runPromise('get_project_list', {
-            "type": "-3",
-            "offset": 0,
+            "type": "0",
+            "offset": offset,
             "limit": 5,
             "sort": type,
             "choose": 0
@@ -156,6 +227,19 @@ export default class Custom extends React.Component {
         });
     }
     render() {
+        const row = (rowData, sectionID, rowID) => {
+            return (
+                <Customs2
+                    rowID={rowID}
+                    dataList={rowData}
+                    delPerson={this.delPerson}
+                    showModal={this.showModal('modal')}
+                    addJobs={this.showModal('modal1')}
+                    getCustomList={this.getCustomList}
+                    setBaseStateFun={this.setBaseStateFun}
+                />
+            )
+        }
         return (
             <QueueAnim className="demo-content"
                 key="demo"
@@ -219,7 +303,7 @@ export default class Custom extends React.Component {
                             this.addPersonalMsg();
                         } }
                     ]}
-                // wrapProps={{ onTouchStart: this.onWrapTouchStart }}
+                    // wrapProps={{ onTouchStart: this.onWrapTouchStart }}
                 >
                     <div className="personalLink">
                         <div className="personalLinkList">
@@ -288,7 +372,7 @@ export default class Custom extends React.Component {
                         </div>
                     </div>
                 </Modal>
-                <div className="mainCustomList">
+                {/* <div className="mainCustomList">
                     <Customs
                         dataList={this.state.data}
                         delPerson={this.delPerson}
@@ -297,7 +381,25 @@ export default class Custom extends React.Component {
                         getCustomList={this.getCustomList}
                         setBaseStateFun={this.setBaseStateFun}
                     ></Customs>
-                </div>
+                </div> */}
+                <ListView
+                    ref={el => this.lv = el}
+                    dataSource={this.state.dataSource}
+                    // renderHeader={() => <span>Pull to refresh</span>}
+                        //     renderFooter={() => (<div style={{ padding: "20px", textAlign: 'center', display: this.state.isLoading ? 'block' : 'none' }}>
+                        // {this.state.isLoading ? '加载中...' : null}
+                                renderFooter={() => (<div style={{ padding: "20px", textAlign: 'center' }}>
+                                    {this.state.isLoading ? '加载中...' : '加载完成'}
+                    </div>)}
+                    renderBodyComponent={() => <MyBody />}
+                    renderRow={row}
+                    style={{
+                        height: this.state.height,
+                        overflow: 'auto'
+                    }}
+                    onEndReached={this.onEndReached}
+                    pageSize={5}
+                />
                 <Modal
                     visible={this.state.modal1}
                     transparent
