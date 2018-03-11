@@ -24,8 +24,17 @@ export const TableHeads = (props) => (    //公共头部
         <Link to='/'><img src={props.url} className="fn-right" /></Link>
     </div>
 )
-export const TableHeadServey = (props) => (    //公共头部  
+export const TableHeadOne = (props) => (    //公共头部  
     <div className="tableHead" style={{ paddingTop: '20px',position:"fixed",width:"100%",top:"0",left:"0"}}>
+        <div className="leftLogoWord fn-left" onClick={() => {hashHistory.go(-1)}}><i className="iconfont icon-jiantou"></i>返回</div>
+        {
+            props.isHide ? "" : props.tag
+        }
+        <Link to='/'><img src={props.url} className="fn-right" /></Link>
+    </div>
+)
+export const TableHeadServey = (props) => (    //公共头部  
+    <div className="tableHead" style={{ paddingTop: '20px',position:"static",width:"100%",top:"0",left:"0"}}>
         <div className="leftLogoWord fn-left" onClick={() => {
             hashHistory.push({
                 pathname: '/'
@@ -102,7 +111,8 @@ export const Customs = (props) =>(         //我的客户信息展示
                                         }}>服务内容:</span>
                                     </td>
                                     <td style={{ lineHeight: "18px" }}>
-                                        <p>{value.content?value.content:"无"}</p>
+                                        {/* <pre dangerouslySetInnerHTML={{__html:value.content?value.content:"无"}} ></pre> */}
+                                        <pre dangerouslySetInnerHTML={{__html:value.content?value.content:"无"}} ></pre>
                                     </td>
                                 </tr>
                                 <tr>
@@ -215,11 +225,11 @@ export const Customs2 = (props) => {
                     <img src={value.path} style={{ width: "100%" }} />
                 </div>
                 <div className="mid fn-left">
-                    <h3>
                         <Link to={'/company?tab=0&id=' + value.gd_company_id} onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}>
-                            {value.company_name}<span>{value.type == 1 ? "包年项目" : value.type == 2 ? "一次性项目" : "调研"}</span>
+                            <h3>
+                                {value.company_name}<span>{value.type == 1 ? "包年项目" : value.type == 2 ? "一次性项目" : "调研"}</span>
+                            </h3>
                         </Link>
-                    </h3>
                     <table>
                         <tr>
                             <td style={{ width: "60px", position: "relative" }}>
@@ -232,14 +242,15 @@ export const Customs2 = (props) => {
                                 }}>服务内容:</span>
                             </td>
                             <td style={{ lineHeight: "18px" }}>
-                                <p>{value.content ? value.content : "无"}</p>
+                                {/* <p>{value.content ? value.content : "无"}</p> */}
+                                <p dangerouslySetInnerHTML={{__html:value.content?value.content:"无"}} ></p>                                
                             </td>
                         </tr>
                         <tr>
                             <td colSpan="2">
                                 <table>
                                     <tr>
-                                        <td style={{ width: "35px", position: "relative", height: "18px" }}>
+                                        <td style={{ width: "60px", position: "relative", height: "18px" }}>
                                             <span style={{
                                                 float: "left",
                                                 position: "absolute",
@@ -255,29 +266,32 @@ export const Customs2 = (props) => {
                                 </table>
                             </td>
                         </tr>
-                        <tr>
-                            <td colSpan="2">
-                                <table>
-                                    <tr>
-                                        <td style={{ width: "35px", position: "relative" }}>
-                                            <span style={{
-                                                float: "left",
-                                                position: "absolute",
-                                                left: "0",
-                                                top: "0",
-                                                lineHeight: "18px"
-                                            }}>条件:</span>
-                                        </td>
-                                        <td style={{ lineHeight: "18px" }}><p>{value.condition}</p></td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
+                        {
+                            value.condition.length > 2?<tr>
+                                <td colSpan="2">
+                                    <table>
+                                        <tr>
+                                            <td style={{ width: "60px", position: "relative" }}>
+                                                <span style={{
+                                                    float: "left",
+                                                    position: "absolute",
+                                                    left: "0",
+                                                    top: "0",
+                                                    lineHeight: "18px"
+                                                }}>条件:</span>
+                                            </td>
+                                            <td style={{ lineHeight: "18px" }}><p>{value.condition}</p></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>:''
+                        }
+                        
                     </table>
                 </div>
                 <div className="right fn-right">
                     <p className="more" onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}>
-                        <Link to={"/company?tab=0&id=" + value.gd_company_id}><i>...</i></Link>
+                        <Link to={"/company?tab=0&id=" + value.gd_company_id}><i style={{width:"40px",display:"inline-block",textAlign:"right"}}>...</i></Link>
                     </p>
                     <ul>
                         <li>

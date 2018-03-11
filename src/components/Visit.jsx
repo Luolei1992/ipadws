@@ -80,7 +80,7 @@ export default class Visit extends React.Component {
         this.handleVisitGet = (res) => {
             console.log(res);
             if(res.success){
-                realData = res.data.item_list;
+                realData = res.data.item_list.reverse();
                 index = realData.length - 1;
                 realDataLength = res.data.item_list.length;
                 NUM_ROWS = realDataLength;
@@ -120,7 +120,7 @@ export default class Visit extends React.Component {
             return;
         };
         this.setState({ isLoading: true });
-        this.orderVisitBack(0, pageIndex * NUM_ROWS, 0);
+        this.orderVisitBack(this.state.classify, pageIndex * NUM_ROWS, this.state.gd_company_id);
     }
     componentDidMount() {
         init('plusMsg');
@@ -259,7 +259,7 @@ export default class Visit extends React.Component {
             )
         }
         return (
-            <div id="capture" className="visitWrap visitRecordWrap" style={{ backgroundColor: "#eeeeee" }}>
+            <div id="capture" className="visitWrap visitRecordWrap animatePage" style={{ border:"0 none",backgroundColor: "#eeeeee" }}>
                 <TableHeada
                     url={urls.wordMsg}
                     isHide={false}

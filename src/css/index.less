@@ -618,7 +618,7 @@
 }
 .qualityFormWrap {
     .qualityWrap {
-        padding: 0.8rem 1.2rem;
+        padding: 0.4rem 1.2rem 0 1.2rem;
         .qualityWrapTop {
             // margin-top: .820313rem;
             h3 {
@@ -683,7 +683,7 @@
                 .date {
                     position: absolute;
                     bottom: .292969rem;
-                    right: .292969rem;
+                    right: .4rem;
                     z-index: 10;
                 }
                 .suggess {
@@ -816,6 +816,7 @@
                         font-size: 18px;
                         font-weight: 800;
                         margin-bottom: .12rem;
+                        padding-right: .5rem;
                         span {
                             font-size: 14px;
                             font-weight: normal;
@@ -986,7 +987,7 @@
     }
     table.personalLis{
         tr {
-            line-height: .6rem;
+            line-height: .7rem;
             td {
                 border: 1px solid #ccc;
             }
@@ -1043,7 +1044,7 @@
     .leftLogoWord {
         font-size: 18px;
         color: #fff;
-        padding: .24rem .1rem 0 .488281rem;
+        padding: .24rem .4rem 0.2rem .488281rem;
         letter-spacing: 2px;
     }
 }
@@ -1199,7 +1200,7 @@
 }
 #downloadPng {
     display:inline-block;
-    padding: .078125rem .097656rem;
+    padding: 0.1rem;
     position: absolute;
     right: 1.2rem;
     margin-top:0.05rem;
@@ -1284,15 +1285,28 @@
     }
 }
 .animatePageY {
-    animation: myfirst 0.6s;
+    animation: myfirstY 0.6s;
 }
-@keyframes myfirst{
+@keyframes myfirstY{
     from {
         transform: translateY(150px);
         opacity: 0.5;
     }
     to {
         transform: translateY(0px);
+        opacity: 1;
+    }
+}
+.animatePageX {
+    animation: myfirstX 0.6s;
+}
+@keyframes myfirstX{
+    from {
+        transform: translateX(-150px);
+        opacity: 0.5;
+    }
+    to {
+        transform: translateX(0px);
         opacity: 1;
     }
 }

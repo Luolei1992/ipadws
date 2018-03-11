@@ -7,7 +7,7 @@ import { DrawBoard } from './drawBoard';
 let canvas;
 let drawBoard;
 let numPlus = 0;
-let interval;
+let interval=[];
 let timeout=[];
 const urls = {
     wordMsg: require('../images/wordMsg.png'),
@@ -61,18 +61,20 @@ export default class Meeting extends React.Component {
         init("meetingResult");
         canvas = document.getElementById("canvas");
         drawBoard = new DrawBoard(canvas);  // 初始化
-        interval=setInterval(() => {
+        interval.push(setInterval(() => {
             this.addMeeting();
-        }, 30000);
-        // let head = document.getElementsByClassName("tableHead")[0];
-        // let mainWrap = document.getElementById("mainWrap");
-        // head.style.position = "static";
-        // mainWrap.style.marginTop = '0';
+        }, 30000));
+        let head = document.getElementsByClassName("tableHead")[0];
+        let mainWrap = document.getElementById("mainWrap");
+        head.style.position = "static";
+        mainWrap.style.marginTop = '0';
     }
     routerWillLeave(nextLocation) {
-        // let mainWrap = document.getElementById("mainWrap");
-        // mainWrap.style.marginTop = '1.3rem';
-        clearInterval(interval);
+        let head = document.getElementsByClassName("tableHead")[0];
+        head.style.position = "fixed";
+        for(let i = 0;i < interval.length;i++){
+            clearInterval(interval[i]);
+        }
     }
     addMeeting = () => {
         runPromise('add_meeting', {
@@ -102,22 +104,33 @@ export default class Meeting extends React.Component {
         this.setState({
             [key]: true,
         });
-        timeout.push(
-            setTimeout(() => {
-                let propmtTouchBox = document.querySelector(".am-modal-wrap");
-                propmtTouchBox.addEventListener("touchmove", this.touchBlur, false);
-            }, 500)
-        );
+        setTimeout(() => {
+            let iptList = document.querySelectorAll("input");
+            for (var a = 0; a < iptList.length; a++) {
+                iptList[a].addEventListener("focus", () => {
+                    document.querySelector(".am-modal-wrap").style.marginTop = "-100px";
+                }, false);
+                iptList[a].addEventListener("blur", () => {
+                    document.querySelector(".am-modal-wrap").style.marginTop = "0";
+                }, false);
+            }
+        }, 500);
+        // timeout.push(
+        //     setTimeout(() => {
+        //         let propmtTouchBox = document.querySelector(".am-modal-wrap");
+        //         propmtTouchBox.addEventListener("touchmove", this.touchBlur, false);
+        //     }, 500)
+        // );
     }
     onClose = key => () => {
         this.setState({
             [key]: false,
         });
-        let propmtTouchBox = document.querySelector(".am-modal-wrap .am-modal");
-        propmtTouchBox.removeEventListener("touchmove", this.touchBlur, false);
-        for (let i = 0; i < timeout.length; i++) {
-            clearTimeout(timeout[i]);
-        }
+        // let propmtTouchBox = document.querySelector(".am-modal-wrap .am-modal");
+        // propmtTouchBox.removeEventListener("touchmove", this.touchBlur, false);
+        // for (let i = 0; i < timeout.length; i++) {
+        //     clearTimeout(timeout[i]);
+        // }
     }
     addOrderMsg() {       //下一任行动和计划
         ++numPlus;
@@ -196,13 +209,7 @@ export default class Meeting extends React.Component {
             // <div className="visitRecordWrap" id="fromHTMLtestdiv" onTouchMove={() => { this.touchBlur(); }}>
             <div className="visitRecordWrap" id="fromHTMLtestdiv">
                 <TableHeads url={urls.wordMsg} isHide={true}></TableHeads>
-                <button id="downloadPng" onClick={() => { 
-                        this.loadingToast();
-                        this.addMeeting(); 
-                        clearInterval(interval);
-                    }}
-                >下载图片</button>
-                <div className="recordMain">
+                <div className="recordMain animatePageY">
                     <h2>会议纪要</h2>
                     <div className="tableDetails">
                         <table className="topTable">
@@ -377,6 +384,14 @@ export default class Meeting extends React.Component {
                         </table>
                     </div>
                 </div>
+                <button id="downloadPng" onClick={() => { 
+                        this.loadingToast();
+                        this.addMeeting(); 
+                        for(let i = 0;i < interval.length;i++){
+                            clearInterval(interval[i]);
+                        }
+                    }}
+                >下载图片</button>
             </div>
         )
     }

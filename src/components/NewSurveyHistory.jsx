@@ -14,7 +14,7 @@ let numPlus=0;
 let fileNum = 0;
 let uploadFiles=0;
 let arrIds = [];
-let interval;
+let interval=[];
 let timeout = [];
 export default class NewSurveyHistory extends React.Component {
     constructor (props) {
@@ -63,6 +63,7 @@ export default class NewSurveyHistory extends React.Component {
             company_url:"",
             company_start_time:"",
             company_referee_name:"",
+            question:false
         },
         this.handleResearchAdd=(res)=>{
             console.log(res);
@@ -114,17 +115,19 @@ export default class NewSurveyHistory extends React.Component {
         readyDo(this.alerts);
         canvas = document.getElementById("canvas");
         drawBoard = new DrawBoard(canvas);  // 初始化
-        let head = document.getElementsByClassName("tableHead")[0];
-        let mainWrap = document.getElementById("mainWrap");
-        head.style.position = "static";
-        mainWrap.style.marginTop = '0';
+        // let head = document.getElementsByClassName("tableHead")[0];
+        // let mainWrap = document.getElementById("mainWrap");
+        // head.style.position = "static";
+        // mainWrap.style.marginTop = '0';
     }
     routerWillLeave(nextLocation) {
         // let mainWrap = document.getElementById("mainWrap");
         // mainWrap.style.marginTop = '1.3rem';
-        let head = document.getElementsByClassName("tableHead")[0];
-        head.style.position = "fixed";
-        clearInterval(interval);
+        // let head = document.getElementsByClassName("tableHead")[0];
+        // head.style.position = "fixed";
+        for(let i = 0;i < interval.length;i++){
+            clearInterval(interval[i]);
+        }
     }
     addResearch=()=>{
         runPromise('add_project_ex', {
@@ -162,9 +165,9 @@ export default class NewSurveyHistory extends React.Component {
                 companyAddress: this.state.company_url,
                 company: this.state.company_name
             });
-            interval = setInterval(() => {
+            interval.push(setInterval(() => {
                 this.addResearch();
-            }, 30000);
+            }, 30000));
             this.onClose('modal4')();
         };
     }
@@ -202,8 +205,11 @@ export default class NewSurveyHistory extends React.Component {
         setTimeout(() => {
             let iptList = document.querySelectorAll("input");
             for (var a = 0; a < iptList.length; a++) {
-                iptList[a].addEventListener("click", () => {
+                iptList[a].addEventListener("focus", () => {
                     document.querySelector(".am-modal-wrap").style.marginTop = "-100px";
+                }, false);
+                iptList[a].addEventListener("blur", () => {
+                    document.querySelector(".am-modal-wrap").style.marginTop = "0";
                 }, false);
             }
         }, 500);
@@ -227,12 +233,6 @@ export default class NewSurveyHistory extends React.Component {
         // for(let i = 0;i<timeout.length;i++){
         //     clearTimeout(timeout[i]);
         // }
-    }
-    changeStyle = ()=>{
-        // let head = document.getElementsByClassName("tableHead")[0];
-        // let mainWrap = document.getElementById("mainWrap");
-        // head.style.position="static";
-        // mainWrap.style.marginTop='0';
     }
     // touchBlur=()=>{
     //     let iptList = document.getElementsByTagName("input");
@@ -532,7 +532,7 @@ export default class NewSurveyHistory extends React.Component {
                                                 <li>
                                                     <span>手机：</span>
                                                     <input
-                                                        type="text"
+                                                        type="number"
                                                         value={this.state.phone}
                                                         onChange={(e) => {
                                                             this.setState({
@@ -574,7 +574,7 @@ export default class NewSurveyHistory extends React.Component {
                                                     <input
                                                         type="radio"
                                                         name="radio"
-                                                        style={{ width: "16px", height: "16px", position: "relative", top: "2px" }}
+                                                        style={{ width: "18px", height: "18px", position: "relative", top: "2px" }}
                                                         onChange={(e) => { this.setState({ radio: '否' }) }}
                                                     /> 否
                                                     &nbsp;&nbsp;&nbsp;&nbsp;
@@ -620,8 +620,36 @@ export default class NewSurveyHistory extends React.Component {
                                 <tr>
                                     <td colSpan="4" className="darkbg">合同内容</td>
                                 </tr>
-                                <tr >
+                                <tr style={{position:"relative"}}>
                                     <td colSpan="4">
+                                        <div
+                                            className="iconfont icon-iconfontquestion"
+                                            style={{
+                                                padding:"10px",
+                                                fontSize:"22px",
+                                                position:"absolute",
+                                                right:"0",
+                                                marginRight:"1.2rem",
+                                                zIndex:"1000"
+                                            }}
+                                            onClick={()=>{this.setState({question:!this.state.question})}}
+                                        ></div>
+                                        <div className="questions" style={{
+                                            padding:"0 10px",
+                                            position:"absolute",
+                                            right:"0",
+                                            marginRight:"1.4rem",
+                                            marginTop:"0.8rem",
+                                            border:"1px solid #ccc",
+                                            fontSize:"12px",
+                                            borderRadius:"5px",
+                                            zIndex:"1000",
+                                            display:this.state.question?"block":"none"                                           
+                                        }}>
+                                            <p>1. 公司未来的发展方向？</p>
+                                            <p>2. 公司还有哪些可能需要做的产品？</p>
+                                            <p>3. 公司还有哪些可能需要做的产品？</p>
+                                        </div>
                                         <div style={{ overflow: "hidden" }}>
                                             <textarea className="allBox textareaPub" id="allBox"
                                                 onChange={(e) => { this.setState({ researchResult: e.currentTarget.value }) }}
@@ -868,7 +896,12 @@ export default class NewSurveyHistory extends React.Component {
                         </div>
                     </div>
                 </div>
-                <button id="downloadPng" onClick={() => { this.loadingToast(); this.addResearch(); clearInterval(interval) }}>保存文件</button>         
+                <button id="downloadPng" onClick={() => { 
+                    this.loadingToast(); 
+                    this.addResearch(); 
+                    for(let i = 0;i < interval.length;i++){
+                        clearInterval(interval[i]);
+                    } }}>保存文件</button>         
             </div>
         )
     }

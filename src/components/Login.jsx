@@ -29,6 +29,7 @@ export default class Login extends React.Component {
             console.log(res);
             if(res.success) {
                 validate.setCookie('user_id', res.data.id);
+                validate.setCookie('user_name', res.data.real_name);
                 let to = GetLocationParam('to');
                 let tab = GetLocationParam('tab');
                 hashHistory.push({
@@ -36,7 +37,6 @@ export default class Login extends React.Component {
                     query: { tab:tab }
                 });
             }else{
-                
                 Toast.info(res.message, 2, null, false);
             }
         }

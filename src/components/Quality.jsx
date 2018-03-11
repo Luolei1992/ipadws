@@ -1,12 +1,12 @@
 import React from 'react';
 import {Link,hashHistory} from 'react-router';
 import { Modal, Toast } from 'antd-mobile';
-import { readyDo, TableHeads,init } from './templates';
+import { readyDo, TableHeadOne,init } from './templates';
 import { DrawBoard } from './drawBoard';
 
 let canvas;
 let drawBoard;
-let interval;
+let interval=[];
 
 const urls = {
     wordMsg: require('../images/wordMsg.png'),
@@ -37,7 +37,6 @@ export default class Quality extends React.Component {
             animating: false            
         },
         this.saveProject = (res) => {
-            console.log(res);
             if (res.success) {
                 Toast.info("文件保存成功", 2, null, false);
                 setTimeout(() => {
@@ -51,30 +50,28 @@ export default class Quality extends React.Component {
             }
         },
         this.addCheckDetail=(res)=>{
-            console.log(res);
             if(res.success){
                 this.setState({
                     id: res.message.id
                 })
             }
         },
-            this.handleProjectGet = (res) => {
-                console.log(res);
-                if (res.success) {
-                    this.setState({
-                        htName: res.data.length == 0 ? "" : res.data.other_name,
-                        htNum: res.data.length == 0 ? "" : res.data.contract_no,
-                        xmName: res.data.length == 0 ? "" : res.data.name,
-                        xmNum: res.data.length == 0 ? "" : res.data.document_id,
-                        xmMaster: res.data.length == 0 ? "" : res.data.master_name,
-                        cgName: res.data.length == 0 ? "" : res.data.purchase_name,
-                        ssCompany: res.data.length == 0 ? "" : res.data.implement_company_name,
-                        ssName: res.data.length == 0 ? "" : res.data.implement_user_name
-                    })
-                } else {
-                    Toast.info(res.message, 2, null, false);
-                }
+        this.handleProjectGet = (res) => {
+            if (res.success) {
+                this.setState({
+                    htName: res.data.length == 0 ? "" : res.data.other_name,
+                    htNum: res.data.length == 0 ? "" : res.data.contract_no,
+                    xmName: res.data.length == 0 ? "" : res.data.name,
+                    xmNum: res.data.length == 0 ? "" : res.data.document_id,
+                    xmMaster: res.data.length == 0 ? "" : res.data.master_name,
+                    cgName: res.data.length == 0 ? "" : res.data.purchase_name,
+                    ssCompany: res.data.length == 0 ? "" : res.data.implement_company_name,
+                    ssName: res.data.length == 0 ? "" : res.data.implement_user_name
+                })
+            } else {
+                Toast.info(res.message, 2, null, false);
             }
+        }
     }
     componentDidMount(){
         this.props.router.setRouteLeaveHook(
@@ -85,15 +82,23 @@ export default class Quality extends React.Component {
         readyDo(this.alerts);
         canvas = document.getElementById("canvas");
         drawBoard = new DrawBoard(canvas);  // 初始化
-        interval = setInterval(() => {
+        interval.push(setInterval(() => {
             this.addCheck();
-        }, 30000);
+        }, 30000));
         runPromise('get_project_info', {
             "gd_project_id": validate.getCookie('baseId')
         }, this.handleProjectGet, true, "post");
+        let head = document.getElementsByClassName("tableHead")[0];
+        let mainWrap = document.getElementById("mainWrap");
+        head.style.position = "static";
+        mainWrap.style.marginTop = '0';
     }
     routerWillLeave(nextLocation) {
-        clearInterval(interval);
+        let head = document.getElementsByClassName("tableHead")[0];
+        head.style.position = "fixed";
+        for(let i = 0;i < interval.length;i++){
+            clearInterval(interval[i]);
+        }
     }
     // touchBlur = () => {
     //     let iptList = document.getElementsByTagName("input");
@@ -159,9 +164,8 @@ export default class Quality extends React.Component {
         return (
             // <div id="fromHTMLtestdiv" className="qualityFormWrap visitRecordWrap" onTouchMove={() => { this.touchBlur(); }}>
             <div id="fromHTMLtestdiv" className="qualityFormWrap visitRecordWrap">
-                <TableHeads url={urls.wordMsg} isHide={false} tag={<h3>验收单</h3>}></TableHeads>
-                <button id="downloadPng" onClick={() => { this.loadingToast();this.addCheck();clearInterval(interval)}}>下载图片</button>
-                <div className="qualityWrap">
+                <TableHeadOne url={urls.wordMsg} isHide={false} tag={<h3>验收单</h3>}></TableHeadOne>
+                <div className="qualityWrap animatePageY">
                     <div className="qualityWrapTop">
                         <h3>{decodeURIComponent(validate.getCookie('company_name'))}</h3>
                         <h3>采购合同 - 阶段验收单</h3>
@@ -236,7 +240,8 @@ export default class Quality extends React.Component {
                                 <p style={{ lineHeight: "30px" }}>
                                     第<i style={{ textDecoration: "underline" }}>
                                         <input maxLength="1" type="text" style={{
-                                            width:"10px",
+                                            width:"20px",
+                                            textAlign:"center",
                                             border:"0 none",
                                             borderBottom:"1px solid #ccc",
                                             color: "red"
@@ -339,6 +344,13 @@ export default class Quality extends React.Component {
                         </tr>
                     </table>
                 </div>
+                <button id="downloadPng" onClick={() => { 
+                    this.loadingToast();
+                    this.addCheck();
+                    for(let i = 0;i < interval.length;i++){
+                        clearInterval(interval[i]);
+                    }}}>下载图片</button>
+                
             </div>
         )
     }

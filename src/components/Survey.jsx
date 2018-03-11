@@ -46,7 +46,7 @@ export default class survey extends React.Component{
                         <span style={{ borderBottom: "3px solid red" }}>历史调研</span>
                     </h3>}
                 ></TableHeadServey>
-                <div style={{ height: "1.3rem", position: "relative", width: "100%" }}></div>                
+                {/* <div style={{ height: "1.3rem", position: "relative", width: "100%" }}></div>                 */}
                 <div className="surveyList animatePageY">
                     <ul>
                         {

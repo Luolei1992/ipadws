@@ -17,7 +17,7 @@ let personalLis1 = [];
 let personalLis2 = [];
 let name1 = [];
 let name2=[];
-let interval;
+let interval=[];
 let timeout = [];
 const urls = {
     wordMsg: require('../images/wordMsg.png')
@@ -69,7 +69,7 @@ export default class SceneVisit extends React.Component {
             toPersonalList:[],
             getPersonalList:[],
             name01:"",
-            name02:""
+            name02:decodeURIComponent(validate.getCookie('user_name'))
         },
         this.handleSceneVisitGet = (res) => {
             console.log(res);
@@ -111,20 +111,22 @@ export default class SceneVisit extends React.Component {
         readyDo(this.alerts);
         canvas = document.getElementById("canvas");
         drawBoard = new DrawBoard(canvas);  // 初始化
-        interval=setInterval(() => {
+        interval.push(setInterval(() => {
             this.addRecordToback();
-        }, 30000);
+        }, 30000));
         this.getPersonLis();
         this.toPersonLis();
-        // let head = document.getElementsByClassName("tableHead")[0];
-        // let mainWrap = document.getElementById("mainWrap");
-        // head.style.position = "static";
-        // mainWrap.style.marginTop = '0';
+        let head = document.getElementsByClassName("tableHead")[0];
+        let mainWrap = document.getElementById("mainWrap");
+        head.style.position = "static";
+        mainWrap.style.marginTop = '0';
     }
     routerWillLeave(nextLocation) {
-        // let mainWrap = document.getElementById("mainWrap");
-        // mainWrap.style.marginTop = '1.3rem';
-        clearInterval(interval);
+        let head = document.getElementsByClassName("tableHead")[0];
+        head.style.position = "fixed";
+        for(let i = 0;i < interval.length;i++){
+            clearInterval(interval[i]);
+        }
     }
     touchBlur = () => {
         let iptList = document.getElementsByTagName("input");
@@ -181,12 +183,17 @@ export default class SceneVisit extends React.Component {
         this.setState({
             [key]: true,
         });
-        // timeout.push(
-        //     setTimeout(() => {
-        //         let propmtTouchBox = document.querySelector(".am-modal-wrap");
-        //         propmtTouchBox.addEventListener("touchmove", this.touchBlur, false);
-        //     }, 500)
-        // );
+        setTimeout(() => {
+            let iptList = document.querySelectorAll("input");
+            for (var a = 0; a < iptList.length; a++) {
+                iptList[a].addEventListener("focus", () => {
+                    document.querySelector(".am-modal-wrap").style.marginTop = "-100px";
+                }, false);
+                iptList[a].addEventListener("blur", () => {
+                    document.querySelector(".am-modal-wrap").style.marginTop = "0";
+                }, false);
+            }
+        }, 500);
     }
     onClose = key => () => {
         this.setState({
@@ -338,17 +345,41 @@ export default class SceneVisit extends React.Component {
             })
         }
     }
-    pullGetPerson=(id,name)=>{
-        personalLis2.push(id);
-        name1.push(name);
-        this.setState({user_ids:personalLis2.join("_"),name02:name1.join(",")});
-        this.onClose('modal3')();
+    pullGetPerson=(id,name,e)=>{
+        let color = e.currentTarget.style.backgroundColor;
+        if(color == "#e2e2e2" || color == "rgb(226, 226, 226)" ) {
+            e.currentTarget.style.backgroundColor = "#fff";
+        }else{
+            e.currentTarget.style.backgroundColor = "#e2e2e2";            
+        }
     }
-    pullToPerson=(id,name)=>{
-        personalLis1.push(id);
-        name2.push(name);
-        this.setState({customer_ids:personalLis1.join("_"),name01:name2.join(",")});     
-        this.onClose('modal4')();   
+    getIndexPerson1=()=>{
+        name1 = [decodeURIComponent(validate.getCookie('user_name'))];
+        personalLis2 = [];
+        let ls = document.querySelectorAll(".personalLinkWrap1 tr");
+        for(let i = 0;i < ls.length;i++){
+            let color = ls[i].style.backgroundColor;
+            if(color == "#e2e2e2" || color == "rgb(226, 226, 226)" ){
+                name1.push(this.state.getPersonalList[i-1].real_name);
+                personalLis2.push(this.state.getPersonalList[i-1].user_id);
+            }
+        }
+        this.setState({user_ids:personalLis2.join("_"),name02:name1.join(",")});
+        this.onClose('modal3')();                    
+    }
+    getIndexPerson2=()=>{
+        name2 = [];
+        personalLis1=[];
+        let ls = document.querySelectorAll(".personalLinkWrap2 tr");
+        for(let i = 0;i < ls.length;i++){
+            let color = ls[i].style.backgroundColor;
+            if(color == "#e2e2e2" || color == "rgb(226, 226, 226)" ){
+                name2.push(this.state.getPersonalList[i-1].real_name);
+                personalLis1.push(this.state.getPersonalList[i-1].user_id);
+            }
+        }
+        this.setState({customer_ids:personalLis1.join("_"),name01:name2.join(",")}); 
+        this.onClose('modal4');       
     }
     render() {
         return (
@@ -357,8 +388,7 @@ export default class SceneVisit extends React.Component {
                     url={urls.wordMsg}
                     isHide={true}
                 ></TableHeads>
-                <button id="downloadPng" onClick={() => { this.loadingToast();this.addRecordToback();clearInterval(interval);}}>下载图片</button>
-                <div className="recordMain">
+                <div className="recordMain animatePageY">
                     <h2>现场回访记录</h2>
                     <div className="tableDetails">
                         <table className="topTable">
@@ -388,7 +418,9 @@ export default class SceneVisit extends React.Component {
                                 <td className="darkbg">受访人员</td>
                                 <td>
                                     {this.state.name01}
-                                    <i onClick={this.showModal('modal4')}
+                                    <i onClick={()=>{
+                                        this.state.toPersonalList.length>0?this.showModal('modal4'):Toast.info('暂无联系人', .8);
+                                    }}
                                         className="iconfont icon-jia" 
                                         style={{
                                             float: "right", 
@@ -432,8 +464,12 @@ export default class SceneVisit extends React.Component {
                             transparent
                             maskClosable={true}
                             onClose={this.onClose('modal3')}
-                            className="personalLinkWrap"
+                            className="personalLinkWrap personalLinkWrap1"
                             style={{width:"800px"}}
+                            footer={[
+                                { text: '取消', onPress: () => { this.onClose('modal3')() } },
+                                { text: '确定', onPress: () => { this.getIndexPerson1(); }}
+                            ]}
                         >
                             <table className="personalLis" style={{
                                 textAlign: "center",
@@ -448,7 +484,7 @@ export default class SceneVisit extends React.Component {
                                 </tr>
                                 {
                                     this.state.getPersonalList.map((value)=>(
-                                        <tr onClick={()=>{this.pullGetPerson(value.user_id,value.real_name)}}>
+                                        <tr onClick={(e)=>{this.pullGetPerson(value.user_id,value.real_name,e)}}>
                                             <td>{value.real_name}</td>
                                             <td>{value.mobile}</td>
                                             <td>{value.email}</td>
@@ -463,12 +499,12 @@ export default class SceneVisit extends React.Component {
                             transparent
                             maskClosable={true}
                             onClose={this.onClose('modal4')}
-                            className="personalLinkWrap"
+                            className="personalLinkWrap personalLinkWrap2"
                             style={{width:"800px"}}
-                            // footer={[
-                            //     { text: '取消', onPress: () => { this.onClose('modal3')() } },
-                            //     { text: '确定', onPress: () => { this.addOrderMsg(); } }
-                            // ]}
+                            footer={[
+                                { text: '取消', onPress: () => { this.onClose('modal4')() } },
+                                { text: '确定', onPress: () => { this.getIndexPerson2(); } }
+                            ]}
                         >
                             <table className="personalLis" style={{
                                 textAlign: "center",
@@ -483,7 +519,7 @@ export default class SceneVisit extends React.Component {
                                 </tr>
                                 {
                                     this.state.toPersonalList.map((value)=>(
-                                        <tr onClick={()=>{this.pullToPerson(value.user_id,value.name)}}>
+                                        <tr onClick={(e)=>{this.pullGetPerson(value.user_id,value.name,e)}}>
                                             <td>{value.name}</td>
                                             <td>{value.mobile}</td>
                                             <td>{value.email}</td>
@@ -742,6 +778,12 @@ export default class SceneVisit extends React.Component {
                         </table>
                     </Modal> */}
                 </div>
+                <button id="downloadPng" onClick={() => { 
+                    this.loadingToast();
+                    this.addRecordToback();
+                    for(let i = 0;i < interval.length;i++){
+                        clearInterval(interval[i]);
+                    }}}>下载图片</button>                
             </div>
         )
     }

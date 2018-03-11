@@ -155,7 +155,7 @@ export default class Custom extends React.Component {
             pageIndex = 0;
         }
         runPromise('get_project_list', {
-            "type": "0",
+            "type": "-3",
             "offset": offset,
             "limit": 5,
             "sort": type,
