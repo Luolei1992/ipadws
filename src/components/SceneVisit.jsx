@@ -145,7 +145,7 @@ export default class SceneVisit extends React.Component {
     }
     addRecordToback=()=>{
         runPromise('add_record', {
-            "gd_company_id": validate.getCookie('baseId'),
+            "gd_project_id": validate.getCookie('project_id'),
             "title": this.state.title,
             "user_ids": this.state.user_ids,
             "customer_ids": this.state.customer_ids,
@@ -184,7 +184,7 @@ export default class SceneVisit extends React.Component {
             [key]: true,
         });
         setTimeout(() => {
-            let iptList = document.querySelectorAll("input");
+            let iptList = document.querySelectorAll(".am-modal-wrap input");
             for (var a = 0; a < iptList.length; a++) {
                 iptList[a].addEventListener("focus", () => {
                     document.querySelector(".am-modal-wrap").style.marginTop = "-100px";
@@ -388,7 +388,14 @@ export default class SceneVisit extends React.Component {
                     url={urls.wordMsg}
                     isHide={true}
                 ></TableHeads>
-                <div className="recordMain animatePageY">
+                <button id="downloadPng" onClick={() => {
+                    this.loadingToast();
+                    this.addRecordToback();
+                    for (let i = 0; i < interval.length; i++) {
+                        clearInterval(interval[i]);
+                    }
+                }}>下载图片</button>     
+                <div className="recordMain">
                     <h2>现场回访记录</h2>
                     <div className="tableDetails">
                         <table className="topTable">
@@ -777,13 +784,7 @@ export default class SceneVisit extends React.Component {
                             </tr>
                         </table>
                     </Modal> */}
-                </div>
-                <button id="downloadPng" onClick={() => { 
-                    this.loadingToast();
-                    this.addRecordToback();
-                    for(let i = 0;i < interval.length;i++){
-                        clearInterval(interval[i]);
-                    }}}>下载图片</button>                
+                </div>           
             </div>
         )
     }

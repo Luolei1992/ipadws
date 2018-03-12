@@ -78,7 +78,7 @@ export default class Meeting extends React.Component {
     }
     addMeeting = () => {
         runPromise('add_meeting', {
-            "gd_company_id": GetLocationParam('id') || validate.getCookie("baseId"),
+            "gd_project_id": validate.getCookie("project_id"),
             "title": this.state.meetingTitle,
             "user_ids": this.state.meetingPersonal,
             "copy_to_ids": "",
@@ -105,7 +105,7 @@ export default class Meeting extends React.Component {
             [key]: true,
         });
         setTimeout(() => {
-            let iptList = document.querySelectorAll("input");
+            let iptList = document.querySelectorAll(".am-modal-wrap input");
             for (var a = 0; a < iptList.length; a++) {
                 iptList[a].addEventListener("focus", () => {
                     document.querySelector(".am-modal-wrap").style.marginTop = "-100px";
@@ -209,7 +209,15 @@ export default class Meeting extends React.Component {
             // <div className="visitRecordWrap" id="fromHTMLtestdiv" onTouchMove={() => { this.touchBlur(); }}>
             <div className="visitRecordWrap" id="fromHTMLtestdiv">
                 <TableHeads url={urls.wordMsg} isHide={true}></TableHeads>
-                <div className="recordMain animatePageY">
+                <button id="downloadPng" onClick={() => {
+                    this.loadingToast();
+                    this.addMeeting();
+                    for (let i = 0; i < interval.length; i++) {
+                        clearInterval(interval[i]);
+                    }
+                }}
+                >下载图片</button>
+                <div className="recordMain">
                     <h2>会议纪要</h2>
                     <div className="tableDetails">
                         <table className="topTable">
@@ -384,14 +392,6 @@ export default class Meeting extends React.Component {
                         </table>
                     </div>
                 </div>
-                <button id="downloadPng" onClick={() => { 
-                        this.loadingToast();
-                        this.addMeeting(); 
-                        for(let i = 0;i < interval.length;i++){
-                            clearInterval(interval[i]);
-                        }
-                    }}
-                >下载图片</button>
             </div>
         )
     }

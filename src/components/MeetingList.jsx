@@ -25,7 +25,7 @@ export default class MeetingList extends React.Component {
     }
     componentDidMount() {
         runPromise('get_meeting_list', {
-            "gd_company_id": GetLocationParam('id') || validate.getCookie('baseId'),
+            "gd_project_id": validate.getCookie('project_id'),
             "offset": "0",
             "limit": "20"
         }, this.handleMeetingListGet, false, "post");

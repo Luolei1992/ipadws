@@ -9,13 +9,16 @@ const urls = {
     guide1: require('../images/guide1.png'),
     guide2: require('../images/guide2.png'),
     guide3: require('../images/guide3.png'),
+    company: 'https://www.huakewang.com/workOrder/company.pdf',
+    government: 'https://www.huakewang.com/workOrder/government.pdf',
+    internet: 'https://www.huakewang.com/workOrder/internet.pdf'
 }
 export default class Guide extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             
-        },
+        }
         this.handleSceneVisitGet =(res)=> {
             validate.setCookie('user_id', "");
             if(res.success){
@@ -26,6 +29,28 @@ export default class Guide extends React.Component {
                 Toast.info(res.message, 2, null, false);
             }
         }
+        // this.pdfReader = api.require('pdfReader')        
+    }
+    componentDidMount(){
+
+    }
+    pdfView = (path) => {
+        let pdfReader = api.require('pdfReader');
+        pdfReader.open({
+            path: path,
+            hidden: {
+                print: true,
+                export: true,
+                bookmark: true,
+                email: true
+            },
+            backBtn: {
+                title: {            
+                    text: "返回",       
+                },
+            },
+            // showLoading: true
+        });
     }
     beforeLogin=(page,tab)=>{
         validate.getCookie('user_id')? 
@@ -50,7 +75,7 @@ export default class Guide extends React.Component {
                 {/* <div className="head">
                     <img src={urls.logo} />
                 </div> */}
-                <div style={{position:"absolute",width:"100%",height:"100%",zIndex:"0"}}>
+                <div style={{position:"absolute",width:"100%",height:"100%"}}>
                     <img src={urls.guideBg} style={{width:"100%"}} />
                 </div>
                 <a><img className="midCenter" src={urls.play} onClick={()=>{this.beforeLogin('customs','0')}}/></a>
@@ -76,22 +101,13 @@ export default class Guide extends React.Component {
                 </div>
                 <div className="pdfShowWrap">
                     <div className="companyPdf" onClick={()=>{
-                        hashHistory.push({
-                            pathname: '/pdf',
-                            query: { src: "company" }
-                        })  
+                        this.pdfView(urls.company);
                     }}></div>
                     <div className="internetPdf pubTangle" onClick={()=>{
-                        hashHistory.push({
-                            pathname: '/pdf',
-                            query: { src: "internet" }
-                        })  
+                        this.pdfView(urls.internet); 
                     }}></div>
                     <div className="govermentPdf pubTangle" onClick={()=>{
-                        hashHistory.push({
-                            pathname: '/pdf',
-                            query: { src: "government" }
-                        })  
+                        this.pdfView(urls.government); 
                     }}></div>
                 </div>
                 <div className="iconfont icon-084tuichu"

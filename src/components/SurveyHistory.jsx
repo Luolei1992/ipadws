@@ -1,7 +1,7 @@
 import React from 'react';
 import { hashHistory,Link } from "react-router";
 import { Toast } from 'antd-mobile';
-import { div2png, readyDo, TableHeads, GetLocationParam} from './templates';
+import { div2png, readyDo, TableHeadOne, GetLocationParam} from './templates';
 import { DrawBoard } from './drawBoard';
 
 const urls = {
@@ -43,18 +43,11 @@ export default class SurveyHistory extends React.Component {
         return (
             <div id="fromHTMLtestdiv">
                 <div className="visitRecordWrap">
-                    <TableHeads 
-                        url={urls.wordMsg} 
-                        isHide={false} 
-                        tag={<h3 className="fn-left">
-                            {/* <Link to='/newSurveyHistory'><span style={{ color: "#fff" }}>新建调研</span></Link>
-                            <span style={{ borderBottom: "3px solid red" }}>历史调研</span> */}
-                            调研详细
-                        </h3>}
-                    ></TableHeads>
+                    <TableHeadOne url={urls.wordMsg} isHide={false} tag={<h3>调研详情</h3>}></TableHeadOne>
                     {/* <button id="downloadPng">下载图片</button> */}
                     {/* <button id="download">下载PDF</button> */}
-                    <img src={this.state.companyDetail.signed_file_path} style={{width:"100%",marginTop:"-1.4rem"}} />
+
+                    <img src={this.state.companyDetail.signed_file_path} style={{width:"100%",marginTop:"-5px"}} />
                 </div>
             </div>
         )

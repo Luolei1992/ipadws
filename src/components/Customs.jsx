@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from 'react-dom';
-import QueueAnim from 'rc-queue-anim';
 import { hashHistory } from "react-router";
 import { TableHeada, Customs, noLogin, Customs2} from './templates';
 import { Modal, List, Toast, ListView} from 'antd-mobile';

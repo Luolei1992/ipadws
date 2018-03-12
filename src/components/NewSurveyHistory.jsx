@@ -4,6 +4,12 @@ import { Modal, ImagePicker, Toast } from 'antd-mobile';
 import { div2png, readyDo, TableHeadServey, init, GetLocationParam } from './templates';
 import { DrawBoard } from './drawBoard';
 
+import PhotoSwipeItem from './photoSwipeElement.jsx';
+import '../js/photoswipe/photoswipe.css';
+import '../js/photoswipe/default-skin/default-skin.css';
+import PhotoSwipe from '../js/photoswipe/photoswipe.min.js';
+import PhotoSwipeUI_Default from '../js/photoswipe/photoswipe-ui-default.min.js';
+
 const urls = {
     wordMsg: require('../images/wordMsg.png'),
     upload: require('../images/upload.png'),
@@ -16,6 +22,17 @@ let uploadFiles=0;
 let arrIds = [];
 let interval=[];
 let timeout = [];
+let size = [];
+let openPhotoSwipe = function (items, index) {
+    let pswpElement = document.querySelectorAll('.pswp')[0];
+    let options = {
+        index: index,
+        showAnimationDuration: 100,
+        hideAnimationDuration: 100
+    }
+    let gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+    gallery.init();
+}
 export default class NewSurveyHistory extends React.Component {
     constructor (props) {
         super(props);
@@ -49,6 +66,7 @@ export default class NewSurveyHistory extends React.Component {
             modal2:false,
             modal3:false,
             modal4:false,
+            modal5:false,
             personLink: [],
             orderList:[],
             impress:[true,false,false,false],
@@ -63,7 +81,7 @@ export default class NewSurveyHistory extends React.Component {
             company_url:"",
             company_start_time:"",
             company_referee_name:"",
-            question:false
+            question:false,
         },
         this.handleResearchAdd=(res)=>{
             console.log(res);
@@ -72,6 +90,7 @@ export default class NewSurveyHistory extends React.Component {
                     id: res.message.id
                 })
             }else{
+                Toast.info("请填写公司名称", 2, null, false);
                 // if (res.message == '公司id不能为空'){
                 //     // Toast.info("请先选择公司", 2, null, false);
                 //     alert("请先选择公司名称");
@@ -117,8 +136,12 @@ export default class NewSurveyHistory extends React.Component {
         drawBoard = new DrawBoard(canvas);  // 初始化
         // let head = document.getElementsByClassName("tableHead")[0];
         // let mainWrap = document.getElementById("mainWrap");
-        // head.style.position = "static";
-        // mainWrap.style.marginTop = '0';
+        // head.style.position = "fixed";
+        // mainWrap.style.marginTop = '1.3rem';
+        // setTimeout(() => {
+        //     let delAnimate = document.querySelector("delAnimate");
+        //     delAnimate.classList.remove('animatePageY');
+        // }, 1000);
     }
     routerWillLeave(nextLocation) {
         // let mainWrap = document.getElementById("mainWrap");
@@ -152,13 +175,15 @@ export default class NewSurveyHistory extends React.Component {
     handleDetailsGet = (res) => {
         if(this.state.company_name == "") {
             Toast.info("请输入公司名称", 2, null, false);
-        } else if (this.state.company_address == "") {
-            Toast.info("请输入公司地址", 2, null, false);
-        }else if(this.state.company_url == ""){
-            Toast.info("请输入公司网址", 2, null, false);
-        }else if(this.state.company_start_time == ""){
-            Toast.info("请输入公司成立时间", 2, null, false);
-        }else{
+        } 
+        // else if (this.state.company_address == "") {
+        //     Toast.info("请输入公司地址", 2, null, false);
+        // }else if(this.state.company_url == ""){
+        //     Toast.info("请输入公司网址", 2, null, false);
+        // }else if(this.state.company_start_time == ""){
+        //     Toast.info("请输入公司成立时间", 2, null, false);
+        // }
+        else{
             this.setState({
                 meetingTime: this.state.company_start_time,
                 meetingAddress: this.state.company_address,
@@ -178,11 +203,13 @@ export default class NewSurveyHistory extends React.Component {
         drawBoard.cancel();
     }
     alerts = (a) =>{
-        runPromise('sign_up_document',{
-            action_type:"project",
-            action_id:this.state.id,
-            signed_file_path:a
-        },this.saveProject,true,"post");
+        if(this.state.id){
+            runPromise('sign_up_document', {
+                action_type: "project",
+                action_id: this.state.id,
+                signed_file_path: a
+            }, this.saveProject, true, "post");
+        }
     }
     save = (e) => {
         drawBoard.save('only-draw',  (url)=> {
@@ -203,7 +230,7 @@ export default class NewSurveyHistory extends React.Component {
             [key]: true,
         });
         setTimeout(() => {
-            let iptList = document.querySelectorAll("input");
+            let iptList = document.querySelectorAll(".am-modal-wrap input");
             for (var a = 0; a < iptList.length; a++) {
                 iptList[a].addEventListener("focus", () => {
                     document.querySelector(".am-modal-wrap").style.marginTop = "-100px";
@@ -314,34 +341,72 @@ export default class NewSurveyHistory extends React.Component {
             score:idx==0?3:idx==1?2:idx==2?1:0
         })
     }
-    onChangeFiles=(e)=>{
-        var reader = new FileReader();
-        reader.readAsDataURL(e.target.files[0]); // 读出 base64
-        reader.onloadend = () => {
-            // 图片的 base64 格式, 可以直接当成 img 的 src 属性值        
-            var dataURL = reader.result;
-            // 下面逻辑处理
-            ++uploadFiles;
-            let a = document.getElementById("upload" + uploadFiles);
-            a.src=dataURL;
+    // onChangeFiles=(e)=>{
+    //     var reader = new FileReader();
+    //     reader.readAsDataURL(e.target.files[0]); // 读出 base64
+    //     reader.onloadend = () => {
+    //         // 图片的 base64 格式, 可以直接当成 img 的 src 属性值        
+    //         var dataURL = reader.result;
+    //         // 下面逻辑处理
+    //         ++uploadFiles;
+    //         let a = document.getElementById("upload" + uploadFiles);
+    //         a.src=dataURL;
+    //         runPromise('upload_image_byw_upy2', {
+    //             "arr": dataURL
+    //         }, this.handleBackPicSrc, false, "post");
+    //         // if(uploadFiles.length < 5) {
+    //         //     this.setState({
+    //         //         files: uploadFiles
+    //         //     })
+    //         // }else{
+    //         //     this.setState({
+    //         //         isShow:"none"
+    //         //     })
+    //         // }
+    //     };
+    // }
+    onChange = (files, type, index) => {
+        console.log(files, type, index);
+        let img = new Image();
+        let item = {};
+        img.src = files[files.length - 1].url;
+        img.onload = function (argument) {
+            item.w = this.width;
+            item.h = this.height;
+        }
+        if(type == 'remove') {
+            this.state.ids.splice(index,1);
+            this.state.files.splice(index,1);
+            size.splice(index,1);
+            this.setState({
+                files,
+            });
+        } else {
+            size.push(item);
             runPromise('upload_image_byw_upy2', {
-                "arr": dataURL
+                "arr": files[files.length - 1].url
             }, this.handleBackPicSrc, false, "post");
-            // if(uploadFiles.length < 5) {
-            //     this.setState({
-            //         files: uploadFiles
-            //     })
-            // }else{
-            //     this.setState({
-            //         isShow:"none"
-            //     })
-            // }
-        };
-    }
+            this.setState({
+                files,
+            });
+        }
+    };
     loadingToast() {
         Toast.loading('保存中...', 0, () => {
             // alert(4)
         }, true);
+    }
+    onTouchImg = (index) => {
+        // console.log(dishPic);
+        let items = [];
+        this.state.files.map((value) => {
+            let item = {};
+            item.w = size[index].w;
+            item.h = size[index].h;
+            item.src = value.url;
+            items.push(item);
+        })
+        openPhotoSwipe(items, index);
     }
     render(){
         return (
@@ -355,7 +420,15 @@ export default class NewSurveyHistory extends React.Component {
                         <Link to='/survey?tab=5' style={{color:"#fff"}}><span>历史调研</span></Link>
                     </h3>}
                 ></TableHeadServey>
-                <div style={{ overflow: "scroll" }} className="animatePageY">
+                {/* <div className="delAnimate animatePageY"> */}
+                <button id="downloadPng" onClick={() => {
+                    this.loadingToast();
+                    this.addResearch();
+                    for (let i = 0; i < interval.length; i++) {
+                        clearInterval(interval[i]);
+                    }
+                }}>保存文件</button>   
+                <div style={{overflow:"scroll"}}>
                     <div className="recordMain">
                         <h2 style={{ letterSpacing: "1px", marginTop: "0.8rem" }}>{this.state.company}</h2>
                         {/* <h2 style={{letterSpacing:"1px",marginTop:"0.8rem"}}> */}
@@ -646,9 +719,10 @@ export default class NewSurveyHistory extends React.Component {
                                             zIndex:"1000",
                                             display:this.state.question?"block":"none"                                           
                                         }}>
-                                            <p>1. 公司未来的发展方向？</p>
-                                            <p>2. 公司还有哪些可能需要做的产品？</p>
-                                            <p>3. 公司还有哪些可能需要做的产品？</p>
+                                            <p>现有品牌？</p>
+                                            <p>有什么服务，主要客户？</p>
+                                            <p>有什么软件产品，主要客户？</p>
+                                            <p>有什么硬件产品，主要客户？</p>
                                         </div>
                                         <div style={{ overflow: "hidden" }}>
                                             <textarea className="allBox textareaPub" id="allBox"
@@ -657,15 +731,8 @@ export default class NewSurveyHistory extends React.Component {
                                         </div>
                                         <div className="surveyUpload">
                                             <div className="staticUpload" style={{ position: "relative" }}>
-                                                {/* <ImagePicker
-                                                files={files}
-                                                onChange={this.onChangeFile}
-                                                multiple={false}
-                                                onImageClick={(index, fs) => console.log(index, fs[0])}
-                                                selectable={files.length < 6}
-                                                accept="image/gif,image/jpeg,image/jpg,image/png"
-                                            /> */}
-                                                <div
+                                                
+                                                {/* <div
                                                     style={{
                                                         height: "2rem",
                                                         width: "2rem",
@@ -692,8 +759,31 @@ export default class NewSurveyHistory extends React.Component {
                                                 <img src="" id="upload1" style={{ width: "2rem", height: "2rem", float: "left", margin: "3px 5px" }} />
                                                 <img src="" id="upload2" style={{ width: "2rem", height: "2rem", float: "left", margin: "3px 5px" }} />
                                                 <img src="" id="upload3" style={{ width: "2rem", height: "2rem", float: "left", margin: "3px 5px" }} />
-                                                <img src="" id="upload4" style={{ width: "2rem", height: "2rem", float: "left", margin: "3px 5px" }} />
+                                                <img src="" id="upload4" style={{ width: "2rem", height: "2rem", float: "left", margin: "3px 5px" }} /> */}
+                                                <ImagePicker
+                                                    files={this.state.files}
+                                                    onChange={this.onChange}
+                                                    multiple={true}
+                                                    onImageClick={(index, fs) => this.onTouchImg(index) }
+                                                    selectable={this.state.files.length < 10}
+                                                    accept="image/gif,image/jpeg,image/jpg,image/png"
+                                                />
                                             </div>
+                                            <Modal
+                                                visible={this.state.modal5}
+                                                // maskClosable={true}
+                                                transparent={true}
+                                                onClose={this.onClose('modal5')}
+                                                className="personalLinkWrap "
+                                                footer={[
+                                                    { text: '取消', onPress: () => { console.log('cancle'); this.onClose('modal1')() } },
+                                                    { text: '确定', onPress: () => { this.addPersonLink(); } }
+                                                ]}
+                                            >
+                                                <div style={{position:"fixed",width:"100%",height:"100%"}}>
+                                                    <img src='' />
+                                                </div>
+                                            </Modal>
                                             <Modal
                                                 visible={this.state.modal3}
                                                 transparent={true}
@@ -796,7 +886,7 @@ export default class NewSurveyHistory extends React.Component {
                                                 this.state.orderList.map((value, idx) => {
                                                     return <tr>
                                                         <td style={{ borderLeft: "0 none" }}>{idx + 1}</td>
-                                                        <td>{value.content}</td>
+                                                        <td><textarea style={{minHeight:"22px",maxHeight:"100px"}}>{value.content}</textarea></td>
                                                         <td>{value.name}</td>
                                                         <td>{value.exp_time}</td>
                                                     </tr>
@@ -895,13 +985,8 @@ export default class NewSurveyHistory extends React.Component {
                             </table>
                         </div>
                     </div>
-                </div>
-                <button id="downloadPng" onClick={() => { 
-                    this.loadingToast(); 
-                    this.addResearch(); 
-                    for(let i = 0;i < interval.length;i++){
-                        clearInterval(interval[i]);
-                    } }}>保存文件</button>         
+                </div>     
+                <PhotoSwipeItem /> 
             </div>
         )
     }

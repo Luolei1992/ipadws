@@ -57,9 +57,8 @@ export default class MyCustom extends React.Component {
         })
     }
     addMission = () => {
-        console.log(validate.getCookie('project_id'))
         runPromise('add_mission', {
-            "gd_project_id": GetLocationParam('id') || validate.getCookie('project_id'),
+            "gd_project_id": validate.getCookie('project_id'),
             "start_time": this.state.happenTime,
             "finish_time": this.state.finishTime,
             "content": this.state.content,
@@ -89,6 +88,17 @@ export default class MyCustom extends React.Component {
             [key]: true,
             slideUp:false
         });
+        setTimeout(() => {
+            let iptList = document.querySelectorAll(".am-modal-wrap input");
+            for (var a = 0; a < iptList.length; a++) {
+                iptList[a].addEventListener("focus", () => {
+                    document.querySelector(".am-modal-wrap").style.marginTop = "-100px";
+                }, false);
+                iptList[a].addEventListener("blur", () => {
+                    document.querySelector(".am-modal-wrap").style.marginTop = "0";
+                }, false);
+            }
+        }, 500);
     }
     onClose = key => () => {
         this.setState({

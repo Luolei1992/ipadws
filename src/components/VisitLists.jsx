@@ -39,7 +39,7 @@ export default class VisitList extends React.Component {
     }
     componentDidMount() {
         runPromise('get_record_list', {
-            "gd_company_id": GetLocationParam('id') || validate.getCookie('baseId'),
+            "gd_project_id": validate.getCookie('project_id'),
             "offset": "0",
             "limit": "20"
         }, this.handleBackVisitGet, true, "post");

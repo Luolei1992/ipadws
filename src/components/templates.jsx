@@ -37,7 +37,7 @@ export const TableHeadServey = (props) => (    //公共头部
     <div className="tableHead" style={{ paddingTop: '20px',position:"static",width:"100%",top:"0",left:"0"}}>
         <div className="leftLogoWord fn-left" onClick={() => {
             hashHistory.push({
-                pathname: '/'
+                pathname: '/guide'
             })}}><i className="iconfont icon-jiantou"></i>返回</div>
         {
             props.isHide ? "" : props.tag
@@ -392,7 +392,7 @@ export const Quality2 = (props) => {
                             <button style={{
                                 backgroundColor: "#E6E6E6",
                                 color: "#333"
-                            }} onClick={() => { props.changeAlert(value.gd_company_id, value.id) }}>回访结果</button> :
+                            }} onClick={() => { props.changeAlert(value.gd_company_id, value.id,value.user_id) }}>回访结果</button> :
                             value.time_least > 0 && value.time_least < 7 ?
                                 <button style={{ backgroundColor: "#0DA0F4" }} onClick={() => { props.changeAlert(value.gd_company_id, value.id) }}>回访结果</button> :
                                 <button onClick={() => { props.changeAlert(value.gd_company_id, value.id) }}>回访结果</button>

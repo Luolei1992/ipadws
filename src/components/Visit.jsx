@@ -69,6 +69,7 @@ export default class Visit extends React.Component {
             id:"",
             gd_company_id: 0,
             classify: 0, //质检分类。0为全部，1为不满意，2为到期，3为已离职
+            userId:""
         },
         this.handleCompanyListGet = (res) => {
             // console.log(res);
@@ -180,7 +181,8 @@ export default class Visit extends React.Component {
             score:this.state.score,
             content:this.state.fujia,
             appendix:this.state.ids.join("_"),
-            id:this.state.id
+            id:this.state.id,
+            customer_id:this.state.userId
         },this.handleAddVisit,true,"post")
     }
     onChange = (files, type, index) => {
@@ -215,11 +217,12 @@ export default class Visit extends React.Component {
             })
         }
     }
-    changeAlert = (idx,visitId) => {
+    changeAlert = (idx,visitId,userId) => {
         this.setState({
             alertShow: !this.state.alertShow,
             tempCompanyId:idx,
-            id:visitId
+            id:visitId,
+            userId:userId
         })
     }
     closeAlert = () => {

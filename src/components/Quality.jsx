@@ -165,7 +165,15 @@ export default class Quality extends React.Component {
             // <div id="fromHTMLtestdiv" className="qualityFormWrap visitRecordWrap" onTouchMove={() => { this.touchBlur(); }}>
             <div id="fromHTMLtestdiv" className="qualityFormWrap visitRecordWrap">
                 <TableHeadOne url={urls.wordMsg} isHide={false} tag={<h3>验收单</h3>}></TableHeadOne>
-                <div className="qualityWrap animatePageY">
+
+                <button id="downloadPng" onClick={() => {
+                    this.loadingToast();
+                    this.addCheck();
+                    for (let i = 0; i < interval.length; i++) {
+                        clearInterval(interval[i]);
+                    }
+                }}>下载图片</button>
+                <div className="qualityWrap">
                     <div className="qualityWrapTop">
                         <h3>{decodeURIComponent(validate.getCookie('company_name'))}</h3>
                         <h3>采购合同 - 阶段验收单</h3>
@@ -344,12 +352,6 @@ export default class Quality extends React.Component {
                         </tr>
                     </table>
                 </div>
-                <button id="downloadPng" onClick={() => { 
-                    this.loadingToast();
-                    this.addCheck();
-                    for(let i = 0;i < interval.length;i++){
-                        clearInterval(interval[i]);
-                    }}}>下载图片</button>
                 
             </div>
         )

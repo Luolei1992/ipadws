@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, hashHistory, IndexRoute } from 'react-router';
 
-import App from './components/App';
+// import App from './components/App';
 import Login from './components/Login';
 import GuidePage from './components/GuidePage';
 import Customs from './components/Customs';
@@ -37,10 +37,9 @@ ReactDOM.render(
     <Router history={hashHistory}>
         <Router path="/" component={BaseState}>
             <IndexRoute component={GuidePage} />
-            <Route path="/" component={App}>
-                <IndexRoute component={GuidePage} />
+            {/* <Route path="/" component={App}> */}
                 <Route path="/guide" component={GuidePage} />
-            </Route>
+            {/* </Route> */}
             <Route path="/mycustom" component={Mycustom}>
                 <IndexRoute component={Company} />
                 <Route path="/company" component={Company} />  
