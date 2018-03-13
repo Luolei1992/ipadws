@@ -42,7 +42,7 @@ export default class Custom extends React.Component {
             return dataBlob;
         };
         this.state = {
-            dataSource: dataSource.cloneWithRows(JSON.parse(localStorage.getItem("customs")) ? JSON.parse(localStorage.getItem("customs")) : {} ),
+            dataSource: dataSource.cloneWithRows(JSON.parse(sessionStorage.getItem("customs")) ? JSON.parse(sessionStorage.getItem("customs")) : {} ),
             isLoading: true,
             height: document.documentElement.clientHeight,
             hasMore: true, //是否有更多的数据
@@ -80,7 +80,7 @@ export default class Custom extends React.Component {
                 if (pageIndex == 0) {
                     this.rData = {};
                     this.rData = { ...this.rData, ...this.genData(pageIndex++, realDataLength, res.data.item_list) };
-                    localStorage.setItem("customs", JSON.stringify(realData))
+                    sessionStorage.setItem("customs", JSON.stringify(realData))
                 } else {
                     this.rData = { ...this.rData, ...this.genData(pageIndex++, realDataLength, res.data.item_list) };
                 }

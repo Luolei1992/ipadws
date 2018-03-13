@@ -19,6 +19,7 @@ let name1 = [];
 let name2=[];
 let interval=[];
 let timeout = [];
+let numPlus = 0;
 const urls = {
     wordMsg: require('../images/wordMsg.png')
 }
@@ -178,11 +179,25 @@ export default class SceneVisit extends React.Component {
     cancelLast = function () {
         drawBoard.cancel();
     }
-    showModal = key => (e, id) => {
+    showModal = key => (e, flg, index) => {
         e.preventDefault(); // 修复 Android 上点击穿透
         this.setState({
             [key]: true,
+        }, () => {
+            if (flg) {
+                init("planThing");
+            }
         });
+        if (flg == 1) {
+            this.setState({
+                order: this.state.orderList[index].seq,
+                things: this.state.orderList[index].content,
+                duty: this.state.orderList[index].name,
+                finishTime: this.state.orderList[index].exp_time
+            })
+        } else {
+
+        }
         setTimeout(() => {
             let iptList = document.querySelectorAll(".am-modal-wrap input");
             for (var a = 0; a < iptList.length; a++) {
@@ -280,20 +295,30 @@ export default class SceneVisit extends React.Component {
         
     }
     addOrderMsg() {       //下一任行动和计划
+        ++numPlus;
         let lis = {
-            seq: this.state.order,
+            seq: numPlus,
             content: this.state.things,
-            user_id: this.state.duty,
+            name: this.state.duty,
             exp_time: this.state.finishTime
         }
-        if (this.state.things == "") {
-            Toast.info('请填写事项！', .8);
-        } else if (this.state.duty == "") {
-            Toast.info('请填写责任人！', .8);
-        } else if (this.state.finishTime == "") {
-            Toast.info('请填写完成时间！', .8);
-        } else {
-            this.onClose('modal2')();
+        // if (this.state.things == ""){
+        //     Toast.info('请填写事项！', .8);
+        // }else if(this.state.duty == ""){
+        //     Toast.info('请填写责任人！', .8);
+        // }else if(this.state.finishTime == ""){
+        //     Toast.info('请填写完成时间！', .8);
+        // } else {
+        this.onClose('modal2')();
+        // }
+        if (this.state.which != -1) {  //修改
+            let aa = this.state.orderList;
+            let bb = this.state.which;
+            aa[bb].content = this.state.things;
+            aa[bb].name = this.state.duty;
+            aa[bb].exp_time = this.state.finishTime;
+            this.setState({ orderList: aa });
+        } else {     //新增
             this.state.orderList.push(lis);
             this.setState({
                 order: "",
@@ -302,6 +327,13 @@ export default class SceneVisit extends React.Component {
                 finishTime: ""
             })
         }
+    }
+    delPlanLis(idx) {
+        console.log(idx);
+        this.state.orderList.splice(idx, 1);
+        this.setState({
+            orderList: this.state.orderList
+        })
     }
     firstMet=(idx)=>{
         let arr = [false,false,false,false];
@@ -403,6 +435,7 @@ export default class SceneVisit extends React.Component {
                                 <td className="darkbg">顾客单位</td>
                                 <td>
                                     <input type="text" className="qualityIpt" 
+                                        value={decodeURIComponent(validate.getCookie('company_name'))}
                                         onChange={(e, value) => {
                                             this.setState({
                                                 currentCompany: e.currentTarget.value
@@ -544,7 +577,6 @@ export default class SceneVisit extends React.Component {
                                 <td colSpan="4">
                                     <textarea className="allBox" id="sceneResult" style={{ minHeight: "3rem" }}
                                         onChange={(e, value) => {
-                                            console.log(e.currentTarget.value);
                                             this.setState({
                                                 content: e.currentTarget.value
                                             })
@@ -553,8 +585,16 @@ export default class SceneVisit extends React.Component {
                                 </td>
                             </tr>
                             <tr>
-                                <td style={{ textAlign: "center", fontWeight: "800" }} colSpan="4" className="darkbg newPersonalMsg">
-                                    下一步计划和行动<span onClick={this.showModal('modal2')}>新增 <i className="iconfont icon-jia"></i></span>
+                                <td colSpan="4" className="darkbg newPersonalMsg">
+                                    下一步计划和行动<span onClick={(e) => {
+                                        this.showModal('modal2')(e);
+                                        this.setState({
+                                            which: "-1",
+                                            things: "",
+                                            duty: "",
+                                            finishTime: ""
+                                        })
+                                    }}>新增 <i className="iconfont icon-jia"></i></span>
                                 </td>
                             </tr>
                             <Modal
@@ -562,7 +602,7 @@ export default class SceneVisit extends React.Component {
                                 transparent
                                 maskClosable={true}
                                 onClose={this.onClose('modal2')}
-                                className="personalLinkWrap"
+                                className="personalLinkWrap planLis"
                                 footer={[
                                     { text: '取消', onPress: () => { this.onClose('modal2')() } },
                                     { text: '确定', onPress: () => { this.addOrderMsg(); } }
@@ -578,29 +618,53 @@ export default class SceneVisit extends React.Component {
                                                     value={this.state.order}
                                                 />
                                             </li>
-                                            <li>
-                                                <span style={{color:"#333"}}>事 项</span>
-                                                <input
-                                                    type="text"
+                                            <li style={{ height: "auto", lineHeight: "auto", overflow: "hidden" }}>
+                                                <span style={{ float: "left", paddingTop: "10px", lineHeight: "25px" }}>事&nbsp;&nbsp;&nbsp;&nbsp;项</span>
+                                                <textarea
+                                                    id="planThing"
+                                                    style={{
+                                                        minHeight: "50px",
+                                                        maxHeight: "200px",
+                                                        paddingTop: "14px",
+                                                        paddingBottom: "10px",
+                                                        border: "0 none",
+                                                        resize: "none",
+                                                        backgroundColor: "#f5f5f5",
+                                                        float: "left"
+                                                    }}
+                                                    onFocus={() => { document.querySelector(".am-modal-wrap").style.marginTop = "-150px"; }}
+                                                    onBlur={() => { document.querySelector(".am-modal-wrap").style.marginTop = "0"; }}
+                                                    onChange={(e) => {
+                                                        this.setState({
+                                                            things: e.currentTarget.value
+                                                        })
+                                                    }}
                                                     value={this.state.things}
-                                                    onChange={(e) => { this.onChangeThings(e) }}
                                                 />
                                             </li>
                                             <li>
-                                                <span style={{color:"#333"}}>责任人</span>
+                                                <span>责 任 人</span>
                                                 <input
                                                     type="text"
                                                     value={this.state.duty}
-                                                    onChange={(e) => { this.onChangeDuty(e) }}
+                                                    onChange={(e) => {
+                                                        this.setState({
+                                                            duty: e.currentTarget.value
+                                                        });
+                                                    }}
                                                 />
                                             </li>
                                             <li>
-                                                <span style={{color:"#333"}}>完成时间</span>
+                                                <span>完成时间</span>
                                                 <input
                                                     type="text"
-                                                    value={this.state.finishTime}
-                                                    onChange={(e) => { this.onChangeFinish(e) }}
                                                     placeholder="0000-00-00"
+                                                    value={this.state.finishTime}
+                                                    onChange={(e) => {
+                                                        this.setState({
+                                                            finishTime: e.currentTarget.value
+                                                        });
+                                                    }}
                                                 />
                                             </li>
                                         </ul>
@@ -614,19 +678,42 @@ export default class SceneVisit extends React.Component {
                                             <td style={{ borderTop: "0 none", borderLeft: "0 none" }}>序号</td>
                                             <td style={{ borderTop: "0 none" }}>事项</td>
                                             <td style={{ borderTop: "0 none" }}>责任人</td>
-                                            <td style={{ borderTop: "0 none", borderRight: "0 none" }}>完成时间</td>
+                                            <td style={{ borderTop: "0 none" }}>完成时间</td>
+                                            <td style={{ borderTop: "0 none", borderRight: "0 none" }}>操作</td>
                                         </tr>
                                         {
                                             this.state.orderList.map((value, idx) => {
                                                 return <tr>
                                                     <td style={{ borderLeft: "0 none" }}>{idx + 1}</td>
-                                                    <td>{value.content}</td>
-                                                    <td>{value.user_id}</td>
+                                                    {/* <td>{value.content}</td> */}
+                                                    <td style={{ paddingLeft: "5px", textAlign: "left" }}>
+                                                        <pre dangerouslySetInnerHTML={{ __html: value.content }}></pre>
+                                                    </td>
+                                                    <td>{value.name}</td>
                                                     <td>{value.exp_time}</td>
+                                                    <td>
+                                                        <span onClick={(e) => { this.showModal('modal2')(e, 1, idx); this.setState({ which: idx, }) }}
+                                                            style={{
+                                                                color: "#fff",
+                                                                padding: "2px 6px",
+                                                                background: "#108ee9",
+                                                                borderRadius: "3px",
+                                                                fontSize: "14px"
+                                                            }}
+                                                        >修改</span>&nbsp;/&nbsp;
+                                                            <span onClick={(e) => { this.delPlanLis(idx); }}
+                                                            style={{
+                                                                color: "#fff",
+                                                                padding: "2px 6px",
+                                                                background: "red",
+                                                                borderRadius: "3px",
+                                                                fontSize: "14px"
+                                                            }}
+                                                        >删除</span>
+                                                    </td>
                                                 </tr>
                                             })
                                         }
-
                                     </table>
                                 </td>
                             </tr>
@@ -724,17 +811,7 @@ export default class SceneVisit extends React.Component {
                                             </div>
                                             <div className="date" >
                                                 <span>日期：</span>
-                                                <ul>
-                                                    <li>
-                                                        <span>年</span>
-                                                    </li>
-                                                    <li>
-                                                        <span>月</span>
-                                                    </li>
-                                                    <li>
-                                                        <span>日</span>
-                                                    </li>
-                                                </ul>
+                                                <input type="text" value={validate.getNowFormatDate()} />
                                             </div>
                                         </div>
                                     </div>

@@ -86,7 +86,7 @@ export default class Quality extends React.Component {
             this.addCheck();
         }, 30000));
         runPromise('get_project_info', {
-            "gd_project_id": validate.getCookie('baseId')
+            "gd_project_id": validate.getCookie('project_id')
         }, this.handleProjectGet, true, "post");
         let head = document.getElementsByClassName("tableHead")[0];
         let mainWrap = document.getElementById("mainWrap");
@@ -112,23 +112,16 @@ export default class Quality extends React.Component {
     // }
     addCheck=()=>{
         runPromise('add_check', {
-            gd_project_id:validate.getCookie('project_id'),
-            // des_order:this.state.fkOrder,  //验收节点数，第几节点（每个节点都会有个验收单）
-            // ht_name:this.state.htName,  //合同名称
-            // xm_name:this.state.xmName, //项目合同名称
-            // ht_num:this.state.htNum, //合同编号
-            // xm_num:this.state.xmNum, //项目编号
-            // xm_master:this.state.xmMaster,  //项目负责人
-            // cg_name:this.state.cgName,  //采购人员
-            // ss_company:this.state.ssCompany,  //实施单位
-            // ss_name:this.state.ssName,  //实施人员
-            des_name:this.state.jdDes,
-            des_detail:this.state.fkDes,
+            "gd_project_id":validate.getCookie('project_id'),
+            des_name1:"",
+            des_name2:this.state.fkOrder,
+            des_detail1: this.state.jdDes,
+            des_detail2:this.state.fkDes,
             chk_daohuo:this.state.getThings,
             chk_yunxing:this.state.goThings,
             chk_ziliao:this.state.zlThings,
             chk_result:this.state.ysResult,
-            chk_time:"",
+            chk_time: validate.getNowFormatDate(),
             id:this.state.id
         }, this.addCheckDetail, true, "post");
     }
@@ -334,17 +327,7 @@ export default class Quality extends React.Component {
                                         </div>
                                         <div className="date" >
                                             <span>日期：</span>
-                                            <ul>
-                                                <li>
-                                                    
-                                                </li>
-                                                <li>
-                                                    
-                                                </li>
-                                                <li>
-                                                    
-                                                </li>
-                                            </ul>
+                                            <input type="text" value={validate.getNowFormatDate()} />
                                         </div>
                                     </div>
                                 </div>

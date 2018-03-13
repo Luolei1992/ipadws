@@ -46,7 +46,7 @@ export default class SceneVisitStatic extends React.Component {
                     url={urls.wordMsg}
                     isHide={true}
                 ></TableHeads>
-                {/* <button id="downloadPng">下载图片</button> */}
+                <div style={{ height: "1.3rem", position: "relative", width: "100%" }}></div> 
                 <img src={this.state.sceneVisits.signed_file_path} style={{ width: "100%", marginTop: "-1.5rem" }} />
             </div>
         )

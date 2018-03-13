@@ -46,6 +46,7 @@ const ajaxURLList = {
     del_project_linker: "gdApi/del_project_linker", //删除项目联系人
     get_staff_list: "gdApi/get_staff_list", //获取己方联系人
     get_survey_info: "gdApi/get_survey_info", //获取调研
+    get_check_info: "gdApi/get_check_info", //获取验收详细
 }
 
 //定义一个基于Promise的异步任务执行器

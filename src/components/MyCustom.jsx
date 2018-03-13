@@ -25,11 +25,11 @@ export default class MyCustom extends React.Component {
             hasError2: false,
         },
         this.handleAddMission=(res)=>{
-            console.log(res);
-            location.reload();
+            if(window.location.href.indexOf('visitRecord') != -1){
+                location.reload();
+            }
         },
         this.handleCompanyUserGet = (res) => {
-            console.log(res);
             if (res.success) {
                 this.setState({
                     personalList: res.data
@@ -37,12 +37,13 @@ export default class MyCustom extends React.Component {
             }
         },
         this.handleAddPersonalMsg=(res)=>{
-            console.log(res);
             if(res.success){
                 Toast.info("添加成功", 2, null, false);
                 this.setState({name:"",job:"",phone:"",email:"",remark:""}); 
                 this.onClose('modal1')();
-                location.reload();
+                if (window.location.href.indexOf('PersonalList') != -1) {
+                    location.reload();
+                }
             }else{
                 Toast.info(res.message, 2, null, false);
             }
@@ -216,7 +217,7 @@ export default class MyCustom extends React.Component {
                         className="personalLinkWrap myCustomModal"
                         footer={[
                             { text: '取消', onPress: () => { console.log('cancle'); this.onClose('modal')(); } },
-                            { text: '确定', onPress: () => { this.onClose('modal')(); this.addMission(); window.location.href; } }
+                            { text: '确定', onPress: () => { this.onClose('modal')(); this.addMission(); } }
                         ]}
                     >
                         <div className="personalLink">
@@ -226,7 +227,7 @@ export default class MyCustom extends React.Component {
                                         <span style={{ textAlignLast:"justify",width:"25%",color:"#333"}}>发生时间:</span>
                                         <input
                                             type="text"
-                                            value={this.state.name}
+                                            value={this.state.happenTime}
                                             onChange={(e) => { this.onChangeHappenTime(e) }}
                                             style={{paddingLeft:"5px"}}
                                             placeholder="0000-00-00"
@@ -237,7 +238,7 @@ export default class MyCustom extends React.Component {
                                         {/* <span>内容：</span> */}
                                         <input
                                             type="text"
-                                            value={this.state.job}
+                                            value={this.state.content}
                                             onChange={(e) => { this.onChangeContent(e) }}
                                             style={{paddingLeft:"5px"}}
                                         />
@@ -246,7 +247,7 @@ export default class MyCustom extends React.Component {
                                         <span style={{ textAlignLast:"justify",width:"25%",color:"#333"}}>完成时间:</span>
                                         <input
                                             type="text"
-                                            value={this.state.phone}
+                                            value={this.state.finishTime}
                                             onChange={(e) => { this.onChangeFinishTime(e) }}
                                             style={{ paddingLeft: "5px" }}
                                             placeholder="0000-00-00"
@@ -256,7 +257,7 @@ export default class MyCustom extends React.Component {
                                         <span style={{ textAlignLast:"justify",width:"25%",color:"#333"}}>交割情况:</span>
                                         <input
                                             type="text"
-                                            value={this.state.email}
+                                            value={this.state.give}
                                             onChange={(e) => { this.onChangeGive(e) }}
                                             style={{paddingLeft:"5px"}}
                                         />

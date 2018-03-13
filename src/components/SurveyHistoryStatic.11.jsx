@@ -40,7 +40,7 @@ export default class SurveyHistoryStatic extends React.Component {
     componentDidMount () {
         runPromise('get_survey_info', {     //调研详细
             // "gd_project_id": this.props.state.baseFlagId
-            "gd_project_id": validate.getCookie("baseId")
+            "gd_company_id": validate.getCookie("baseId")
         }, this.handleProjectGet, false, "post");
     }
 

@@ -506,7 +506,7 @@
                 }
                 .signatureTxt {
                     span {
-                        line-height: 20px;
+                        line-height: 28px;
                     }
                     position: relative;
                     #canvas {
@@ -529,8 +529,12 @@
                     .date {
                         position: absolute;
                         bottom: .292969rem;
-                        right: .292969rem;
-                        z-index: 10;
+                        right: 0;
+                        z-index: 105;
+                        input{
+                            border:0 none;
+                            width: 120px;
+                        }
                     }
                     .suggess {
                         padding: .488281rem;
@@ -661,7 +665,7 @@
             }
             .signatureTxt {
                 span {
-                    line-height: 20px;
+                    line-height: 18px;
                 }
                 position: relative;
                 #canvas {
@@ -684,7 +688,11 @@
                     position: absolute;
                     bottom: .292969rem;
                     right: .4rem;
-                    z-index: 10;
+                    z-index: 105;
+                    input{
+                        border:0 none;
+                        width: 120px;
+                    }
                 }
                 .suggess {
                     padding: .488281rem;
@@ -931,7 +939,21 @@
         tr {
             td {
                 line-height: 0.5rem;
-                width: 25%;
+            }
+            td:nth-child(1) {
+                width: 10%;
+            }
+            td:nth-child(2) {
+                width: 35%;
+            }
+            td:nth-child(3) {
+                width: 20%;
+            }
+            td:nth-child(4) {
+                width: 20%;
+            }
+            td:nth-child(5) {
+                width: 15%;
             }
         }        
     }
@@ -1118,8 +1140,8 @@
         .personalLinkList {
             ul {
                 li {
-                    height: .6rem;
-                    line-height:.6rem; 
+                    height: .8rem;
+                    line-height:.8rem; 
                     background-color: #F5F5F5;
                     margin: .078125rem;
                     input {
@@ -1189,11 +1211,11 @@
         ul {
             li {
                 span {
-                    width: 35%;
+                    width: 30%;
                     display: inline-block;
                 }
                 input {
-                    width: 65%;
+                    width: 70%;
                 }
             }
         }
@@ -1265,12 +1287,27 @@
 .newSurveyCompany {
     width: 300px !important;
 }
-
+.planLis.personalLinkWrap.am-modal-transparent {
+    width: 320px;
+    .am-list-item {
+        padding-left: 0;
+        background-color: #f5f5f5;
+        .am-textarea-control {
+            // padding:0;
+            textarea{
+                font-size: 15px;
+            }
+        }
+    }
+}
 .customsLists.visitRecordWrap{
     padding-bottom: 0px!important;
 }
 .demo-content {
     background-color: #000;
+}
+.am-modal-transparent.addPersonalDetail {
+    width: 280px !important;
 }
 //自定义动画
 .animatePage {

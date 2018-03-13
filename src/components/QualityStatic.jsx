@@ -13,9 +13,11 @@ export default class QualityStatic extends React.Component {
                 user_list:[],
                 copy_to_list:[],
                 plan_list:[],
+                check_info:{}
             }
         },
         this.handleMeetingDetailsGet = (res) => {
+            console.log(res);
             if(res.success){
                 this.setState({
                     meetingShow: res.data
@@ -24,7 +26,7 @@ export default class QualityStatic extends React.Component {
         }
     }
     componentDidMount(){
-        runPromise('get_record_info', {
+        runPromise('get_check_info', {
             "check_id": GetLocationParam('id'),
         }, this.handleMeetingDetailsGet, false, "post");
     }
@@ -33,7 +35,8 @@ export default class QualityStatic extends React.Component {
             <div id="fromHTMLtestdiv">
                 <div className="qualityFormWrap visitRecordWrap">
                     <TableHeads url={urls.wordMsg} isHide={false} tag={<h3>验收单</h3>}></TableHeads>
-                    <img src={this.state.meetingShow.signed_file_path} style={{ width: "100%", marginTop: "-1.5rem" }} />
+                    <div style={{ height: "1.3rem", position: "relative", width: "100%" }}></div>                                        
+                    <img src={this.state.meetingShow.check_info.signed_file_path} style={{ width: "100%", marginTop: "-1.5rem" }} />
                 </div>
             </div>
         )
