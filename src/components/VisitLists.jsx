@@ -66,7 +66,18 @@ export default class VisitList extends React.Component {
                                 {
                                     this.state.backVisit.item_list.map((value) => (
                                         <Link to={'/sceneStatic?id='+value.id}>
-                                            <li>
+                                            <li style={{position:"relative"}}>
+                                                {
+                                                    value.signed_file_path ? <i className="iconfont icon-biaoji2"
+                                                        style={{
+                                                            display: "inline-block",
+                                                            fontSize: "22px",
+                                                            color: "#1ea1ef",
+                                                            position: "absolute",
+                                                            right: "0",
+                                                            top: "0"
+                                                        }}></i> : ""
+                                                }
                                                 <p>{value.score == 0 ? "不满意" : value.score == 1 ? "一般" : "满意"}</p>
                                                 <p>{(value.add_time + '').split(" ")[0]}</p>
                                             </li>

@@ -21,7 +21,8 @@ function MyBody(props) {
 let realData = [];
 let index = realData.length - 1;
 let realDataLength = realData.length;
-let NUM_ROWS = 10;
+const NUM_ROWS = 6; //循环长度
+let real_NUM_ROWS = 6;
 let pageIndex = 0;
 
 export default class Visit extends React.Component {
@@ -31,9 +32,9 @@ export default class Visit extends React.Component {
         const dataSource = new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2,
         });
-        this.genData = (pIndex = 0, NUM_ROWS, data) => {
+        this.genData = (pIndex = 0, real_NUM_ROWS, data) => {
             const dataBlob = {};
-            for (let i = 0; i < NUM_ROWS; i++) {
+            for (let i = 0; i < real_NUM_ROWS; i++) {
                 const ii = (pIndex * NUM_ROWS) + i;
                 dataBlob[`${ii}`] = data[i];
             }
@@ -72,29 +73,28 @@ export default class Visit extends React.Component {
             userId:""
         },
         this.handleCompanyListGet = (res) => {
-            // console.log(res);
             this.setState({
                 companyLists:res.data
             })
             sessionStorage.setItem("companyLists", JSON.stringify(res.data.item_list));
         },
         this.handleVisitGet = (res) => {
-            console.log(res);
             if(res.success){
                 realData = res.data.item_list.reverse();
                 index = realData.length - 1;
                 realDataLength = res.data.item_list.length;
-                NUM_ROWS = realDataLength;
+                real_NUM_ROWS = realDataLength;
                 if (pageIndex == 0) {
                     this.rData = {};
-                    this.rData = { ...this.rData, ...this.genData(pageIndex++, realDataLength, res.data.item_list) };
+                    this.rData = { ...this.rData, ...this.genData(pageIndex, realDataLength, res.data.item_list) };
                     sessionStorage.setItem("visitLists", JSON.stringify(realData));
                 } else {
-                    this.rData = { ...this.rData, ...this.genData(pageIndex++, realDataLength, res.data.item_list) };
+                    this.rData = { ...this.rData, ...this.genData(pageIndex, realDataLength, res.data.item_list) };
                 }
+                ++pageIndex;
                 this.setState({
                     dataSource: this.state.dataSource.cloneWithRows(this.rData),
-                    hasMore: res.data.total_pages > pageIndex ? true : false,
+                    hasMore: res.data.total_count > pageIndex * NUM_ROWS ? true : false,
                     isLoading: false,
                     visitLists: res.data
                 });
@@ -103,7 +103,6 @@ export default class Visit extends React.Component {
             }
         },
         this.handleAddVisit = (res) =>{
-            console.log(res);
             if(res.success){
                 Toast.info("提交成功", 2, null, false);
                 this.setState({
@@ -117,11 +116,15 @@ export default class Visit extends React.Component {
     onEndReached = (event) => {
         // load new data   数据加载完成
         // hasMore: from backend data, indicates whether it is the last page, here is false
-        if (this.state.isLoading && !this.state.hasMore) {
+        if (this.state.isLoading) {
             return;
         };
-        this.setState({ isLoading: true });
-        this.orderVisitBack(this.state.classify, pageIndex * NUM_ROWS, this.state.gd_company_id);
+        if (!this.state.hasMore) {
+            return;
+        };
+        this.setState({ isLoading: true }, () => {
+            this.orderVisitBack(this.state.classify, pageIndex * NUM_ROWS, this.state.gd_company_id);
+        });
     }
     componentDidMount() {
         init('plusMsg');
@@ -163,7 +166,7 @@ export default class Visit extends React.Component {
         runPromise('get_visit_back_list', {   //获取回访列表
             gd_company_id: gd_company_id,
             offset: offset,
-            limit: "10",
+            limit: NUM_ROWS,
             score: score,
             timeOut: timeOut,
             work_status: status
@@ -206,7 +209,6 @@ export default class Visit extends React.Component {
         });
     }
     show = (showIndex) => {
-        console.log(showIndex);
         if(this.state.isShow == showIndex) {
             this.setState({
                 isShow: -1
@@ -222,7 +224,9 @@ export default class Visit extends React.Component {
             alertShow: !this.state.alertShow,
             tempCompanyId:idx,
             id:visitId,
-            userId:userId
+            userId:userId,
+            files:[],
+            fujia:""
         })
     }
     closeAlert = () => {
@@ -252,7 +256,7 @@ export default class Visit extends React.Component {
         const { files } = this.state;
         const row = (rowData, sectionID, rowID) => {
             return (
-                <Quality2
+                <NewQuality2
                     rowID={rowID}
                     visitLis={rowData}
                     isShow={this.state.isShow}
@@ -284,7 +288,7 @@ export default class Visit extends React.Component {
                                         style={{ "background-color": this.state.gd_company_id == value.id ? "#4e4c4c" : "#000"}}
                                         onClick={(e)=>{this.clickChangeBg(e,value.id)}}>
                                         <a>
-                                            <p style={{color:"#fff"}}><span>{value.company_name}</span><i>{value.visit_back_count}</i></p>
+                                            <p style={{ color: "#fff" }}><span>{value.company_name}</span><i>{value.visit_back_customer_count}</i></p>
                                         </a>
                                     </li>
                                 ))
@@ -321,7 +325,12 @@ export default class Visit extends React.Component {
                             onEndReached={this.onEndReached}
                             pageSize={5}
                         />
-                        <div className="alertModalBg" style={{ display: this.state.alertShow ? "block" : "none" }}></div>
+                        <div className="alertModalBg" 
+                            style={{ display: this.state.alertShow ? "block" : "none" }}
+                            onClick={(e)=>{
+                                this.setState({ alertShow:false})
+                            }}
+                            ></div>
                         <div className="alertModal" style={{ display: this.state.alertShow ? "block" : "none" }}>
                             <i className="icon-icon_chahao iconfont" onClick={this.closeAlert}></i>
                             <p className="which" style={{ textAlign: "center" }}>
@@ -333,6 +342,13 @@ export default class Visit extends React.Component {
                                 placeholder="附加信息：" 
                                 onChange={(e)=>{this.setState({fujia:e.currentTarget.value})}} 
                                 value={this.state.fujia}
+                                style={{resize:"none"}}
+                                onBlur={(e) => { 
+                                    e.currentTarget.parentNode.style.marginTop = '0';
+                                }}
+                                onFocus={(e) => { 
+                                    e.currentTarget.parentNode.style.marginTop = '2rem';
+                                }}
                             ></textarea>
                             <ImagePicker
                                 files={files}
@@ -349,3 +365,23 @@ export default class Visit extends React.Component {
         )
     }
 }
+
+const Mycontainer = (WrappedComponent) => 
+    class extends React.Component {
+        constructor(props) {
+            super(props)
+            this.state = {
+                isShow: false
+            }
+        }
+        show = () => {
+            this.setState({
+                isShow: !this.state.isShow
+            })
+        }
+        render() {
+            return <WrappedComponent {...this.props} isShow={this.state.isShow} show={this.show} />
+        }
+    }
+
+const NewQuality2 = Mycontainer(Quality2);

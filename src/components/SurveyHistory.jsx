@@ -15,7 +15,19 @@ const urls = {
     addPic2: require('../images/addPic.png'),
     addPic3: require('../images/addPic.png'),
 }
-
+let canvas;
+let drawBoard;
+let arrSize = [];
+let openPhotoSwipe = function (items, index) {
+    let pswpElement = document.querySelectorAll('.pswp')[0];
+    let options = {
+        index: index,
+        showAnimationDuration: 100,
+        hideAnimationDuration: 100
+    }
+    let gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+    gallery.init();
+}
 export default class SurveyHistoryStatic extends React.Component {
     constructor (props) {
         super(props);
@@ -30,7 +42,6 @@ export default class SurveyHistoryStatic extends React.Component {
             files:[],
         },
         this.handleProjectGet = (res) => {
-            console.log(res)
             if(res.success){
                 this.setState({
                     companyDetail: res.data,
@@ -77,12 +88,10 @@ export default class SurveyHistoryStatic extends React.Component {
     //     // this.state.companyDetail.signed_file_path ?
     // }
     render(){
-        console.log(!!this.state.companyDetail.signed_file_path);
         return (
             <div id="fromHTMLtestdiv">
                 <form className="visitRecordWrap">
                     <TableHeadOne url={urls.wordMsg} isHide={false} tag={<h3>调研详情</h3>}></TableHeadOne>
-                    
                     <div className="recordMain">
                         <div style={{ height: "1.3rem", position: "relative", width: "100%" }}></div>
                         <h2 style={{ letterSpacing: "1px", marginTop: "0.8rem" }}>{this.state.companyDetail.company_name}</h2>
@@ -239,21 +248,7 @@ export default class SurveyHistoryStatic extends React.Component {
                 </form>
                 <PhotoSwipeItem />
             </div>
-            
         )
     }
 }
 
-let canvas;
-let drawBoard;
-let arrSize = [];
-let openPhotoSwipe = function (items, index) {
-    let pswpElement = document.querySelectorAll('.pswp')[0];
-    let options = {
-        index: index,
-        showAnimationDuration: 100,
-        hideAnimationDuration: 100
-    }
-    let gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
-    gallery.init();
-}

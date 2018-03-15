@@ -23,7 +23,8 @@ function MyBody(props) {
 let realData = [];
 let index = realData.length - 1;
 let realDataLength = realData.length;
-let NUM_ROWS = 5;
+const NUM_ROWS = 5; //循环长度
+let real_NUM_ROWS = 5;
 let pageIndex = 0;
 
 export default class Custom extends React.Component {
@@ -33,9 +34,9 @@ export default class Custom extends React.Component {
         const dataSource = new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2,
         });
-        this.genData = (pIndex = 0, NUM_ROWS, data) => {
+        this.genData = (pIndex = 0, real_NUM_ROWS, data) => {
             const dataBlob = {};
-            for (let i = 0; i < NUM_ROWS; i++) {
+            for (let i = 0; i < real_NUM_ROWS; i++) {
                 const ii = (pIndex * NUM_ROWS) + i;
                 dataBlob[`${ii}`] = data[i];
             }
@@ -76,7 +77,7 @@ export default class Custom extends React.Component {
                 realData = res.data.item_list;
                 index = realData.length - 1;
                 realDataLength = res.data.item_list.length;
-                NUM_ROWS = realDataLength;
+                real_NUM_ROWS = realDataLength;
                 if (pageIndex == 0) {
                     this.rData = {};
                     this.rData = { ...this.rData, ...this.genData(pageIndex++, realDataLength, res.data.item_list) };
@@ -87,7 +88,7 @@ export default class Custom extends React.Component {
                 // this.rData = { ...this.rData, ...this.genData(pageIndex++, realDataLength, res.data.item_list) };
                 this.setState({
                     dataSource: this.state.dataSource.cloneWithRows(this.rData),
-                    hasMore: res.data.total_pages > pageIndex ? true : false,
+                    hasMore: res.data.total_count > pageIndex * NUM_ROWS ? true : false,
                     isLoading: false,
                     data:res.data.item_list
                 })

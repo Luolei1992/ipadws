@@ -317,7 +317,7 @@ export default class Quality extends React.Component {
                         <tr>
                             <td colSpan="4" className="signatureTxt">
                                 <div className="suggess">
-                                    <canvas id="canvas" width="768" height="150"></canvas>
+                                    <canvas id="canvas" width="1536" height="300"></canvas>
                                     <div className="signature sure" style={{ position: "relative", zIndex: "100" }}>
                                         <span style={{ backgroundColor: "#fff" }}>项目负责人(签字): </span>
                                     </div>

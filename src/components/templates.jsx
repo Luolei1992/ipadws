@@ -110,9 +110,9 @@ export const Customs = (props) =>(         //我的客户信息展示
                                             lineHeight: "18px"
                                         }}>服务内容:</span>
                                     </td>
-                                    <td style={{ lineHeight: "18px" }}>
-                                        {/* <pre dangerouslySetInnerHTML={{__html:value.content?value.content:"无"}} ></pre> */}
-                                        <pre dangerouslySetInnerHTML={{__html:value.content?value.content:"无"}} ></pre>
+                                    <td className="eclipsLine" style={{ 
+                                        lineHeight: "18px"
+                                     }} ><pre dangerouslySetInnerHTML={{__html:value.content?value.content:"无"}} ></pre>
                                     </td>
                                 </tr>
                                 <tr>
@@ -221,102 +221,117 @@ export const Customs2 = (props) => {
     return(         
         <li key={props.rowID}>
             <div className="liWrap">
-                <div className="left fn-left">
-                    <img src={value.path} style={{ width: "100%" }} />
-                </div>
-                <div className="mid fn-left">
-                        <Link to={'/company?tab=0&id=' + value.gd_company_id} onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}>
-                            <h3>
-                                {value.company_name}<span>{value.type == 1 ? "包年项目" : value.type == 2 ? "一次性项目" : "调研"}</span>
-                            </h3>
-                        </Link>
-                    <table>
-                        <tr>
-                            <td style={{ width: "60px", position: "relative" }}>
-                                <span style={{
-                                    float: "left",
-                                    position: "absolute",
-                                    left: "0",
-                                    top: "0",
-                                    lineHeight: "18px"
-                                }}>服务内容:</span>
-                            </td>
-                            <td style={{ lineHeight: "18px" }}>
-                                {/* <p>{value.content ? value.content : "无"}</p> */}
-                                <p dangerouslySetInnerHTML={{__html:value.content?value.content:"无"}} ></p>                                
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colSpan="2">
-                                <table>
-                                    <tr>
-                                        <td style={{ width: "60px", position: "relative", height: "18px" }}>
-                                            <span style={{
-                                                float: "left",
-                                                position: "absolute",
-                                                left: "0",
-                                                top: "0",
-                                                lineHeight: "18px"
-                                            }}>备注:</span>
-                                        </td>
-                                        <td style={{
-                                            lineHeight: "18px"
-                                        }}><p>{value.remark}</p></td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                        {
-                            value.condition.length > 2?<tr>
+                <Link to={'/company?tab=0&id=' + value.gd_company_id} onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}>
+                    <div className="left fn-left">
+                        <img src={value.path} style={{ width: "100%" }} />
+                    </div>
+                </Link>
+                
+                <Link to={'/company?tab=0&id=' + value.gd_company_id} onClick={(e) => { 
+                        props.setBaseStateFun(value.gd_company_id, value.company_name, value.id)
+                    }}>
+                    <div className="mid fn-left">
+                                <h3>
+                                    {value.company_name}<span>{value.type == 1 ? "包年项目" : value.type == 2 ? "一次性项目" : "调研"}</span>
+                                </h3>
+                        <table>
+                            <tr>
+                                <td style={{ width: "60px", position: "relative" }}>
+                                    <span style={{
+                                        float: "left",
+                                        position: "absolute",
+                                        left: "0",
+                                        top: "0",
+                                        lineHeight: "18px"
+                                    }}>服务内容:</span>
+                                </td>
+                                <td className="eclipsLine" style={{ lineHeight: "18px" }}>
+                                    {/* <p>{value.content ? value.content : "无"}</p> */}
+                                    <p dangerouslySetInnerHTML={{__html:value.content?value.content:"无"}} ></p>                                
+                                </td>
+                            </tr>
+                            <tr>
                                 <td colSpan="2">
                                     <table>
                                         <tr>
-                                            <td style={{ width: "60px", position: "relative" }}>
+                                            <td style={{ width: "60px", position: "relative", height: "18px" }}>
                                                 <span style={{
                                                     float: "left",
                                                     position: "absolute",
                                                     left: "0",
                                                     top: "0",
                                                     lineHeight: "18px"
-                                                }}>条件:</span>
+                                                }}>备注:</span>
                                             </td>
-                                            <td style={{ lineHeight: "18px" }}><p>{value.condition}</p></td>
+                                            <td style={{
+                                                lineHeight: "18px"
+                                            }}><p>{value.remark}</p></td>
                                         </tr>
                                     </table>
                                 </td>
-                            </tr>:''
-                        }
-                        
-                    </table>
-                </div>
+                            </tr>
+                            {
+                                value.condition.length > 2?<tr>
+                                    <td colSpan="2">
+                                        <table>
+                                            <tr>
+                                                <td style={{ width: "60px", position: "relative" }}>
+                                                    <span style={{
+                                                        float: "left",
+                                                        position: "absolute",
+                                                        left: "0",
+                                                        top: "0",
+                                                        lineHeight: "18px"
+                                                    }}>条件:</span>
+                                                </td>
+                                                <td style={{ lineHeight: "18px" }}><p>{value.condition}</p></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>:''
+                            }
+                            
+                        </table>
+                    </div>
+                </Link>
                 <div className="right fn-right">
                     <p className="more" onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}>
                         <Link to={"/company?tab=0&id=" + value.gd_company_id}><i style={{width:"40px",display:"inline-block",textAlign:"right"}}>...</i></Link>
                     </p>
                     <ul>
                         <li>
-                            <p className="top" onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}>
-                                <Link to={"/visitRecord?tab=1&id=" + value.gd_company_id}>{value.mission_count}</Link>
-                            </p>
+                            <Link to={"/visitRecord?tab=1&id=" + value.gd_company_id}>
+                                <p className="top" onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}>
+                                    {value.mission_count}
+                                </p>
+                            </Link>
                             <p className="btm" style={{ dispaly: "inline-block", padding: "4px 0" }} onClick={(e) => { props.addJobs(e, value.id); props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}>任务</p>
                         </li>
                         <li>
-                            <p className="top" onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}>
-                                <Link to={"/visitLists?tab=2&id=" + value.gd_company_id}>{value.record_count}</Link>
-                            </p>
-                            <p className="btm" style={{ dispaly: "inline-block", padding: "4px 0" }} onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}><Link to="/scene">回访</Link></p>
+                            <Link to={"/visitLists?tab=2&id=" + value.gd_company_id}>
+                                <p className="top" onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}>
+                                    {value.record_count}
+                                </p>
+                            </Link>
+                            <Link to="/scene">
+                                <p className="btm" style={{ dispaly: "inline-block", padding: "4px 0" }} onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}>回访</p>
+                            </Link>
                         </li>
                         <li>
-                            <p className="top" onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}>
-                                <Link to={"/meetingList?tab=3&id=" + value.gd_company_id}>{value.meeting_count}</Link>
-                            </p>
-                            <p className="btm" style={{ dispaly: "inline-block", padding: "4px 0" }} onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}><Link to="/meeting">纪要</Link></p>
+                            <Link to={"/meetingList?tab=3&id=" + value.gd_company_id}>
+                                <p className="top" onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}>
+                                {value.meeting_count}
+                                </p>
+                            </Link>
+                            <Link to="/meeting"><p className="btm" style={{ dispaly: "inline-block", padding: "4px 0" }} onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}>纪要</p></Link>
                         </li>
                         <li>
-                            <p className="top" onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}>
-                                <Link to={"/qualityList?tab=6&id=" + value.gd_company_id}>{value.check_count}</Link>
-                            </p>
-                            <p className="btm" style={{ dispaly: "inline-block", padding: "4px 0" }} onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}><Link to="/quality">验收</Link></p>
+                            <Link to={"/qualityList?tab=6&id=" + value.gd_company_id}>
+                                <p className="top" onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}>
+                                    {value.check_count}
+                                </p>
+                            </Link>
+                            <Link to="/quality"><p className="btm" style={{ dispaly: "inline-block", padding: "4px 0" }} onClick={() => { props.setBaseStateFun(value.gd_company_id, value.company_name, value.id) }}>验收</p></Link>
                         </li>
                     </ul>
                 </div>
@@ -355,11 +370,11 @@ export const Quality2 = (props) => {
             <div className="top">
                 <ul className="fn-left">
                     <li><i></i></li>
-                    <li>{value.user_name}</li>
+                    <li>{value.customer_name}</li>
                     <li style={{ color: "#ADADAD", margin: "0 5px" }}>{value.company_name}</li>
                     <li style={{ color: "#ADADAD" }}>{value.job_name}</li>
                 </ul>
-                <span className="slideDown iconfont icon-tubiao-" onClick={() => props.show(idx)}></span>
+                <span className="slideDown iconfont icon-tubiao-" onClick={() => props.show()}></span>
             </div>
             <div className="btm">
                 <div className="btmLeft">
@@ -392,14 +407,14 @@ export const Quality2 = (props) => {
                             <button style={{
                                 backgroundColor: "#E6E6E6",
                                 color: "#333"
-                            }} onClick={() => { props.changeAlert(value.gd_company_id, value.id,value.user_id) }}>回访结果</button> :
+                            }} onClick={() => { props.changeAlert(value.gd_company_id, value.id, value.customer_id) }}>回访结果</button> :
                             value.time_least > 0 && value.time_least < 7 ?
                                 <button style={{ backgroundColor: "#0DA0F4" }} onClick={() => { props.changeAlert(value.gd_company_id, value.id) }}>回访结果</button> :
                                 <button onClick={() => { props.changeAlert(value.gd_company_id, value.id) }}>回访结果</button>
                     }
                 </div>
             </div>
-            <div className="attach" style={{ display: props.isShow == idx ? "block" : "none" }}>
+            <div className="attach" style={{ display: props.isShow ? "block" : "none" }}>
                 <div className="attachTop">
                     手机：{value.customer_mobile}<span></span>邮箱：{value.customer_email}
                     <p>{value.remark}</p>
@@ -641,6 +656,19 @@ export const readyDo = (a) => {
             body[0].appendChild(canvas);
             
             var base64text = canvas.toDataURL(type);
+            var trans = api.require('trans');
+            trans.saveImage({
+                base64Str: base64text.split(',')[1],
+                imgPath: "fs://",
+                album: true,
+                imgName: "ss.png",
+            }, function (ret, err) {
+                if (ret.status) {
+                    newCanvas.remove();
+                } else {
+                    alert(JSON.stringify(err));
+                }
+            });
             
             runPromise('upload_image_byw_upy2', {
                 "arr": base64text
@@ -651,28 +679,27 @@ export const readyDo = (a) => {
                         a(res.data.path);
                     }
                     // download(res.data.path);
-                    api.download({
-                        url: res.data.path,
-                        savePath: 'fs://' + Date.now()+'.png',
-                        report: true,
-                        cache: true,
-                        allowResume: true
-                    }, function (ret, err) {
-                        if (ret.state == 1) {
-                            //下载成功
-                            api.saveMediaToAlbum({
-                                path: ret.savePath
-                            }, function (ret, err) {
-                                if (ret && ret.status) {
-                                    // alert('下载成功');
-                                } else {
-                                    // alert('下载失败');
-                                }
-                            });
-                        }
-                    });
+                    // api.download({
+                    //     url: res.data.path,
+                    //     savePath: 'fs://' + Date.now()+'.png',
+                    //     report: true,
+                    //     cache: true,
+                    //     allowResume: true
+                    // }, function (ret, err) {
+                    //     if (ret.state == 1) {
+                    //         //下载成功
+                    //         api.saveMediaToAlbum({
+                    //             path: ret.savePath
+                    //         }, function (ret, err) {
+                    //             if (ret && ret.status) {
+                    //                 // alert('下载成功');
+                    //             } else {
+                    //                 // alert('下载失败');
+                    //             }
+                    //         });
+                    //     }
+                    // });
                     // Toast.info("文件保存成功", 2, null, false);
-                    newCanvas.remove();
                 }
             }, false, "post");
             // console.log(imgData);

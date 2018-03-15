@@ -2670,7 +2670,9 @@ var Logger = function () {
                     args[_key] = arguments[_key];
                 }
 
-                Function.prototype.bind.call(window.console.log, window.console).apply(window.console, [Date.now() - this.start + 'ms', this.id ? 'html2canvas (' + this.id + '):' : 'html2canvas:'].concat([].slice.call(args, 0)));
+                // Function.prototype.bind.call(window.console.log, window.console)
+                // .apply(window.console, [Date.now() - this.start + 'ms', this.id ? 'html2canvas (' + this.id + '):' : 'html2canvas:']
+                // .concat([].slice.call(args, 0)));
             }
         }
 

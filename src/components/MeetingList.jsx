@@ -15,7 +15,6 @@ export default class MeetingList extends React.Component {
             }
         },
         this.handleMeetingListGet = (res) => {
-            console.log(res);
             if(res.success){
                 this.setState({
                     meetingList: res.data
@@ -45,7 +44,18 @@ export default class MeetingList extends React.Component {
                                 {
                                     this.state.meetingList.item_list.map((value)=>(
                                         <Link to={'/meetingStatic?id='+value.id}>
-                                            <li>
+                                            <li style={{position:"relative"}}>
+                                                {
+                                                    value.signed_file_path ? <i className="iconfont icon-biaoji2"
+                                                        style={{
+                                                            display: "inline-block",
+                                                            fontSize: "22px",
+                                                            color: "#1ea1ef",
+                                                            position: "absolute",
+                                                            right: "0",
+                                                            top: "0"
+                                                        }}></i> : ""
+                                                }
                                                 <p>{value.title}</p>
                                                 <p>{(value.start_time+'').split(" ")[0]}</p>
                                             </li>
