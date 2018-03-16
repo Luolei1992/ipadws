@@ -138,7 +138,7 @@ function sendAjax(url, param, method) {
     });
 }
 function errLogin(data)  {
-    if (data.message == '会话已失效，请重新登录') {
+    if (data.message == '会话已失效，请重新登录' || data.message == '不是公司员工') {
         Toast.info(data.message, .8, null, false);
         validate.setCookie("user_id","");
         setTimeout(() => {

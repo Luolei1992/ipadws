@@ -52,8 +52,8 @@ export default class Custom extends React.Component {
             animate:true,
             modal: false,
             modal1: false,
-            type:"add_time",
-            order: "全部",
+            type:"1",
+            order: "合作中",
             check: "全部",
             company: "",
             job: "",
@@ -95,7 +95,6 @@ export default class Custom extends React.Component {
             }
         },
         this.handleAddPersonalMsg=(res)=>{
-            console.log(res);
             if(res.success){
                 Toast.info("添加成功", 2, null, false);
                 this.getProjectLis(this.state.type);   //更新项目数据
@@ -106,7 +105,6 @@ export default class Custom extends React.Component {
             }
         },
         this.handleAddMission=(res)=>{
-            console.log(res);
             if(res.success){
                 Toast.info("添加成功", 2, null, false);
                 this.getProjectLis(this.state.type);   //更新项目数据                
@@ -141,7 +139,7 @@ export default class Custom extends React.Component {
             // height: this.state.height - ReactDOM.findDOMNode(this.refs.lv).offsetTop,
             height: this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop,
         }), 100);
-        this.getProjectLis("add_time");
+        this.getProjectLis("1");
         // document.getElementById("mainWrap").style.marginTop
     }
     componentDidUpdate(){
@@ -158,8 +156,9 @@ export default class Custom extends React.Component {
             "type": "-3",
             "offset": offset,
             "limit": 5,
-            "sort": type,
-            "choose": 0
+            "sort": "add_time",
+            "choose": 0,
+            "work_status": type
         }, this.handleProjectGet, true, "post");
     }
     addPersonalMsg=()=>{
@@ -263,10 +262,9 @@ export default class Custom extends React.Component {
                                     this.state.show2 ? this.setState({ show2: false }) : "";
                                 }}>{this.state.order} <i className="iconfont icon-tubiao-"></i></span>
                                 <ul style={{ display: this.state.show ? "block" : "none" }}>
-                                    <li onClick={(e) => { this.changeOrder(e,"") }}>全部</li>
-                                    <li onClick={(e) => { this.changeOrder(e,"start_time") }}>最新合作</li>
-                                    <li onClick={(e) => { this.changeOrder(e,"end_time") }}>即将过期</li>
-                                    <li onClick={(e) => { this.changeOrder(e,"score") }}>评价高低</li>
+                                    <li onClick={(e) => { this.changeOrder(e, "0") }}>全部</li>
+                                    <li onClick={(e) => { this.changeOrder(e, "1") }}>合作中</li>
+                                    <li onClick={(e) => { this.changeOrder(e, "2") }}>已过期</li>
                                 </ul>
                             </div>
                             {/* <span style={{ marginLeft: "0.5rem" }}>筛选：</span>
@@ -391,7 +389,7 @@ export default class Custom extends React.Component {
                     renderRow={row}
                     style={{
                         // height: this.state.height,
-                        height: "661px",
+                        height: "640px",
                         overflow: 'auto'
                     }}
                     onEndReached={this.onEndReached}

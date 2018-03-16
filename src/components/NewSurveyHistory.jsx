@@ -379,9 +379,10 @@ export default class NewSurveyHistory extends React.Component {
     //     };
     // }
     onChange = (files, type, index) => {
-        console.log(files, type, index);
-        let img = new Image();
-        let item = {};
+        if(files.length>0){
+            let img = new Image();
+            let item = {};
+        }
         img.src = files[files.length - 1].url;
         img.onload = function (argument) {
             item.w = this.width;

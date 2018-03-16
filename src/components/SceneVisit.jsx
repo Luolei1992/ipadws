@@ -112,9 +112,14 @@ export default class SceneVisit extends React.Component {
         readyDo(this.alerts);
         canvas = document.getElementById("canvas");
         drawBoard = new DrawBoard(canvas);  // 初始化
-        interval.push(setInterval(() => {
-            this.addRecordToback();
-        }, 30000));
+        let blurList = document.querySelectorAll("input");
+        for (let s = 0; s < blurList.length; s++) {
+            blurList[s].addEventListener('blur', () => {
+                interval.push(setInterval(() => {
+                    this.addRecordToback();
+                }, 30000));
+            })
+        }
         this.getPersonLis();
         this.toPersonLis();
         let head = document.getElementsByClassName("tableHead")[0];

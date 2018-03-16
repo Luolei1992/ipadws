@@ -62,9 +62,14 @@ export default class Meeting extends React.Component {
         init("meetingResult");
         canvas = document.getElementById("canvas");
         drawBoard = new DrawBoard(canvas);  // 初始化
-        interval.push(setInterval(() => {
-            this.addMeeting();
-        }, 30000));
+        let blurList = document.querySelectorAll("input");
+        for (let s = 0; s < blurList.length; s++) {
+            blurList[s].addEventListener('blur', () => {
+                interval.push(setInterval(() => {
+                    this.addMeeting();
+                }, 30000));
+            })
+        }
         let head = document.getElementsByClassName("tableHead")[0];
         let mainWrap = document.getElementById("mainWrap");
         head.style.position = "static";

@@ -9,9 +9,9 @@ const urls = {
     guide1: require('../images/guide1.png'),
     guide2: require('../images/guide2.png'),
     guide3: require('../images/guide3.png'),
-    company: 'https://www.huakewang.com/workOrder/company.pdf',
-    government: 'https://www.huakewang.com/workOrder/government.pdf',
-    internet: 'https://www.huakewang.com/workOrder/internet.pdf'
+    company: 'https://www.huakewang.com/workorder/company.pdf',
+    government: 'https://www.huakewang.com/workorder/government.pdf',
+    internet: 'https://www.huakewang.com/workorder/internet.pdf'
 }
 export default class Guide extends React.Component {
     constructor(props) {

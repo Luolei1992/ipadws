@@ -82,9 +82,14 @@ export default class Quality extends React.Component {
         readyDo(this.alerts);
         canvas = document.getElementById("canvas");
         drawBoard = new DrawBoard(canvas);  // 初始化
-        interval.push(setInterval(() => {
-            this.addCheck();
-        }, 30000));
+        let blurList = document.querySelectorAll("input");
+        for (let s = 0; s < blurList.length; s++) {
+            blurList[s].addEventListener('blur', () => {
+                interval.push(setInterval(() => {
+                    this.addCheck();
+                }, 30000));
+            })
+        }
         runPromise('get_project_info', {
             "gd_project_id": validate.getCookie('project_id')
         }, this.handleProjectGet, true, "post");
